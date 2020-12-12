@@ -1,0 +1,126 @@
+.nav-link.active {
+  border-bottom-color: #007cff !important;
+  border-width: 2px !important;
+}
+
+.nav-tabs .nav-link:focus,
+.nav-tabs .nav-link:hover {
+  border-color: transparent;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.nav-tabs .nav-link.active {
+  border-color: transparent;
+}
+
+.activity-dialog {
+  max-width: 800px;
+}
+
+.activity-dropdown {
+  width: 50% !important;
+}
+
+.tab-content {
+  padding: 24px 24px 40px 32px !important;
+}
+
+.detail-button {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+  text-align: center;
+  font-family: Poppins;
+  color: #595959;
+  background-color: white;
+  padding: 10px 19px;
+  border-color: #e8e8e8 !important;
+}
+
+.detail-button:hover,
+.detail-button:focus,
+.detail-button:active {
+  background-color: seagreen !important;
+}
+
+.show-detail-hr {
+  background-color: #e8e8e8;
+  width: 95% !important;
+  margin: 0px auto 0px auto !important;
+}
+
+.activity-detail {
+  background-color: #fafafa;
+  border: 1px solid #e8e8e8;
+  box-sizing: border-box;
+  border-radius: 4px;
+  color: #595959;
+  padding: 1em;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.activity-text {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.student-detail-text {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #262626;
+}
+
+.tab-text {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  color: #595959;
+}
+.onboard-tiles {
+  border-width: 1px;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+.onboard-button {
+  width: 80%;
+  margin-top: 1.5rem;
+  position: relative;
+}
+.close-tiles {
+  height: fit-content;
+  float: right;
+  margin-top: -1.8rem;
+  position: absolute;
+  padding-left: 1.1rem;
+  width: fit-content;
+  margin-left: 0.1rem;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.activity-content {
+  overflow: auto;
+  max-height: 500px;
+  margin-bottom: 20px;
+}
+
+.mr-0 {
+  margin-right: 0;
+}

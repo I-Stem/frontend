@@ -11,6 +11,7 @@ const INITIAL_STATE: IAfcService.IStateProps = {
   documentName: "",
   outputFormat: 0,
   tagId: "",
+  inputFileLink: "",
 };
 
 type IMapPayload = IAfcService.Actions.IMapPayload;
@@ -24,6 +25,7 @@ export const AfcReducer = (
       return {
         ...state,
         inputFileId: action?.payload?.inputFileId || state.inputFileId,
+        inputFileLink: action.payload?.inputFileLink || state.inputFileLink,
         ...action.payload,
       };
 
@@ -34,6 +36,7 @@ export const AfcReducer = (
       return {
         ...state,
         inputFileId: action?.payload?.inputFileId,
+        inputFileLink: action.payload?.inputFileLink || state.inputFileLink,
       };
 
     default:

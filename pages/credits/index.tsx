@@ -16,6 +16,7 @@ import {
   ICreditsData,
   IStemServices,
   ReduxNextPageContext,
+  IStore,
 } from "@Interfaces";
 import { CreditsActions } from "@Actions";
 import { Wrapper } from "@Components";
@@ -32,6 +33,7 @@ const Credits: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   const [credits, setCredits] = useState<ICreditsData>({
     totalCredits: 0,
   });
+  const { userType, role } = props.user;
 
   const [feedbackFlags, setFeedbackFlags] = useState<FeedbackFlagsData>();
 
@@ -82,7 +84,7 @@ const Credits: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       <Head>
         <title>Credit Balance | I-Stem</title>
       </Head>
-      <DashboardLayout hideBreadcrumb>
+      <DashboardLayout userType={userType} role={role} hideBreadcrumb>
         {credits && (
           <>
             <div className="flex justify-between credit-bar">
@@ -99,7 +101,7 @@ const Credits: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                 {feedbackFlags?.afcServiceUsed ? (
                   <BlueButton
                     href="/credits/feedback"
-                    queryParams={{for:FeedbackCategory.AFC_SERVICE}}
+                    queryParams={{ for: FeedbackCategory.AFC_SERVICE }}
                   >
                     {feedbackFlags.afcFeedbackProvided === 0
                       ? `EARN 100 CREDITS`
@@ -123,7 +125,9 @@ const Credits: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                 {feedbackFlags?.afcEscalated ? (
                   <BlueButton
                     href="/credits/feedback"
-                     queryParams={{for:FeedbackCategory.AFC_SERVICE_ESCALATION}}
+                    queryParams={{
+                      for: FeedbackCategory.AFC_SERVICE_ESCALATION,
+                    }}
                   >
                     {feedbackFlags.afcEscalateFeedbackProvided === 0
                       ? `EARN 100 CREDITS`
@@ -145,7 +149,7 @@ const Credits: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                 {feedbackFlags?.vcServiceUsed ? (
                   <BlueButton
                     href="/credits/feedback"
-                    queryParams={{for:FeedbackCategory.VC_SERVICE}}
+                    queryParams={{ for: FeedbackCategory.VC_SERVICE }}
                   >
                     {feedbackFlags.vcStandardFeedbackProvided === 0
                       ? `EARN 100 CREDITS`
@@ -167,7 +171,7 @@ const Credits: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                 {feedbackFlags?.vcCustomModelServiceUsed ? (
                   <BlueButton
                     href="/credits/feedback"
-                    queryParams={{for:FeedbackCategory.VC_CUSTOM_SERVICE}}
+                    queryParams={{ for: FeedbackCategory.VC_CUSTOM_SERVICE }}
                   >
                     {feedbackFlags.vcCustomFeedbackProvided === 0
                       ? `EARN 100 CREDITS`
@@ -188,7 +192,9 @@ const Credits: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                 {feedbackFlags?.vcEscalated ? (
                   <BlueButton
                     href="/credits/feedback"
-                    queryParams={{for:FeedbackCategory.VC_SERVICE_ESCALATION}}
+                    queryParams={{
+                      for: FeedbackCategory.VC_SERVICE_ESCALATION,
+                    }}
                   >
                     {feedbackFlags.vcEscalateFeedbackProvided === 0
                       ? `EARN 100 CREDITS`
@@ -222,11 +228,16 @@ Credits.getInitialProps = async (
 
   return { namespacesRequired: ["common"], token, user };
 };
-
+const mapStateToProps = (store: IStore) => {
+  const { auth } = store;
+  return {
+    user: auth.user,
+  };
+};
 const mapDispatchToProps = {
   getCreditsHistory: CreditsActions.GetCreditsHistory,
   GetFeedbackFlags: CreditsActions.GetFeedbackFlags,
 };
-const Extended = connect(null, mapDispatchToProps)(Credits);
+const Extended = connect(mapStateToProps, mapDispatchToProps)(Credits);
 
 export default PrivateRoute(Extended);

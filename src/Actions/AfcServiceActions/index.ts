@@ -21,7 +21,7 @@ export const AfcServiceActions = {
     dispatch: Dispatch,
     getState: () => IStore
   ) => {
-    const { inputFileId } = getState().afcService;
+    const { inputFileId, inputFileLink } = getState().afcService;
 
     const params = {
       documentName: payload.documentName,
@@ -30,6 +30,7 @@ export const AfcServiceActions = {
       docType: payload.docType,
       status: inputFileId ? 1 : 0,
       inputFileId,
+      inputFileLink,
     };
     if (!inputFileId) {
       delete params.inputFileId;

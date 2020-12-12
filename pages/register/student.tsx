@@ -1,8 +1,9 @@
 // #region Global Imports
 import { Col, Layout, Row } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import Head from "next/head";
 // #endregion Global Imports
 
 // #region Local Imports
@@ -10,6 +11,7 @@ import "./style.scss";
 import { Wrapper } from "@Components";
 import RegisterUser from "@Components/auth/RegisterUser";
 import { Navbar } from "@Components/Navbar";
+import { UserType } from "@Definitions/Constants";
 import fileName from "@Definitions/Constants/image";
 // #endregion Local Imports
 
@@ -19,16 +21,34 @@ import { IRegister } from "@Interfaces";
 
 const { Content } = Layout;
 const { AUTH_BACKGROUND_IMAGE } = fileName;
+const [currentUserType, setCurrentUserType] = useState<UserType>(
+  UserType.I_STEM
+);
 
 export const Register: NextPage<
   IRegister.IProps,
   IRegister.InitialProps
 > = () => {
   const router = useRouter();
+  useEffect(() => {
+    if (router.query.userType === UserType.I_STEM) {
+      setCurrentUserType(UserType.I_STEM);
+    } else if (router.query.userType === UserType.VOLUNTEER) {
+      setCurrentUserType(UserType.VOLUNTEER);
+    } else if (
+      router.query.userType === undefined &&
+      router.query.verificationToken
+    ) {
+      setCurrentUserType(UserType.UNIVERSITY);
+    }
+  }, []);
 
   return (
     <section className="auth-bg" id="register-student">
       <Wrapper>
+        <Head>
+          <title>Register</title>
+        </Head>
         <Navbar />
         <Content>
           <Row>
@@ -43,7 +63,11 @@ export const Register: NextPage<
             </Col>
             <Col xs={24} lg={11}>
               <div className="p-6 mt-8">
-                <RegisterUser userType={router.query.userType} />
+                <RegisterUser
+                  userType={currentUserType}
+                  email={router.query.email}
+                  verificationToken={router.query.verificationToken}
+                />
               </div>
             </Col>
           </Row>

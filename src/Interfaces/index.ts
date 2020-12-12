@@ -17,6 +17,7 @@ export * from "@Interfaces/VCService";
 export * from "@Components/Upload/Upload";
 export * from "@Components/Layouts/Wrapper/Wrapper";
 export * from "@Interfaces/Community";
+export * from "@Interfaces/University";
 // #endregion Component Interfaces
 // #region Redux Interfaces
 export * from "@Redux/IAction";
@@ -50,6 +51,5 @@ export * from "@Services/API/Credits/ICreditsResponse";
 export * from "@Services/API/Credits";
 export * from "@Services/API/Community";
 export * from "@Services/API/Community/ICommunityResponse";
-
 
 // #endregion Service Interfaces

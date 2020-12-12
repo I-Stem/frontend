@@ -1,12 +1,16 @@
+import { UserType } from "@Definitions/Constants";
+
 export interface IAuthUser {
   role?: string;
   _id?: string;
   fullname: string;
   email: string;
   password?: string;
-  userType: number;
+  userType: UserType;
   createdAt?: string;
   updatedAt?: string;
+  organizationName?: string;
+  organizationCode?: string;
 }
 export interface IAuthSuccess {
   user?: IAuthUser;
@@ -14,6 +18,7 @@ export interface IAuthSuccess {
   token_expires_in: number;
   error?: boolean;
   message?: string;
+  organizationStatus: string;
 }
 
 export interface IAuthResponse {
@@ -21,6 +26,7 @@ export interface IAuthResponse {
   message: string;
   data: {
     user: IAuthUser;
+    organizationStatus: string;
     token: string;
     token_expires_in: number;
   };

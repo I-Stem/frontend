@@ -8,7 +8,6 @@ import {
   BASE_URL,
   LOGIN_PAGE_ROUTE,
   VERIFICATION_URL,
-  userType,
 } from "@Definitions/Constants";
 import { IStore } from "@Redux/IStore";
 
@@ -16,6 +15,8 @@ import "./auth.scss";
 
 import { IAuthPayload } from "@Interfaces";
 import { IAuth } from "./Auth";
+import { UniversityPortal } from "@Services";
+import { BlueButton, WhiteButton } from "@Components/HOC/Dashboard";
 
 const { Text } = Typography;
 const layout = {
@@ -31,25 +32,26 @@ const BusinessSetup = (props: IAuth.IRegisterUserProps) => {
       organisationAddress,
       noStudentsWithDisability,
     } = values;
-    const { fullname = "", email = "", password = "" } = props.user;
-    props
-      .register({
-        fullname,
-        email,
-        password,
-        userType: userType.organisation,
-        organisationName,
-        organisationAddress,
-        noStudentsWithDisability,
-        verificationLink: `${BASE_URL}${VERIFICATION_URL}`,
-      })
-      .then((result: IAuthPayload) => {
-        if (result.error) {
-          router.push(`${LOGIN_PAGE_ROUTE}?email=${email}`);
-        } else {
-          router.push("/register/success");
-        }
-      });
+
+    const {
+      fullname = "",
+      email = "",
+      password = "",
+      organizationCode,
+    } = props.user;
+    console.log("OrgCode", organizationCode);
+    UniversityPortal.registerUniversity({
+      name: organisationName,
+      address: organisationAddress,
+      noStudentsWithDisability: noStudentsWithDisability,
+      code: organizationCode,
+    }).then((results: any) => {
+      if (results.code === 200) {
+        router.push("/dashboard");
+      } else {
+        console.log("Error", results.message);
+      }
+    });
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -69,7 +71,10 @@ const BusinessSetup = (props: IAuth.IRegisterUserProps) => {
             className="w-9/12"
             layout="horizontal"
             name="basic"
-            initialValues={{ remember: true }}
+            initialValues={{
+              remember: true,
+              organisationName: router.query.organizationName,
+            }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
           >
@@ -78,9 +83,14 @@ const BusinessSetup = (props: IAuth.IRegisterUserProps) => {
               className="dark"
               label="Company/Institute Name"
               name="organisationName"
-              rules={[{ required: true, message: "Please enter your organization name!" }]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your organization name!",
+                },
+              ]}
             >
-              <Input size="large" placeholder="I-Stem" />
+              <Input className="auth-input" size="large" placeholder="I-Stem" />
             </Form.Item>
             <Form.Item
               {...layout}
@@ -88,10 +98,17 @@ const BusinessSetup = (props: IAuth.IRegisterUserProps) => {
               label="Company/Institute location"
               name="organisationAddress"
               rules={[
-                { required: true, message: "Please enter your organization location!" },
+                {
+                  required: true,
+                  message: "Please enter your organization location!",
+                },
               ]}
             >
-              <Input size="large" placeholder="City, Country, Pincode" />
+              <Input
+                className="auth-input"
+                size="large"
+                placeholder="City, Country, Pincode"
+              />
             </Form.Item>
 
             <Form.Item
@@ -108,12 +125,30 @@ const BusinessSetup = (props: IAuth.IRegisterUserProps) => {
                 size="large"
                 className="vertical-radio"
               >
-                <Radio.Button value="not-sure">Not Sure</Radio.Button>
-                <Radio.Button value="1-10">1-10</Radio.Button>
-                <Radio.Button value="10-50">10-50</Radio.Button>
-                <Radio.Button value="50-100">50-100</Radio.Button>
-                <Radio.Button value="100-500">100-500</Radio.Button>
-                <Radio.Button value="500+">500+</Radio.Button>
+                <Radio.Button
+                  className="auth-input padding-top"
+                  value="not-sure"
+                >
+                  Not Sure
+                </Radio.Button>
+                <Radio.Button className="auth-input padding-top" value="1-10">
+                  1-10
+                </Radio.Button>
+                <Radio.Button className="auth-input padding-top" value="10-50">
+                  10-50
+                </Radio.Button>
+                <Radio.Button className="auth-input padding-top" value="50-100">
+                  50-100
+                </Radio.Button>
+                <Radio.Button
+                  className="auth-input padding-top"
+                  value="100-500"
+                >
+                  100-500
+                </Radio.Button>
+                <Radio.Button className="auth-input padding-top" value="500+">
+                  500+
+                </Radio.Button>
               </Radio.Group>
             </Form.Item>
           </Form>
@@ -125,16 +160,20 @@ const BusinessSetup = (props: IAuth.IRegisterUserProps) => {
         </Col>
       </Row>
       <div className="fixed bg-white  bottom-0 left-0 right-0 p-3 border-t border-gray-200">
-        <div className="flex justify-between">
-          <Link href="/register/business">
+        <div className="flex justify-between float-right">
+          <div style={{ width: "100%", marginRight: "20px" }}>
+            <BlueButton onClick={() => router.push("/dashboard")}>
+              Skip
+            </BlueButton>
+          </div>
+          {/* <Link href="/register/business">
             <Button type="text">Previous</Button>
-          </Link>
-
+          </Link> */}
           <Button
             form="business-setup"
             key="submit"
             htmlType="submit"
-            className="w-40"
+            className="w-40 auth-input"
             type="primary"
           >
             Next

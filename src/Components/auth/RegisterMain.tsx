@@ -1,5 +1,5 @@
 import React from "react";
-import Head from 'next/head';
+import Head from "next/head";
 import { Button, Typography } from "antd";
 import Link from "next/link";
 
@@ -10,6 +10,7 @@ import {
   REGISTER_VOLUNTEER_ROUTE,
 } from "@Definitions/Constants";
 import volunteer from "@Pages/register/volunteer";
+import { UserType } from "@Definitions/Constants";
 
 const { Title } = Typography;
 
@@ -24,9 +25,10 @@ const RegisterMain = () => {
         Register your account as
       </Title>
       <div className="mt-6">
-        <Link href={{
+        <Link
+          href={{
             pathname: REGISTER_STUDENT_ROUTE,
-            query: {userType:'student'}
+            query: { userType: UserType.I_STEM },
           }}
         >
           <Button className="register-buttons mt-6" block>
@@ -38,10 +40,10 @@ const RegisterMain = () => {
             UNIVERSITY OR BUSINESS REPRESENTATIVE
           </Button>
         </Link>
-        <Link 
+        <Link
           href={{
             pathname: REGISTER_STUDENT_ROUTE,
-            query: {userType:'volunteer'}
+            query: { userType: UserType.VOLUNTEER },
           }}
         >
           <Button className="register-buttons mt-6" block>

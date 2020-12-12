@@ -15,6 +15,7 @@ import "../style.scss";
 
 // #region Interface Imports
 import { IRegister } from "@Interfaces";
+import { UserType } from "@Definitions/Constants";
 // #endregion Interface Imports
 
 const { Content } = Layout;
@@ -41,7 +42,7 @@ export const Register: NextPage<
             </Col>
             <Col xs={24} lg={11}>
               <div className="p-6 mt-8">
-                <RegisterUser userType="organisation" />
+                <RegisterUser userType={UserType.UNIVERSITY} />
               </div>
             </Col>
           </Row>

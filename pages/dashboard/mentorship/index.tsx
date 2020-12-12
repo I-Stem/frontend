@@ -692,6 +692,31 @@ const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                 />
               </Form>
             )}
+            {conditional()}
+            <label htmlFor="anythingElseElement">
+              <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
+                Anything else that we should know?
+              </h3>
+            </label>
+            <TextareaAutosize
+              defaultValue={preFill?.anythingElse}
+              id="anythingElseElement"
+              name="anythingElse"
+              ref={register}
+              className="lip-textarea"
+            />
+            <br />
+            {changeButtons ? (
+              <div className="display-flex lip-submit">
+                <div className="lip-changes">
+                  <BlueButton htmlType="submit">UPDATE CHANGES</BlueButton>
+                </div>
+              </div>
+            ) : (
+              <div className="lip-submit">
+                <BlueButton htmlType="submit">SUBMIT APPLICATION</BlueButton>
+              </div>
+            )}
           </Formik>
         </div>
       </FormLayout>

@@ -61,7 +61,9 @@
     "postcss-import": "^12.0.1",
     "query-string": "^6.8.3",
     "react": "^16.13.1",
+    "react-aria-live": "^2.0.5",
     "react-bootstrap": "^1.4.0",
+    "react-csv-reader": "^3.1.2",
     "react-dom": "^16.13.1",
     "react-ga": "^3.1.2",
     "react-hook-form": "^6.13.1",
@@ -161,7 +163,7 @@
     }
   },
   "lint-staged": {
-    "./pages/**/*.{ts,tsx}": [
+    "pages/**/*.{ts,tsx}": [
       "npx prettier --write ."
     ],
     "src/**/*.{ts,tsx}": [

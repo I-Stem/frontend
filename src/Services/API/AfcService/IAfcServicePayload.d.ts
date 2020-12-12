@@ -12,6 +12,7 @@ export interface IAfcServicePayloadPost {
   inputFileId: string;
   status?: number;
   docType: string;
+  inputFileLink: string;
 }
 
 export interface IAfcServiceReview {

@@ -1,23 +1,31 @@
 import React, { Fragment, useRef } from "react";
 import Head from "next/head";
+import Cookie from "js-cookie";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Drawer, IconButton, Hidden } from "@material-ui/core";
+// import {Link} from '@adobe/react-spectrum'
 import { Breadcrumb, Button, Col, Row } from "antd";
 import "./style.scss";
 import UserDropDown from "@Components/StemServices/UserDropDown";
 import Header from "@Components/Basic/Header";
-import { BREADCRUMB_MAP, MENU_ITEMS } from "@Definitions/Constants";
+import {
+  BREADCRUMB_MAP,
+  MENU_ITEMS,
+  UNIVERSITY_MENU_ITEMS,
+  UserType,
+} from "@Definitions/Constants";
 import { DashboardProps } from "./DashboardProps";
 
 const DashboardLayout: React.FunctionComponent<DashboardProps> = (
-  { children, hideBreadcrumb },
+  { children, hideBreadcrumb, role, userType },
   props: any
 ): JSX.Element => {
   const initialFocus = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { window } = props;
   const menuItems = MENU_ITEMS;
+  const universityMenuItems = UNIVERSITY_MENU_ITEMS;
   const { pathname } = router;
   const pathSnippets = pathname.substring(1).split("/");
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -33,6 +41,15 @@ const DashboardLayout: React.FunctionComponent<DashboardProps> = (
   } else {
     document.body.style.overflow = "auto";
   }
+  const universityNav = universityMenuItems.map(item => {
+    return (
+      <Link href={item.link} key={item.link}>
+        <a className="ant-menu-item ant-menu-item-only-child text-base font-semibold menu-font">
+          {item.name}
+        </a>
+      </Link>
+    );
+  });
   const navigation = (
     <nav className="h-full w-full ant-menu ant-menu-light ant-menu-root ant-menu-inline">
       {menuItems.map(item => {
@@ -44,6 +61,18 @@ const DashboardLayout: React.FunctionComponent<DashboardProps> = (
           </Link>
         );
       })}
+      {(userType == UserType.UNIVERSITY || userType === UserType.I_STEM) &&
+      role == "STAFF" ? (
+        <div>
+          <div className="navbar-divider"></div>
+          <div className="text-base font-semibold manage-options">
+            MANAGE OPTIONS
+          </div>
+          {universityNav}
+        </div>
+      ) : (
+        <></>
+      )}
     </nav>
   );
   const extraBreadcrumbItems = hideBreadcrumb

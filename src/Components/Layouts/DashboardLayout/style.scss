@@ -12,7 +12,7 @@ $selected-item-background: #f0f7ff;
 .lipbg .dashboard-container {
   flex: 1 1 auto;
 }
-.menu-font{
+.menu-font {
   color: #002852;
 }
 
@@ -29,4 +29,18 @@ $selected-item-background: #f0f7ff;
 .ant-menu-vertical-right .ant-menu-item::after,
 .ant-menu-inline .ant-menu-item::after {
   border-right: 3px solid var(--color-btn-blue);
+}
+.navbar-divider {
+  margin-top: 1rem;
+  border-width: 1px;
+  margin-bottom: 1rem;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+  width: 101%;
+}
+.manage-options {
+  color: #8c8c8c;
+  margin: 2rem 0rem 1.5rem 0.5rem;
+  font-size: 14px;
 }

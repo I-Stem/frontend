@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState, useRef } from "react";
 import { NextPage } from "next";
-import Head from 'next/head';
+import Head from "next/head";
 import { Col, Row, Typography } from "antd";
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
@@ -12,13 +12,18 @@ import {
   ICaptioningServiceDocument,
   ICaptioningServiceResponse,
   IStemServices,
+  IStore,
   ReduxNextPageContext,
 } from "@Interfaces";
 import { Wrapper } from "@Components";
 import { DashboardLayout } from "@Components/Layouts/DashboardLayout/index";
 import { BlueButton } from "@Components/HOC/Dashboard/CTAButtons";
 import fileNames from "@Definitions/Constants/image";
-import { VIDEO_CAPTIONING_NEW_REQUEST, VC_STEPTWO, VC_STEPONE} from "@Definitions/Constants/pageroutes";
+import {
+  VIDEO_CAPTIONING_NEW_REQUEST,
+  VC_STEPTWO,
+  VC_STEPONE,
+} from "@Definitions/Constants/pageroutes";
 import { CreditsActions, VcServiceActions } from "@Actions";
 import RequestTable from "@Components/StemServices/RequestTable";
 import SearchDocument from "@Components/StemServices/SearchDocument";
@@ -31,16 +36,18 @@ const { Title, Text } = Typography;
 const VideoCaptioning: NextPage<
   IStemServices.IProps,
   IStemServices.InitialProps
-> = (props: IStemServices.IProps) => {
+> = (props: any) => {
   const [requestTableData, changeRequestTableData] = useState<
     [ICaptioningServiceDocument] | []
   >([]);
   const initialFocus = useRef<HTMLDivElement>(null);
   const [reachedEnd, setEnd] = useState(false);
   const [searchPayload, setSearchPayload] = useState({ page: 1 });
-  const [isCreditEnough, setIsCreditEnough] = useState<boolean>(false);
   const { can } = useAppAbility();
   const access: boolean = can("VIEW", "AI_SERVICES");
+  const { userType, role } = props.user;
+  const { totalCredits } = props;
+  const isCreditEnough = totalCredits > 0;
   const fetchRequests = (payload: any) => {
     props.search(payload).then((result: any) => {
       const appendData: any =
@@ -67,13 +74,6 @@ const VideoCaptioning: NextPage<
     fetchRequests(searchPayload);
     initialFocus?.current?.focus();
   });
-  useEffect(() => {
-    props.getCredits().then(res => {
-      if (res.data) {
-        setIsCreditEnough(res.data?.totalCredits > 0);
-      }
-    });
-  }, [isCreditEnough])
   const searchList = (values: any) => {
     const { searchQuery } = values;
     fetchResults(searchQuery);
@@ -94,7 +94,7 @@ const VideoCaptioning: NextPage<
       <div className="m-auto mr-8 pt-8">
         <BlueButton href={VC_STEPONE} disabled={!isCreditEnough}>
           <span className="flex items-center">
-            <span className="ml-2">Convert  audio/video</span>
+            <span className="ml-2">Convert audio/video</span>
           </span>
         </BlueButton>
         {!isCreditEnough && (
@@ -102,7 +102,7 @@ const VideoCaptioning: NextPage<
             aria-describedby="credit-info"
             aria-hidden={isCreditEnough}
             role="region"
-            >
+          >
             <span id="credit-info">You have insufficient credits</span>
           </div>
         )}
@@ -120,14 +120,14 @@ const VideoCaptioning: NextPage<
             </span>
           </BlueButton>
           {!isCreditEnough && (
-          <div
-            aria-describedby="credit-info"
-            aria-hidden={isCreditEnough}
-            role="region"
+            <div
+              aria-describedby="credit-info"
+              aria-hidden={isCreditEnough}
+              role="region"
             >
-            <span id="credit-info">You have insufficient credits</span>
-          </div>
-        )}
+              <span id="credit-info">You have insufficient credits</span>
+            </div>
+          )}
         </div>
       </Col>
     </Row>
@@ -149,24 +149,32 @@ const VideoCaptioning: NextPage<
         <title>Audio/Video Accessibility Service | I-Stem</title>
       </Head>
       {access ? (
-        <DashboardLayout hideBreadcrumb>
-        <Row>
-          <Col span={16}>
-            <div ref={initialFocus} tabIndex={-1} >
-              <Title className="mt-8 lip-title">Audio/Video Accessibility Service</Title>
-            </div>
-            <Text className="lip-subtext">
-              This I-Stem service lets you convert audio and video into accessible formats.
-            </Text>
-          </Col>
-          {requestTableData && requestTableData.length ? sideCTA : <Fragment />}
-        </Row>
-        {requestTableData && requestTableData.length ? hasRequests : isNew}
-      </DashboardLayout>
-      ) : ( <Error statusCode={403} title="Access Denied" />) }
-      
+        <DashboardLayout userType={userType} role={role} hideBreadcrumb>
+          <Row>
+            <Col span={16}>
+              <div ref={initialFocus} tabIndex={-1}>
+                <Title className="mt-8 lip-title">
+                  Audio/Video Accessibility Service
+                </Title>
+              </div>
+              <Text className="lip-subtext">
+                This I-Stem service lets you convert audio and video into
+                accessible formats.
+              </Text>
+            </Col>
+            {requestTableData && requestTableData.length ? (
+              sideCTA
+            ) : (
+              <Fragment />
+            )}
+          </Row>
+          {requestTableData && requestTableData.length ? hasRequests : isNew}
+        </DashboardLayout>
+      ) : (
+        <Error statusCode={403} title="Access Denied" />
+      )}
     </Wrapper>
-    )
+  );
 };
 
 VideoCaptioning.getInitialProps = async (
@@ -176,11 +184,17 @@ VideoCaptioning.getInitialProps = async (
 
   return { namespacesRequired: ["common"], token, user };
 };
-
+const mapStateToProps = (store: IStore) => {
+  const { auth, credits } = store;
+  return {
+    user: auth.user,
+    totalCredits: credits.totalCredits,
+  };
+};
 const mapDispatchToProps = {
   search: VcServiceActions.Search,
   getCredits: CreditsActions.GetCredits,
 };
-const Extended = connect(null, mapDispatchToProps)(VideoCaptioning);
+const Extended = connect(mapStateToProps, mapDispatchToProps)(VideoCaptioning);
 
 export default PrivateRoute(Extended);

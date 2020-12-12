@@ -1,7 +1,13 @@
-import React, { Fragment, useCallback, useEffect, useState, useRef } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
 import { connect } from "react-redux";
 import { NextPage } from "next";
-import Head from 'next/head';
+import Head from "next/head";
 import { Col, Row, Typography } from "antd";
 import { FileAddOutlined } from "@ant-design/icons";
 import debounce from "lodash.debounce";
@@ -13,6 +19,7 @@ import {
   IAfcServiceDocument,
   IAfcServiceResponse,
   IStemServices,
+  IStore,
   ReduxNextPageContext,
 } from "@Interfaces";
 import { Wrapper } from "@Components";
@@ -33,7 +40,7 @@ const { Title, Text } = Typography;
 const FormatConversion: NextPage<
   IStemServices.IProps,
   IStemServices.InitialProps
-> = (props: IStemServices.IProps) => {
+> = (props: any) => {
   const { can } = useAppAbility();
   const access: boolean = can("VIEW", "AI_SERVICES");
   const [requestTableData, changeRequestTableData] = useState<
@@ -42,8 +49,9 @@ const FormatConversion: NextPage<
   const initialFocus = useRef<HTMLDivElement>(null);
   const [reachedEnd, setEnd] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
-  const [isCreditEnough, setIsCreditEnough] = useState<boolean>(false);
-  const messageFocus = useRef<HTMLDivElement>(null);
+  const { userType, role } = props.user;
+  const { totalCredits } = props;
+  const isCreditEnough = totalCredits > 0;
   const fetchRequests = useCallback((page: number) => {
     props.search({ page }).then((result: any) => {
       const appendData: any = requestTableData.concat(result.data);
@@ -64,13 +72,6 @@ const FormatConversion: NextPage<
     fetchRequests(1);
     initialFocus.current?.focus();
   }, [fetchRequests]);
-  useEffect(() => {
-    props.getCredits().then(res => {
-      if (res.data) {
-        setIsCreditEnough(res.data?.totalCredits > 0);
-      }
-    });
-  }, [isCreditEnough]);
   const searchList = (values: any) => {
     const { searchQuery } = values;
     fetchResults(searchQuery);
@@ -96,12 +97,7 @@ const FormatConversion: NextPage<
           </span>
         </BlueButton>
         {!isCreditEnough && (
-          <div
-            aria-describedby="credit-info"
-            aria-hidden={isCreditEnough}
-            ref={messageFocus}
-            role="region"
-        >
+          <div aria-describedby="credit-info" aria-hidden={isCreditEnough}>
             <span id="credit-info">You have insufficient credits</span>
           </div>
         )}
@@ -123,15 +119,10 @@ const FormatConversion: NextPage<
             </span>
           </BlueButton>
           {!isCreditEnough && (
-          <div
-            aria-describedby="credit-info"
-            aria-hidden={isCreditEnough}
-            ref={messageFocus}
-            role="region"
-            >
-            <span id="credit-info">You have insufficient credits</span>
-          </div>
-        )}
+            <div aria-describedby="credit-info" aria-hidden={isCreditEnough}>
+              <span id="credit-info">You have insufficient credits</span>
+            </div>
+          )}
         </div>
       </Col>
     </Row>
@@ -150,36 +141,36 @@ const FormatConversion: NextPage<
 
   return (
     <Wrapper>
-       <Head>
+      <Head>
         <title>Document Accessibility Service | I-Stem</title>
       </Head>
       {access ? (
-        <DashboardLayout hideBreadcrumb={true}>
-        <Row>
-          <Col span={16}>
-            <div ref={initialFocus} tabIndex={-1}>
-              <Title className="mt-8 lip-title">Document Accessibility Service</Title>
-            </div>
-            <Text className="lip-subtext">
-              This I-Stem service lets you convert documents and images in
-              accessible formats
-            </Text>
-          </Col>
-          {requestTableData && requestTableData.length ? (
+        <DashboardLayout userType={userType} role={role} hideBreadcrumb={true}>
+          <Row>
+            <Col span={16}>
+              <div ref={initialFocus} tabIndex={-1}>
+                <Title className="mt-8 lip-title">
+                  Document Accessibility Service
+                </Title>
+              </div>
+              <Text className="lip-subtext">
+                This I-Stem service lets you convert documents and images in
+                accessible formats
+              </Text>
+            </Col>
+            {requestTableData && requestTableData.length ? (
               sideCTA
             ) : (
               <Fragment />
             )}
-        </Row>
-        {requestTableData && requestTableData.length ? hasRequests : isNew}
-      </DashboardLayout>
+          </Row>
+          {requestTableData && requestTableData.length ? hasRequests : isNew}
+        </DashboardLayout>
       ) : (
         <Error statusCode={403} title="Access Denied" />
-      )
-      }
-     
+      )}
     </Wrapper>
-  )
+  );
 };
 
 FormatConversion.getInitialProps = async (
@@ -190,10 +181,18 @@ FormatConversion.getInitialProps = async (
   return { namespacesRequired: ["common"], token, user };
 };
 
+const mapStateToProps = (store: IStore) => {
+  const { auth, credits } = store;
+  return {
+    user: auth.user,
+    totalCredits: credits.totalCredits,
+  };
+};
+
 const mapDispatchToProps = {
   search: AfcServiceActions.Search,
   getCredits: CreditsActions.GetCredits,
 };
-const Extended = connect(null, mapDispatchToProps)(FormatConversion);
+const Extended = connect(mapStateToProps, mapDispatchToProps)(FormatConversion);
 
 export default PrivateRoute(Extended);

@@ -4,16 +4,17 @@ import {
   IAuthResetPasswordPayload,
   IAuthVerifyPayload,
 } from "@Interfaces";
-import {
-  userType,
-} from "@Definitions/Constants";
+import { UserType } from "@Definitions/Constants";
 
 declare namespace IAuth {
   export interface IRegisterUserProps {
     user?: IAuthUser;
-    userType: userType;
+    userType: UserType;
     register(params: IAuthPayload);
-    saveBusinessCredentials(params: IAuthPayload): void;
+    saveBusinessCredentials(params: IAuthPayload);
+    email?: any;
+    verificationToken?: any;
+    organisation?: any;
   }
   export interface ILoginProps {
     message?: string;

@@ -5,6 +5,7 @@ export interface IUploadData {
   createdAt: string;
   updatedAt: string;
   __v: number;
+  inputURL: string;
 }
 export interface IUploadResponse {
   flag: string;

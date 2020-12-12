@@ -20,7 +20,7 @@ export const GreenButton: React.FunctionComponent<ICTAButton.IProps> = props => 
     </Button>
   );
   return (
-    <div className="w-full padding">
+    <div className="w-full">
       {props.href ? (
         <Link href={props.href}>{ButtonComponent}</Link>
       ) : (

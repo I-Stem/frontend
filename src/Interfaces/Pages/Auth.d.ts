@@ -9,6 +9,7 @@ declare module IAuth {
   export interface IAuthStateProps {
     user: IAuthUser;
     token: string;
+    organizationStatus: string;
   }
 
   export interface InitialProps {

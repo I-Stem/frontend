@@ -1,5 +1,5 @@
-import React, { useEffect, useRef,useState } from "react";
-import Head from 'next/head';
+import React, { useEffect, useRef, useState } from "react";
+import Head from "next/head";
 import { connect } from "react-redux";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -10,6 +10,9 @@ import { FORGOT_PASSWORD_ROUTE } from "@Definitions/Constants/pageroutes";
 import { IAuthResponse, IStore } from "@Interfaces";
 import AuthDisclaimer from "./AuthDisclaimer";
 import { IAuth } from "./Auth";
+import { UserType } from "@Definitions/Constants";
+import { Modal } from "react-bootstrap";
+import { GreenButton } from "@Components/HOC/Dashboard";
 
 const { Title } = Typography;
 
@@ -25,6 +28,8 @@ const LoginForm = (props: IAuth.ILoginProps) => {
   const { message } = props;
   const [respMessage, setRespMessage] = useState("");
   const headref = useRef<HTMLDivElement>(null);
+  const [orgMessage, setOrgMessage] = useState("");
+  const [showDialog, setShowDialog] = useState(false);
 
   const verifyhasToken = async () => {
     const { email, verifyToken } = router.query;
@@ -61,13 +66,48 @@ const LoginForm = (props: IAuth.ILoginProps) => {
   const onFinish = (values: any) => {
     const { email, password } = values;
     props.login({ email, password }).then((result: IAuthResponse) => {
-      console.log(" Error is ", result);
       if (!result.error) {
         setRespMessage("");
         props.clearAuthMessage();
-        router.push("/dashboard");
-      }
-      else {
+        if (
+          result.data.user.userType === UserType.UNIVERSITY &&
+          result.data.user.role === "STAFF"
+        ) {
+          if (result.data.organizationStatus === "REGISTRATION_COMPLETE") {
+            router.push("/dashboard");
+          } else if (
+            result.data.organizationStatus === "REGISTRATION_PENDING"
+          ) {
+            router.push({
+              pathname: "/register/business/setup",
+              query: { organizationName: result.data.user.organizationName },
+            });
+          }
+          // else if (
+          //   result.data.organizationStatus === "REGISTRATION_REJECTED"
+          // ) {
+          //   setOrgMessage("Your registration for the university was rejected.");
+          //   setShowDialog(true);
+          // } else {
+          //   setOrgMessage(
+          //     "Your registration for the university is pending approval from I-Stem. You will be notified through email once approved."
+          //   );
+          //   setShowDialog(true);
+          // }
+        } else {
+          router.push("/dashboard");
+        }
+      } else if (result.code === 403) {
+        setOrgMessage("Your registration for the university was rejected.");
+        setShowDialog(true);
+        setRespMessage("");
+      } else if (result.code === 400) {
+        setOrgMessage(
+          "Your registration for the university is pending approval from I-Stem. You will be notified through email once approved."
+        );
+        setShowDialog(true);
+        setRespMessage("");
+      } else {
         setRespMessage(result.message);
       }
     });
@@ -78,9 +118,9 @@ const LoginForm = (props: IAuth.ILoginProps) => {
       <Head>
         <title>Sign in | I-Stem</title>
       </Head>
-    <div ref={headref} tabIndex={-1}>
-      <Title className="lipHead">{message || heading}</Title>
-    </div>
+      <div ref={headref} tabIndex={-1}>
+        <Title className="lipHead">{message || heading}</Title>
+      </div>
       <Title className="lipHead" level={4}>
         {subtitle}
       </Title>
@@ -107,10 +147,18 @@ const LoginForm = (props: IAuth.ILoginProps) => {
           ]}
           validateTrigger="onSubmit"
         >
-          <Input aria-live="off" className="auth-input" size="large" placeholder="user@email.com" />
-
+          <Input
+            aria-live="off"
+            className="auth-input"
+            size="large"
+            placeholder="user@email.com"
+          />
         </Form.Item>
-        <span aria-hidden="true" tabIndex={-1} className="forgot-password-link z-10">
+        <span
+          aria-hidden="true"
+          tabIndex={-1}
+          className="forgot-password-link z-10"
+        >
           <Link href={FORGOT_PASSWORD_ROUTE}>
             <a tabIndex={-1}>
               <span> Forgot password?</span>
@@ -123,13 +171,16 @@ const LoginForm = (props: IAuth.ILoginProps) => {
           name="password"
           rules={[{ required: true, message: "Password is required" }]}
         >
-          <Input.Password aria-live="off" className="auth-input" size="large" placeholder="8+ characters" />
+          <Input.Password
+            aria-live="off"
+            className="auth-input"
+            size="large"
+            placeholder="8+ characters"
+          />
         </Form.Item>
 
         <Form.Item>
-          <span className="response_Message">
-            {respMessage}
-          </span>
+          <span className="response_Message">{respMessage}</span>
           <Button
             size="large"
             className="login-button"
@@ -140,16 +191,36 @@ const LoginForm = (props: IAuth.ILoginProps) => {
             SIGN IN
           </Button>
           <span className="sr-only">
-          <Link href={FORGOT_PASSWORD_ROUTE}>
-            <a>
-              <span> Forgot password?</span>
-            </a>
-          </Link>
-        </span>
+            <Link href={FORGOT_PASSWORD_ROUTE}>
+              <a>
+                <span> Forgot password?</span>
+              </a>
+            </Link>
+          </span>
         </Form.Item>
       </Form>
-
       <AuthDisclaimer message="Sign in" />
+      <Modal
+        show={showDialog}
+        onHide={() => setShowDialog(false)}
+        animation={true}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <h3 className="lip-title">MESSAGE</h3>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{orgMessage}</Modal.Body>
+        <Modal.Footer>
+          <div style={{ width: "40%" }}>
+            <GreenButton htmlType="button" onClick={() => setShowDialog(false)}>
+              <span className="flex items-center">
+                <span className="ml-2">OK</span>
+              </span>
+            </GreenButton>
+          </div>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

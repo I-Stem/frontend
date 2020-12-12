@@ -6,7 +6,13 @@ import { Grid } from "@material-ui/core";
 
 // #region Local Imports
 import "./style.scss";
-import { IStemServices, IStore, ReduxNextPageContext } from "@Interfaces";
+import { withTranslation } from "@Server/i18n";
+import {
+  CreditsService,
+  IStemServices,
+  IStore,
+  ReduxNextPageContext,
+} from "@Interfaces";
 import { StemService } from "@Components/StemServices";
 import { DashboardLayout } from "@Components/Layouts/DashboardLayout/index";
 import { useAppAbility } from "src/Hooks/useAppAbility";
@@ -20,13 +26,17 @@ import { IServiceResponse } from "@Services/API/AccessService/IServiceResponse";
 import PrivateRoute from "../_privateRoute";
 import { AccessService } from "../../src/Services/API/AccessService";
 import { connect } from "react-redux";
-import { AuthActions } from "@Actions";
-import Cookie from "js-cookie";
+import { RecommendedActions } from "@Components/University/RecommendedActions";
+import { UserType } from "@Definitions/Constants";
+import Error from "next/error";
+import { CreditsActions } from "@Actions";
 
 const StemServices: NextPage<
   IStemServices.IProps,
   IStemServices.InitialProps
-> = (t, props) => {
+> = (props: any) => {
+  const { userType, role } = props.user;
+
   const initialFocus = useRef<HTMLDivElement>(null);
   const messageFocus = useRef<HTMLDivElement>(null);
   const [focus, updateFocus] = useState(false);
@@ -43,6 +53,11 @@ const StemServices: NextPage<
       messageFocus.current?.focus();
     }
   }, [focus]);
+
+  useEffect(() => {
+    props.getCredits();
+  }, []);
+
   const { can } = useAppAbility();
   const access: boolean = can("VIEW", "AI_SERVICES");
   const requestAccess = () => (
@@ -101,13 +116,33 @@ const StemServices: NextPage<
     );
   });
 
+  const resources = ResourcesList.filter((data: any) => {
+    if (
+      userType === UserType.VOLUNTEER ||
+      (userType === UserType.UNIVERSITY && role == "STAFF")
+    ) {
+      return data.ServiceName !== "Job Opportunities";
+    }
+    return data.ServiceName !== "";
+  }).map(service => {
+    return (
+      <Grid item sm={6} md={6} lg={4} key={service.ServiceName}>
+        <StemService serviceInstance={service} />
+      </Grid>
+    );
+  });
   return (
     <section className="lipbg flex flex-col">
       <Head>
         <title>Dashboard | I-Stem</title>
       </Head>
-      <DashboardLayout hideBreadcrumb>
+      <DashboardLayout userType={userType} role={role} hideBreadcrumb>
         <div className="pl-16 pr-12 flex-1" key="2">
+          {userType === UserType.UNIVERSITY && role === "STAFF" ? (
+            <RecommendedActions />
+          ) : (
+            <></>
+          )}
           <Grid item className="pt-4">
             <div ref={initialFocus} tabIndex={-1}>
               <h2 className="font-semibold text-xl heading-color">
@@ -161,4 +196,19 @@ StemServices.getInitialProps = async (
   return { namespacesRequired: ["common"], token, user };
 };
 
-export default PrivateRoute(StemServices);
+const mapStateToProps = (store: IStore) => {
+  const { auth } = store;
+  return {
+    user: auth.user,
+  };
+};
+
+const mapDispatchToProps = {
+  getCredits: CreditsActions.GetCredits,
+};
+
+const Extended = withTranslation("common")(StemServices);
+
+export default PrivateRoute(
+  connect(mapStateToProps, mapDispatchToProps)(Extended)
+);

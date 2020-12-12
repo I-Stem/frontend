@@ -12,30 +12,44 @@ import { Layout } from "antd";
 // #endregion Local Imports
 
 // #region Interface Imports
-import { IRegister } from "@Interfaces";
+import { IRegister, IStemServices, ReduxNextPageContext } from "@Interfaces";
 import Link from "next/link";
+import PrivateRoute from "@Pages/_privateRoute";
+import { UserType } from "@Definitions/Constants";
+import { DashboardLayout } from "@Components/Layouts/DashboardLayout";
+import Head from "next/head";
+import { FormLayout } from "@Components/HOC/Dashboard";
+import "../style.scss";
 // #endregion Interface Imports
 
 const { Content } = Layout;
 
 const { LIP_LOGO } = fileNames;
 
-export const Setup: NextPage<IRegister.IProps, IRegister.InitialProps> = () => {
+export const Setup: NextPage<
+  IStemServices.IProps,
+  IStemServices.InitialProps
+> = (props: any) => {
   return (
     <section id="setup">
       <Wrapper>
-        <div className="p-6 setup-header">
-          <Link href="/register">
-            <img className="lip-logo inline-block" src={LIP_LOGO} alt="Logo" />
-          </Link>
-        </div>
-
-        <Content className="mx-auto" style={{ maxWidth: "1280px" }}>
-          <BusinessSetup userType="organisation" />
-        </Content>
+        <Head>
+          <title>Basic Information | I-Stem</title>
+        </Head>
+        <FormLayout hideFooter={true}>
+          <Content className="mx-auto" style={{ maxWidth: "1150px" }}>
+            <BusinessSetup userType={UserType.UNIVERSITY} />
+          </Content>
+        </FormLayout>
       </Wrapper>
     </section>
   );
 };
+Setup.getInitialProps = async (
+  ctx: ReduxNextPageContext
+): Promise<IStemServices.InitialProps> => {
+  const { user, token } = ctx.store.getState().auth;
 
-export default Setup;
+  return { namespacesRequired: ["common"], token, user };
+};
+export default PrivateRoute(Setup);
