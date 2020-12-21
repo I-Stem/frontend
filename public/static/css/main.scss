@@ -1,0 +1,149 @@
+@import "./colors";
+
+@import "tailwindcss/base";
+
+@import "tailwindcss/components";
+
+@import "tailwindcss/utilities";
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+@import "./globalstyles.scss";
+
+html,
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-primary);
+  font-family: "Poppins", sans-serif !important;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--color-heading);
+  }
+}
+
+@import "./overrideAnt.scss";
+
+.width-50p {
+  width: 50%;
+}
+.width-33p {
+  width: 33.333%;
+}
+.width-25p {
+  width: 25%;
+}
+.width-41p {
+  width: 41.66%;
+}
+.width-40p {
+  width: 40%;
+}
+.width-20p {
+  width: 20%;
+}
+.MuiTypography-h2{
+  font-size: 30px !important;
+  font-family: "Poppins", sans-serif !important;
+  font-weight: 600 !important;
+  line-height: 45px !important;
+  letter-spacing: -0.00833em !important;
+}
+.MuiTypography-subtitle1 {
+  font-size: 20px !important;
+  font-family: "Poppins" !important;
+  font-weight: 500 !important;
+  line-height: 30px !important;
+  letter-spacing: 0.00938em !important;
+  color: #595959 !important;
+}
+.MuiTypography-h3 {
+  font-size: 24px !important;
+  font-family: "Poppins" !important;
+  font-weight: 600 !important;
+  line-height: 1.167 !important;
+  color: #262626 !important;
+}
+.MuiTypography-h6 {
+  font-size: 20px !important;
+  font-family: "Poppins" !important;
+  font-weight: 600 !important;
+  line-height: 30px !important;
+}
+.MuiToggleButtonGroup-vertical {
+  flex-direction: column;
+  width: 100%;
+}
+.MuiToggleButton-root {
+  color: #262626 !important;
+  font-family: "Poppins" !important;
+  text-transform: inherit !important;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+.Mui-selected{
+  background-color: #002852 !important;
+  color: #FFFFFF !important;
+}
+.MuiDrawer-paper {
+  top: 80px !important;
+  width: 25% !important;
+  padding-top: 2rem;
+  padding-left: 1rem;
+}
+.MuiAutocomplete-inputRoot{
+  height: 52px;
+}
+.MuiInputLabel-root{
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #bfbfc2 !important;
+  font-family: "Poppins" !important;
+}
+.downshift-div{
+  border-width: 1.5px;
+  border-radius: 5px;
+  height: 52px;
+}
+.downshift-input{
+  height: 49px;
+  width: 85%;
+  padding: 1rem;
+}
+.downshift-menu{
+  position: absolute;
+  background: white;
+  max-height: 180px;
+  overflow-y: auto;
+  width: fit-content;
+  padding-right: 6.5%;
+  padding-left: 1%;
+  z-index: 1000;
+  border-right-width: 1px;
+  border-left-width: 1px;
+}
+.downshift-item{
+  padding: .5rem;
+}
+.downshift-toggle-button{
+  height: 52px;
+}
+.MuiCheckbox-colorSecondary.Mui-checked{
+  color: #008A5A !important;
+}
+.MuiRadio-colorSecondary.Mui-checked{
+  color: #008A5A !important;
+}

@@ -1,0 +1,55 @@
+@import "../../../public/static/css/colors.scss";
+
+label.button-upload {
+  background-color: var(--color-btn-blue);
+  height: 52px;
+  border: 0;
+  color: #fff;
+  padding: 10px 2rem;
+  text-align: center;
+  width: 100%;
+  display: block;
+  border-radius: 4px;
+  font-size: 20px !important;
+  font-weight: 600;
+  cursor: pointer;
+
+  input[type="file"] {
+    display: none;
+  }
+}
+
+.progress-section {
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  z-index: 20;
+  background: #f0f7ff;
+  border-radius: 4px;
+  padding: 15px;
+  border: 1px solid #a4d0ff;
+  min-width: 360px;
+}
+
+.progress-bar {
+  position: relative;
+  width: 100%;
+
+  .progress-inner {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    vertical-align: middle;
+    background-color: #bfbfbf;
+    border-radius: 100px;
+    height: 2px;
+
+    .progress-bg {
+      position: relative;
+      background-color: #056ad4;
+      border-radius: 100px;
+      height: 2px;
+    }
+  }
+}

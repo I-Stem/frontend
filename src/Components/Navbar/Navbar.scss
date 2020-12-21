@@ -1,0 +1,19 @@
+@import "../../../public/static/css/colors.scss";
+
+.lip-logo {
+  height: 100%;
+  width: auto;
+  cursor: pointer;
+}
+
+.lip-nav-button {
+  color: var(--color-btn-primary);
+  min-height: 52px;
+  min-width: 100px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.text-lg{
+  font-size: 16px;
+}

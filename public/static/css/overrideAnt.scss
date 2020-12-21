@@ -1,0 +1,12 @@
+@import "./colors";
+
+.ant-form-item-label > label.ant-form-item-required::before {
+  display: none !important;
+}
+
+#setup .ant-radio-group-large .ant-radio-button-wrapper {
+  display: block !important;
+  width: 300px !important;
+  margin: 10px 0 !important;
+  border-radius: 5px !important;
+}

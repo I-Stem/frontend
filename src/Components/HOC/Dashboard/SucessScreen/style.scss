@@ -1,0 +1,7 @@
+@import "../../../../../public/static/css/colors";
+$background-color1: var(--color-bg-blue);
+$font-color: var(--color-primary);
+.lipbg {
+  background-color: $background-color1;
+  min-height: 100vh;
+}

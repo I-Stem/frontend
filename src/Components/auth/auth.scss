@@ -1,0 +1,67 @@
+@import "../../../public/static/css/colors.scss";
+
+$form-link-color: #ffa594;
+
+.lipHead {
+  color: var(--color-invert) !important;
+}
+
+.register-buttons {
+  height: 52px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: var(--color-btn-indigo);
+  color: var(--color-btn-text);
+  border: none;
+  width: 90.5%;
+}
+.auth-form {
+  .ant-page-header-heading-title {
+    color: var(--color-form-text);
+  }
+  .ant-typography {
+    color: var(--color-form-text) !important;
+  }
+
+  .ant-form-item-required {
+    color: var(--color-form-text) !important;
+    font-size: medium !important;
+  }
+
+  .ant-form-item.dark .ant-form-item-required {
+    color: var(--color-primary) !important;
+    font-size: 20px;
+    margin-top: 4rem;
+  }
+}
+
+.response_Message{
+  color: $form-link-color;
+}
+.login-button {
+  height: 52px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.forgot-password-link {
+  position: absolute;
+  right: 0;
+  padding-top: 0.2em;
+  padding-right: 2em;
+  cursor: pointer;
+  span {
+    color: $form-link-color;
+  }
+}
+
+.disclaimer {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.auth-input{
+  font-size: 16px;
+  font-weight: 600;
+  height: 52px;
+}

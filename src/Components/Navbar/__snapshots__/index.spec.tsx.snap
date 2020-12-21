@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navbar should match snapshot 1`] = `
+<div>
+  <div
+    class="p-6 mx-4"
+  >
+    <img
+      alt="Logo"
+      class="lip-logo inline-block"
+      src="/static/images/logo.svg"
+    />
+    <div
+      class="float-right flex items-center"
+    >
+      <span
+        class="text-white text-lg"
+      >
+        New to I-Stem?
+      </span>
+      <button
+        class="ant-btn lip-nav-button ml-4 "
+        type="button"
+      >
+        <span>
+          CREATE AN ACCOUNT 
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

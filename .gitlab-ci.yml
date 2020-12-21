@@ -1,0 +1,38 @@
+image: mersocarlin/gitlab-node:latest
+
+# Cache modules in between jobs
+cache:
+  key: "node_modules"
+  paths:
+    - node_modules/
+
+before_script:
+  # - apt-get update -qy
+  # - apt-get install -y ruby-dev
+  # - gem install dpl
+  - npm install
+
+stages:
+  # - test
+  - staging
+
+# lint:
+#   stage: test
+#   script:
+#     - npm run lint
+
+# test:
+#   stage: test
+#   script:
+#     - cp .env.example .env
+#     - npm run test
+
+staging:
+  type: deploy
+  stage: staging
+  only:
+    - shadow
+    - master
+    - pre-release
+  script:
+    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY

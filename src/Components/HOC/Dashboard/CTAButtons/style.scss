@@ -1,0 +1,39 @@
+@import "../../../../../public/static/css/colors";
+$green-btn-background: var(--color-btn-primary);
+$blue-btn-background: var(--color-btn-blue);
+$font-color: #262626;
+.ant-btn.ant-btn-block.text-center.green-btn {
+  background-color: $green-btn-background;
+  height: 52px;
+  border: 0;
+  &:hover,
+  &:focus {
+    background-color: $green-btn-background;
+  }
+}
+.ant-btn.ant-btn-block.text-center.blue-btn {
+  background-color: $blue-btn-background;
+  height: 52px;
+  border: 0;
+  &:hover,
+  &:focus {
+    background-color: $blue-btn-background;
+  }
+}
+.ant-btn.ant-btn-block.text-center.white-btn {
+  background-color: #ffffff;
+  height: 52px;
+  border: 0;
+  span {
+    color: $font-color;
+  }
+  &:hover {
+    background-color: $green-btn-background;
+    span {
+      color: #ffffff;
+    }
+  }
+}
+.padding{
+  padding: .5rem;
+}

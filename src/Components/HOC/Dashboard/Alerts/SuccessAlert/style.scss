@@ -1,0 +1,11 @@
+$modal-background: #002852;
+.success-icon {
+  margin-top: -5rem;
+}
+.success-modal {
+  .ant-modal-content {
+    background-color: $modal-background;
+    padding: 0rem 2rem 2rem 2rem;
+    border-radius: 0.5rem;
+  }
+}

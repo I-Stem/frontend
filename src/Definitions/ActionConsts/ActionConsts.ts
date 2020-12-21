@@ -1,0 +1,53 @@
+export const ActionConsts = {
+  Upload: {
+    ResetReducer: "Upload_ResetReducer",
+    SetReducer: "Upload_SetReducer",
+    INITIATE_UPLOADING: "INITIATE_UPLOADING",
+    UPDATE_PROGRESS: "UPDATE_PROGRESS",
+    UPDATE_SUCCESS: "UPDATE_SUCCESS",
+    UPDATE_FAILURE: "UPDATE_FAILURE",
+    CANCEL_UPLOAD: "CANCEL_UPLOAD",
+    RESET_UPLOAD_LIST: "RESET_UPLOAD_LIST",
+  },
+
+  Home: {
+    ResetReducer: "Home_ResetReducer",
+    SetReducer: "Home_SetReducer",
+  },
+  Auth: {
+    ResetReducer: "Auth_ResetReducer",
+    SetReducer: "Auth_SetReducer",
+    REGISTER_SUCCESS: "REGISTER_SUCCESS",
+    REGISTER_FAIL: "REGISTER_FAIL",
+    LOGIN_SUCCESS: "LOGIN_SUCCESS",
+    LOGIN_FAIL: "LOGIN_FAIL",
+    FORGOT_PASSWORD_SUCCESS: "FORGOT_PASSWORD_SUCCESS",
+    FORGOT_PASSWORD_FAIL: "FORGOT_PASSWORD_FAIL",
+    CLEAR_TOAST_REQUEST: "CLEAR_TOAST_REQUEST",
+  },
+  Credits: {
+    SetCredits: "SET_CREDITS",
+    ClearCredits: "CLEAR_CREDITS",
+    UpdateCredits: "UPDATE_CREDITS",
+  },
+
+  Afc: {
+    SAVE_AFC_SERVICE: "SAVE_AFC_SERVICE",
+    RESET_AFC_SERVICE: "RESET_AFC_SERVICE",
+    UPDATE_AFC_FILE_ID: "UPDATE_AFC_FILE_ID",
+  },
+  VC: {
+    SAVE_VC_SERVICE: "SAVE_VC_SERVICE",
+    RESET_VC_SERVICE: "RESET_VC_SERVICE",
+    UPDATE_VC_FILE_ID: "UPDATE_VC_FILE_ID",
+    UPDATE_VC_DATA_FILE_ID: "UPDATE_VC_DATA_FILE_ID"
+  },
+  Feedback:{
+    SAVE_FEEDBACK_SERVICE: "SAVE_FEEDBACK_SERVICE",
+  },
+  Community: {
+    SAVE_COM_SERVICE: "SAVE_COM_SERVICE",
+    RESET_COM_SERVICE: "RESET_COM_SERVICE",
+    UPDATE_COM_FILE_ID: "UPDATE_COM_FILE_ID",
+  }
+};

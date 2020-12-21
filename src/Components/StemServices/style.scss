@@ -1,0 +1,122 @@
+@import "../../../public/static/css/colors";
+$error-color: #ffa594;
+.service-component {
+  background-color: #FAFAFA;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08);
+  color: #595959 !important;
+}
+.escalate-modal {
+  .ant-modal-body {
+    background-color: var(--color-btn-blue);
+  }
+}
+.navbar__Logout{
+  font-family: Poppins;
+  float: left;
+  font-style: normal;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #FFFFFF;
+  }
+
+.lip-button{
+  height: 52px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}
+.lip-cselect__control{
+  height: 52px !important;
+ 
+}  
+.lip-cselect__placeholder{
+  color: #bfbfbf !important;
+}
+.tag-bg {
+  display: inline-block;
+  text-align: center;
+  height: 2em;
+  font-size: 16px;
+  line-height: 2em;
+  border-radius: 25px;
+  min-width: 8em;
+  max-width: 10em;
+  color: #001224;
+  background-color: rgba(0, 40, 82, 0.1);
+}
+
+.escalated-tag {
+  color: #001224;
+  background-color: rgba(0, 40, 82, 0.1);
+}
+
+.failed-tag {
+  color: #5d0f00;
+  background-color: rgba(185, 36, 6, 0.1);
+}
+
+.progress-tag {
+  color: #876800;
+  background-color: rgba(173, 139, 0, 0.1);
+}
+
+.completed-tag {
+  color: #003b27;
+  background-color: rgba(17, 153, 142, 0.1);
+}
+.list-style {
+  ul {
+    li {
+      padding: 1.2em;
+    }
+  }
+}
+
+thead[class*="ant-table-thead"] th {
+  background-color: var(--color-bg) !important;
+  font-weight: 800;
+}
+
+[data-reach-menu-list] {
+  padding:2px 0 !important;
+}
+
+[data-reach-menu-item] {
+  font: small-caption !important;
+  padding: 10px 20px !important; 
+
+}
+[data-reach-menu-item][data-selected] {
+  background:#002852 !important;
+}
+.auth-form {
+  .ant-page-header-heading-title {
+    color: var(--color-form-text);
+  }
+  .ant-typography {
+    color: var(--color-form-text) !important;
+  }
+
+  .ant-form-item-required {
+    color: var(--color-form-text) !important;
+    font-size: medium !important;
+  }
+  .ant-form-item-label > label {
+    color: var(--color-form-text) !important;
+    font-size: medium !important;
+  }
+  .ant-form-item.dark .ant-form-item-required {
+    color: var(--color-primary) !important;
+    font-size: 20px;
+    margin-top: 4rem;
+  }
+  .escalate-error {
+    color: $error-color !important;
+    white-space: pre-wrap;
+  }
+  .ant-form label {
+    font-size: 30px;
+ }
+}

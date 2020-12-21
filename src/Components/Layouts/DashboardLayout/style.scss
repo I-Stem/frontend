@@ -1,0 +1,32 @@
+@import "../../../../public/static/css/colors.scss";
+$background-color-service: var(--color-bg);
+$selected-item-background: #f0f7ff;
+
+.lipbg {
+  // background-color: var(--color-btn-blue);
+  height: 100vh;
+  display: flex;
+  flex-flow: column;
+}
+
+.lipbg .dashboard-container {
+  flex: 1 1 auto;
+}
+.menu-font{
+  color: #002852;
+}
+
+// .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+//   background-color: $selected-item-background;
+// }
+
+.ant-menu-item-selected {
+  color: var(--color-btn-blue);
+}
+
+.ant-menu-vertical .ant-menu-item::after,
+.ant-menu-vertical-left .ant-menu-item::after,
+.ant-menu-vertical-right .ant-menu-item::after,
+.ant-menu-inline .ant-menu-item::after {
+  border-right: 3px solid var(--color-btn-blue);
+}

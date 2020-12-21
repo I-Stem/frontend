@@ -1,0 +1,11 @@
+$modal-background: #b92406;
+.failure-icon {
+  margin-top: -5rem;
+}
+.failure-modal {
+  .ant-modal-content {
+    background-color: $modal-background;
+    padding: 0rem 2rem 2rem 2rem;
+    border-radius: 0.5rem;
+  }
+}
