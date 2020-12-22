@@ -2,7 +2,7 @@ module.exports = {
   title: 'Frontend Documentation',
   tagline: 'Accessiblizing the world!!',
   url: 'https://I-Stem.github.io',
-  baseUrl: '/frontend/',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
