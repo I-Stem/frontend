@@ -1,6 +1,8 @@
 module.exports = {
-  someSidebar: {
-    FrontendRepo: ['greeting'],
-//    Features: ['mdx'],
+  docs: [{
+type: 'category',
+label: 'Getting Started',
+items : ['greeting']
   },
+]
 };

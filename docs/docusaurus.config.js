@@ -66,12 +66,16 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
+path: 'docs',
           sidebarPath: require.resolve('./sidebars.js'),
-        routeBasePath: '/',
+include: ['**/*.md', '**/*.mdx'], // Extensions to include.
+routeBasePath: '/'
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
+blog: false,
+pages: false
       },
     ],
   ],
