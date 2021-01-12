@@ -1,5 +1,4 @@
 // #region Global Imports
-import { WithTranslation } from "next-i18next";
 import { IAuthUser } from "@Services/API/Auth/IAuthResponse";
 import { ICreditsResponse } from "@Services/API/Credits/ICreditsResponse";
 // #endregion Global Imports
@@ -9,7 +8,7 @@ export declare module IStemServices {
     user: IAuthUser;
     token: string;
   }
-  export interface IProps extends WithTranslation {
+  export interface IProps {
     search: Function;
     getCredits: () => Promise<ICreditsResponse>;
   }

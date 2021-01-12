@@ -13,6 +13,7 @@ import fileNames from "@Definitions/Constants/image";
 
 // #region Interface Imports
 import { IRegister } from "@Interfaces";
+import { UserType } from "@Definitions/Constants";
 
 // #endregion Interface Imports
 
@@ -35,7 +36,7 @@ export const Register: NextPage<
           </Col>
           <Col xs={24} lg={11}>
             <div className="p-6 mt-8">
-              <RegisterUser userType="volunteer" />
+              <RegisterUser userType={UserType.VOLUNTEER} />
             </div>
           </Col>
         </Row>
