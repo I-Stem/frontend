@@ -243,3 +243,21 @@ legend {
   width: fit-content;
   margin-left: 0.1rem;
 }
+.ul-list {
+  list-style-type: disc;
+  margin-left: 1rem;
+}
+.desc-toggle {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.desc-toggle-icon {
+  padding: 0.4rem;
+  margin-top: -0.3rem;
+}
+.lip-pagination {
+  text-align: center;
+}
+.lip-pagination ul {
+  display: inline-flex !important;
+}

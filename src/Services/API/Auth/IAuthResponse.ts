@@ -11,6 +11,8 @@ export interface IAuthUser {
   updatedAt?: string;
   organizationName?: string;
   organizationCode?: string;
+  showOnboardStudentsCard?: boolean;
+  showOnboardStaffCard?: boolean;
 }
 export interface IAuthSuccess {
   user?: IAuthUser;

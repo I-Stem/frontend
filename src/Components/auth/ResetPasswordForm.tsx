@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from "react";
-import Head from 'next/head';
+import Head from "next/head";
 import { connect } from "react-redux";
 import { useRouter } from "next/router";
 import { Button, Form, Input, Typography } from "antd";
 import { AuthActions } from "@Actions";
 import "./auth.scss";
 import { IAuth } from "./Auth";
+import { VALID_PASSWORD } from "@Definitions/Constants";
 
 const { Title, Text } = Typography;
 
@@ -63,7 +64,13 @@ const ResetPasswordForm = (props: IAuth.IResetPasswordProps) => {
           label="New Password"
           name="password"
           aria-live="polite"
-          rules={[{ required: true, message: "Please enter a password" }]}
+          rules={[
+            { required: true, message: "Please enter a password" },
+            {
+              pattern: new RegExp(VALID_PASSWORD),
+              message: "Password must be atleast 8 characters",
+            },
+          ]}
         >
           <Input.Password
             aria-live="off"
@@ -80,6 +87,10 @@ const ResetPasswordForm = (props: IAuth.IResetPasswordProps) => {
           dependencies={["password"]}
           rules={[
             { required: true, message: "Please confirm your password" },
+            {
+              pattern: new RegExp(VALID_PASSWORD),
+              message: "Password must be atleast 8 characters",
+            },
             ({ getFieldValue }) => ({
               validator(rule, value) {
                 if (!value || getFieldValue("password") === value) {

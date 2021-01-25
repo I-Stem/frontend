@@ -61,8 +61,8 @@ const DashboardLayout: React.FunctionComponent<DashboardProps> = (
           </Link>
         );
       })}
-      {(userType == UserType.UNIVERSITY || userType === UserType.I_STEM) &&
-      role == "STAFF" ? (
+      {(userType === UserType.UNIVERSITY || userType === UserType.I_STEM) &&
+      role === "STAFF" ? (
         <div>
           <div className="navbar-divider"></div>
           <div className="text-base font-semibold manage-options">
@@ -72,6 +72,22 @@ const DashboardLayout: React.FunctionComponent<DashboardProps> = (
         </div>
       ) : (
         <></>
+      )}
+      {(userType === UserType.UNIVERSITY || userType === UserType.I_STEM) &&
+      role === "REMEDIATOR" ? (
+        <div>
+          <div className="navbar-divider"></div>
+          <div className="text-base font-semibold manage-options">
+            MANAGE OPTIONS
+          </div>
+          <Link href="/organization/escalation">
+            <a className="ant-menu-item ant-menu-item-only-child text-base font-semibold menu-font">
+              Escalations
+            </a>
+          </Link>
+        </div>
+      ) : (
+        <> </>
       )}
     </nav>
   );

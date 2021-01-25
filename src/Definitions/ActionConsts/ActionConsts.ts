@@ -54,4 +54,7 @@ export const ActionConsts = {
     UPLOAD_CSV: "UPLOAD_CSV",
     CSV_ERRORS: "CSV_ERRORS",
   },
+  Escalation: {
+    REMEDIATE_ESCALATION: "REMEDIATE_ESCALATION",
+  },
 };

@@ -41,6 +41,10 @@ export const UNIVERSITY_MENU_ITEMS = [
     name: "Settings",
     link: "/organization/settings",
   },
+  {
+    name: "Escalations",
+    link: "/organization/escalation",
+  },
 ];
 export const VC_BASE_URL = "/dashboard/video-captioning";
 export const AFC_BASE_URL = "/dashboard/format-conversion";

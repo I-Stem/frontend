@@ -98,8 +98,12 @@ const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                       placeholder="Select csv column"
                       className="stud-select"
                       as="select"
+                      value="none"
                       {...formik.getFieldProps("name")}
                     >
+                      <option value="none" hidden>
+                        Select csv column
+                      </option>
                       {headers.map(header => (
                         <option key={header} className="csv-dropdown-item">
                           {header}
@@ -115,8 +119,12 @@ const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                       placeholder="Select csv column"
                       className="stud-select"
                       as="select"
+                      value="none"
                       {...formik.getFieldProps("email")}
                     >
+                      <option value="none" hidden>
+                        Select csv column
+                      </option>
                       {headers.map(header => (
                         <option key={header} className="csv-dropdown-item">
                           {header}
@@ -132,8 +140,12 @@ const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                       className="stud-select"
                       placeholder="Select csv column"
                       as="select"
+                      value="none"
                       {...formik.getFieldProps("roll_no")}
                     >
+                      <option value="none" hidden>
+                        Select csv column
+                      </option>
                       {headers.map(header => (
                         <option key={header} className="csv-dropdown-item">
                           {header}

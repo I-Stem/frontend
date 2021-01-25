@@ -5,12 +5,6 @@ import { connect } from "react-redux";
 import { useRouter } from "next/router";
 import { BlueButton } from "@Components/HOC/Dashboard/CTAButtons";
 import { GreenButton } from "@Components/HOC/Dashboard";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-} from "@material-ui/core";
 import { CommunityService } from "@Services";
 // #endregion Global Imports
 
@@ -37,6 +31,8 @@ import { Form } from "react-bootstrap";
 import RadioCheck from "@Components/HOC/Dashboard/RadioCheck";
 import FormErrorFocus from "../../../src/Components/FormErrorFocus";
 import PrivateRoute from "../../_privateRoute";
+import fileNames from "@Definitions/Constants/image";
+import { MentorshipDescription } from "@Components/ServiceDescriptions/mentorship";
 
 const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   props: any
@@ -45,23 +41,21 @@ const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   const [hasPreviousRequest, setHasPreviousRequest] = useState<boolean>(false);
   const [preFill, setPreFill] = useState<MentorshipData>();
   const initialFocus = useRef<HTMLDivElement>(null);
-
   const [disabilities, setDisabilities] = useState([] as DisabilitiesData[]);
   const [changeButtons, setChangeButtons] = useState<Boolean>();
-  const [closeButtonDialog, setCloseButtonDialog] = useState(false);
   const [hideForm, setHideForm] = useState(false);
   const dialogFocus = useRef<HTMLDivElement>(null);
   const [industry, setIndustry] = useState<string | undefined>("");
+  const { INFO_ICON } = fileNames;
+  const [showDescription, setShowDescription] = useState(false);
   let mentorShipStatus = "";
   let menteeStatus: boolean;
-
   useEffect(() => {
-    initialFocus.current?.focus();
+    // initialFocus.current?.focus();
     props.GetDisabilities().then((response: any) => {
       setDisabilities(response);
     });
     props.GetMentorship().then((response: any) => {
-      console.log(`mentorship: ${JSON.stringify(response)}`);
       let isPWDValue = "";
       if (response) {
         if (response?.isPWD === true) isPWDValue = "true";
@@ -72,9 +66,15 @@ const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
         });
         setHasPreviousRequest(true);
         setChangeButtons(true);
+      } else {
+        setShowDescription(true);
       }
     });
   }, []);
+
+  useEffect(() => {
+    initialFocus.current?.focus();
+  }, [showDescription]);
 
   const onsubmit = (data: any) => {
     console.log("Form Data:", JSON.stringify(data));
@@ -231,42 +231,6 @@ const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
     }
   };
 
-  const handleCloseButton = () => {
-    setCloseButtonDialog(!closeButtonDialog);
-  };
-
-  const closeDialog = (
-    <Dialog
-      open={closeButtonDialog}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-      role="dialog"
-      PaperProps={{
-        style: { backgroundColor: "#002852" },
-      }}
-    >
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          <p
-            ref={dialogFocus}
-            className=" text-center  leading-7 font-medium text-white"
-          >
-            Are you sure you want to leave the page? Leaving this page will
-            discard any unsaved changes.
-          </p>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <div style={{ width: "100%", display: "flex" }}>
-          <GreenButton onClick={handleCloseButton} href={DASHBOARD_ROUTE}>
-            Yes
-          </GreenButton>
-          <GreenButton onClick={handleCloseButton}>No</GreenButton>
-        </div>
-      </DialogActions>
-    </Dialog>
-  );
-
   const menteeSection = (formik: FormikProps<MentorshipFormFields>) => (
     <div>
       <h2 className="lip-title">MENTEE QUESTIONS</h2>
@@ -306,6 +270,24 @@ const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       </Form.Group>
       {formik.errors.questionToMentor && formik.touched.questionToMentor ? (
         <div className="error">{formik.errors.questionToMentor}</div>
+      ) : null}
+      <br />
+      <Form.Group controlId="contactNumberElement">
+        <Form.Label>
+          <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
+            Provide your Contact Number *
+          </h3>
+        </Form.Label>
+        <Form.Control
+          placeholder="Contact Number"
+          as="textarea"
+          rows={1}
+          className="lip-textarea"
+          {...formik.getFieldProps("contactNumber")}
+        />
+      </Form.Group>
+      {formik.errors.contactNumber && formik.touched.contactNumber ? (
+        <div className="error">{formik.errors.contactNumber}</div>
       ) : null}
       <br />
       <Form.Group controlId="terms">
@@ -428,6 +410,7 @@ const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
     mentorSkills: preFill?.mentorSkills || "",
     learnSkills: preFill?.learnSkills || "",
     questionToMentor: preFill?.questionToMentor || "",
+    contactNumber: preFill?.contactNumber || "",
   };
 
   return (
@@ -435,264 +418,321 @@ const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       <Head>
         <title>Mentorship | I-Stem</title>
       </Head>
-      {closeDialog}
-      <FormLayout form="mentorshipForm" hideFooter close={handleCloseButton}>
+      <FormLayout form="mentorshipForm" hideFooter>
         <div className="lip-margin">
-          <div tabIndex={-1} ref={initialFocus}>
-            <h2 className="lip-title">MENTORSHIP</h2>
+          <div className="display-flex">
+            <div tabIndex={-1} ref={initialFocus}>
+              <h2 className="lip-title">MENTORSHIP</h2>
+            </div>
+            <img
+              className="desc-toggle-icon"
+              alt={
+                "Show description" +
+                (showDescription ? "Expanded" : "Collapsed")
+              }
+              onClick={() => {
+                setShowDescription(!showDescription);
+              }}
+              src={INFO_ICON}
+              role="button"
+              aria-live="polite"
+            />
           </div>
-          {hasPreviousRequest ? showButtons() : <></>}
-          <p className="lip-subtext">
-            Complete this form to sign up for a meeting with a mentor in the
-            next two weeks, or as a mentor to share your knowledge, experience
-            and skills with a mentee. Each meeting is typically 45 Mins. long.
-            If you are a mentee, you can sign up for a match every other week.
-            If you are a mentor, you only need to submit this once, and may
-            update your response or pause mentorship temporarily using this
-            page.
-          </p>
-          <Formik
-            enableReinitialize
-            initialValues={initialValues}
-            validationSchema={Yup.object().shape({
-              currentPosition: Yup.string().required(
-                "Current Position is required"
-              ),
-              isPWD: Yup.string().required("Select the option"),
-              associatedDisabilities: Yup.array()
-                .required()
-                .when("isPWD", {
-                  is: "true",
-                  then: schema => schema,
-                  otherwise: Yup.array(),
-                }),
-              signupAs: Yup.string().required("Sign Up As required"),
-              learnSkills: Yup.string().when("signupAs", {
-                is: (value: string) =>
-                  !(value === "mentee" || value === "both"),
-                then: schema => schema,
-                otherwise: Yup.string().required("Skills required"),
-              }),
-              questionToMentor: Yup.string(),
-              menteeAgreement: Yup.boolean().when("signupAs", {
-                is: (value: string) =>
-                  !(value === "mentee" || value === "both"),
-                then: schema => schema,
-                otherwise: Yup.boolean().required("Agreement Required"),
-              }),
-              mentorSkills: Yup.string().when("signupAs", {
-                is: (value: string) =>
-                  !(value === "mentor" || value === "both"),
-                then: schema => schema,
-                otherwise: Yup.string().required("Mentor skills Required"),
-              }),
-              connectOften: Yup.string().when("signupAs", {
-                is: (value: string) =>
-                  !(value === "mentor" || value === "both"),
-                then: schema => schema,
-                otherwise: Yup.string().required("Choose one option"),
-              }),
-              anythingElse: Yup.string(),
-            })}
-            onSubmit={onsubmit}
-          >
-            {formik => (
-              <Form
-                id="mentorshipForm"
-                aria-hidden={hideForm}
-                onSubmit={formik.handleSubmit}
+
+          {showDescription ? (
+            <>
+              <MentorshipDescription />
+              <div className="lip-submit">
+                <BlueButton
+                  htmlType="button"
+                  onClick={() => {
+                    setShowDescription(!showDescription);
+                  }}
+                >
+                  PROCEED TO FILL MENTORSHIP DETAILS
+                </BlueButton>
+              </div>
+            </>
+          ) : (
+            <div>
+              {hasPreviousRequest ? showButtons() : <></>}
+              <p className="lip-subtext">
+                Complete this form to sign up for a meeting with a mentor in the
+                next two weeks, or as a mentor to share your knowledge,
+                experience and skills with a mentee. Each meeting is typically
+                45 Mins. long. If you are a mentee, you can sign up for a match
+                every other week. If you are a mentor, you only need to submit
+                this once, and may update your response or pause mentorship
+                temporarily using this page.
+              </p>
+              <Formik
+                enableReinitialize
+                initialValues={initialValues}
+                validationSchema={Yup.object().shape({
+                  currentPosition: Yup.string().required(
+                    "Current Position is required"
+                  ),
+                  isPWD: Yup.string().required("Select the option"),
+                  associatedDisabilities: Yup.array()
+                    .required()
+                    .when("isPWD", {
+                      is: "true",
+                      then: schema => schema,
+                      otherwise: Yup.array(),
+                    }),
+                  signupAs: Yup.string().required("Sign Up As required"),
+                  learnSkills: Yup.string().when("signupAs", {
+                    is: (value: string) =>
+                      !(value === "mentee" || value === "both"),
+                    then: schema => schema,
+                    otherwise: Yup.string().required("Skills required"),
+                  }),
+                  contactNumber: Yup.string().when("signupAs", {
+                    is: (value: string) =>
+                      !(value === "mentee" || value === "both"),
+                    then: schema => schema,
+                    otherwise: Yup.string().required("Contact Number required"),
+                  }),
+                  questionToMentor: Yup.string(),
+                  menteeAgreement: Yup.boolean().when("signupAs", {
+                    is: (value: string) =>
+                      !(value === "mentee" || value === "both"),
+                    then: schema => schema,
+                    otherwise: Yup.boolean().required("Agreement required"),
+                  }),
+                  mentorSkills: Yup.string().when("signupAs", {
+                    is: (value: string) =>
+                      !(value === "mentor" || value === "both"),
+                    then: schema => schema,
+                    otherwise: Yup.string().required("Mentor skills required"),
+                  }),
+                  connectOften: Yup.string().when("signupAs", {
+                    is: (value: string) =>
+                      !(value === "mentor" || value === "both"),
+                    then: schema => schema,
+                    otherwise: Yup.string().required(
+                      "Choose one option for disability"
+                    ),
+                  }),
+                  anythingElse: Yup.string(),
+                })}
+                onSubmit={onsubmit}
               >
-                <label htmlFor="industryElement">
-                  <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
-                    Industry you work/interested in? *
-                  </h3>
-                </label>
-                <div className="lip-industry">
-                  <DropdownWrapper
-                    setSelectedOrTypedInputValue={setIndustry}
-                    name="industry"
-                    id="industryElement"
-                    getDropdownListItems={props.GetIndustry}
-                    initialDropdownValue={preFill?.industry}
-                    required
-                  />
-                </div>
-                <Form.Group controlId="currentPositionElement">
-                  <Form.Label>
-                    <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
-                      What is your current job position? (e.g. student at IIT
-                      Delhi, software engineer at Intel, Secretary in Ministry
-                      of Health etc.) *
-                    </h3>
-                  </Form.Label>
-                  <Form.Control
-                    placeholder="Current Job Position"
-                    as="textarea"
-                    rows={1}
-                    className="lip-textarea"
-                    {...formik.getFieldProps("currentPosition")}
-                  />
-                </Form.Group>
-                {formik.errors.currentPosition &&
-                formik.touched.currentPosition ? (
-                  <div className="error">{formik.errors.currentPosition}</div>
-                ) : null}
-                <br />
-                <fieldset>
-                  <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
-                    Are you a person with disability? *
-                  </h3>
-                  <RadioCheck
-                    htmlType="radio"
-                    name="isPWD"
-                    value="true"
-                    label="Yes"
-                    id="yes"
-                    onChange={() => formik.setFieldValue("isPWD", "true")}
-                    checked={formik.values.isPWD === "true"}
-                  />
-                  <RadioCheck
-                    htmlType="radio"
-                    name="isPWD"
-                    value="false"
-                    label="No"
-                    id="no"
-                    onChange={() => formik.setFieldValue("isPWD", "false")}
-                    checked={formik.values.isPWD === "false"}
-                  />
-                </fieldset>
-                {formik.errors.isPWD && formik.touched.isPWD ? (
-                  <div className="error">{formik.errors.isPWD}</div>
-                ) : null}
-                {formik.values.isPWD === "true" ? (
-                  <div>
-                    <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
-                      What is the nature of your disability? *
-                    </h3>
-                    <fieldset
-                      className="space-bottom"
-                      id="disabilitiesList"
-                      style={{ display: "flex", flexWrap: "wrap" }}
-                    >
-                      {disabilities.map((data: any, i: number) => {
-                        return (
-                          <div style={{ flex: "0 50%" }}>
-                            <RadioCheck
-                              htmlType="checkbox"
-                              label={`${data.name}`}
-                              id={data.name}
-                              defaultChecked={preFill?.associatedDisabilities?.includes(
-                                data.name
-                              )}
-                              value={data.name}
-                              key={`${i}`}
-                              name="associatedDisabilities"
-                              onChange={() =>
-                                formik.setFieldValue("associatedDisabilities", [
-                                  ...formik.values?.associatedDisabilities!,
-                                  data.name,
-                                ])
-                              }
-                            />
-                          </div>
-                        );
-                      })}
-                    </fieldset>
-                    {formik.errors.associatedDisabilities &&
-                    formik.touched.associatedDisabilities ? (
+                {formik => (
+                  <Form
+                    id="mentorshipForm"
+                    aria-hidden={hideForm}
+                    onSubmit={formik.handleSubmit}
+                  >
+                    <label htmlFor="industryElement">
+                      <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
+                        Industry you work/interested in? *
+                      </h3>
+                    </label>
+                    <div className="lip-industry">
+                      <DropdownWrapper
+                        setSelectedOrTypedInputValue={setIndustry}
+                        name="industry"
+                        id="industryElement"
+                        getDropdownListItems={props.GetIndustry}
+                        initialDropdownValue={preFill?.industry}
+                        required
+                      />
+                    </div>
+                    <Form.Group controlId="currentPositionElement">
+                      <Form.Label>
+                        <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
+                          What is your current job position? (e.g. student at
+                          IIT Delhi, software engineer at Intel, Secretary in
+                          Ministry of Health etc.) *
+                        </h3>
+                      </Form.Label>
+                      <Form.Control
+                        placeholder="Current Job Position"
+                        as="textarea"
+                        rows={1}
+                        className="lip-textarea"
+                        {...formik.getFieldProps("currentPosition")}
+                      />
+                    </Form.Group>
+                    {formik.errors.currentPosition &&
+                    formik.touched.currentPosition ? (
                       <div className="error">
-                        {formik.errors.associatedDisabilities}
+                        {formik.errors.currentPosition}
                       </div>
                     ) : null}
-                  </div>
-                ) : (
-                  <></>
-                )}
+                    <br />
+                    <fieldset>
+                      <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
+                        Are you a person with disability? *
+                      </h3>
+                      <RadioCheck
+                        htmlType="radio"
+                        name="isPWD"
+                        value="true"
+                        label="Yes"
+                        id="yes"
+                        onChange={() => formik.setFieldValue("isPWD", "true")}
+                        checked={formik.values.isPWD === "true"}
+                      />
+                      <RadioCheck
+                        htmlType="radio"
+                        name="isPWD"
+                        value="false"
+                        label="No"
+                        id="no"
+                        onChange={() => formik.setFieldValue("isPWD", "false")}
+                        checked={formik.values.isPWD === "false"}
+                      />
+                    </fieldset>
+                    {formik.errors.isPWD && formik.touched.isPWD ? (
+                      <div className="error">{formik.errors.isPWD}</div>
+                    ) : null}
+                    {formik.values.isPWD === "true" ? (
+                      <div>
+                        <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
+                          What is the nature of your disability? *
+                        </h3>
+                        <fieldset
+                          className="space-bottom"
+                          id="disabilitiesList"
+                          style={{ display: "flex", flexWrap: "wrap" }}
+                        >
+                          {disabilities.map((data: any, i: number) => {
+                            return (
+                              <div style={{ flex: "0 50%" }}>
+                                <RadioCheck
+                                  htmlType="checkbox"
+                                  label={`${data.name}`}
+                                  id={data.name}
+                                  defaultChecked={preFill?.associatedDisabilities?.includes(
+                                    data.name
+                                  )}
+                                  value={data.name}
+                                  key={`${i}`}
+                                  name="associatedDisabilities"
+                                  onChange={() =>
+                                    formik.setFieldValue(
+                                      "associatedDisabilities",
+                                      [
+                                        ...formik.values
+                                          ?.associatedDisabilities!,
+                                        data.name,
+                                      ]
+                                    )
+                                  }
+                                />
+                              </div>
+                            );
+                          })}
+                        </fieldset>
+                        {formik.errors.associatedDisabilities &&
+                        formik.touched.associatedDisabilities ? (
+                          <div className="error">
+                            {formik.errors.associatedDisabilities}
+                          </div>
+                        ) : null}
+                      </div>
+                    ) : (
+                      <></>
+                    )}
 
-                <label htmlFor="signUpAsElement">
-                  <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
-                    What would you like to signup as? *
-                  </h3>
-                </label>
-                <label>
-                  Please note: If you would like to sign up as a mentee, but do
-                  not have a question in the next two weeks, please don't sign
-                  up right now. Only sign up if you would like to connect with a
-                  community member for support in the next two weeks.
-                </label>
-                <fieldset>
-                  <RadioCheck
-                    htmlType="radio"
-                    name="signupAs"
-                    value="mentee"
-                    label="Mentee"
-                    id="mentee"
-                    onChange={() => formik.setFieldValue("signupAs", "mentee")}
-                    checked={formik.values.signupAs === "mentee"}
-                  />
-                  <RadioCheck
-                    htmlType="radio"
-                    name="signupAs"
-                    value="mentor"
-                    label="Mentor"
-                    id="mentor"
-                    onChange={() => formik.setFieldValue("signupAs", "mentor")}
-                    checked={formik.values.signupAs === "mentor"}
-                  />
-                  <RadioCheck
-                    htmlType="radio"
-                    name="signupAs"
-                    value="both"
-                    label="Both"
-                    id="both"
-                    onChange={() => formik.setFieldValue("signupAs", "both")}
-                    checked={formik.values.signupAs === "both"}
-                  />
-                </fieldset>
-                {formik.errors.signupAs && formik.touched.signupAs ? (
-                  <div className="error">{formik.errors.signupAs}</div>
-                ) : null}
-                {conditional(formik)}
-                <Form.Group controlId="anythingElseElement">
-                  <Form.Label>
-                    <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
-                      Anything else that we should know?
-                    </h3>
-                  </Form.Label>
-                  <Form.Control
-                    placeholder="Anything else"
-                    as="textarea"
-                    rows={1}
-                    className="lip-textarea"
-                    {...formik.getFieldProps("anythingElse")}
-                  />
-                </Form.Group>
-                {formik.errors.anythingElse && formik.touched.anythingElse ? (
-                  <div className="error">{formik.errors.anythingElse}</div>
-                ) : null}
-                <br />
-                {changeButtons ? (
-                  <div className="display-flex lip-submit">
-                    <BlueButton htmlType="submit">UPDATE CHANGES</BlueButton>
-                  </div>
-                ) : (
-                  <div className="lip-submit">
-                    <BlueButton htmlType="submit">
-                      SUBMIT APPLICATION
-                    </BlueButton>
-                  </div>
+                    <label htmlFor="signUpAsElement">
+                      <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
+                        What would you like to signup as? *
+                      </h3>
+                    </label>
+                    <label>
+                      Please note: If you would like to sign up as a mentee, but
+                      do not have a question in the next two weeks, please don't
+                      sign up right now. Only sign up if you would like to
+                      connect with a community member for support in the next
+                      two weeks.
+                    </label>
+                    <fieldset>
+                      <RadioCheck
+                        htmlType="radio"
+                        name="signupAs"
+                        value="mentee"
+                        label="Mentee"
+                        id="mentee"
+                        onChange={() =>
+                          formik.setFieldValue("signupAs", "mentee")
+                        }
+                        checked={formik.values.signupAs === "mentee"}
+                      />
+                      <RadioCheck
+                        htmlType="radio"
+                        name="signupAs"
+                        value="mentor"
+                        label="Mentor"
+                        id="mentor"
+                        onChange={() =>
+                          formik.setFieldValue("signupAs", "mentor")
+                        }
+                        checked={formik.values.signupAs === "mentor"}
+                      />
+                      <RadioCheck
+                        htmlType="radio"
+                        name="signupAs"
+                        value="both"
+                        label="Both"
+                        id="both"
+                        onChange={() =>
+                          formik.setFieldValue("signupAs", "both")
+                        }
+                        checked={formik.values.signupAs === "both"}
+                      />
+                    </fieldset>
+                    {formik.errors.signupAs && formik.touched.signupAs ? (
+                      <div className="error">{formik.errors.signupAs}</div>
+                    ) : null}
+                    {conditional(formik)}
+                    <Form.Group controlId="anythingElseElement">
+                      <Form.Label>
+                        <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
+                          Anything else that we should know?
+                        </h3>
+                      </Form.Label>
+                      <Form.Control
+                        placeholder="Anything else"
+                        as="textarea"
+                        rows={1}
+                        className="lip-textarea"
+                        {...formik.getFieldProps("anythingElse")}
+                      />
+                    </Form.Group>
+                    {formik.errors.anythingElse &&
+                    formik.touched.anythingElse ? (
+                      <div className="error">{formik.errors.anythingElse}</div>
+                    ) : null}
+                    <br />
+                    {changeButtons ? (
+                      <div className="display-flex lip-submit">
+                        <BlueButton htmlType="submit">
+                          UPDATE CHANGES
+                        </BlueButton>
+                      </div>
+                    ) : (
+                      <div className="lip-submit">
+                        <BlueButton htmlType="submit">
+                          SUBMIT APPLICATION
+                        </BlueButton>
+                      </div>
+                    )}
+                    <FormErrorFocus
+                      offset={0}
+                      align="top"
+                      focusDelay={200}
+                      ease="linear"
+                      duration={100}
+                      formik={formik}
+                    />
+                  </Form>
                 )}
-                <FormErrorFocus
-                  offset={0}
-                  align="top"
-                  focusDelay={200}
-                  ease="linear"
-                  duration={100}
-                  formik={formik}
-                />
-              </Form>
-            )}
-          </Formik>
+              </Formik>
+            </div>
+          )}
         </div>
       </FormLayout>
     </Wrapper>
@@ -727,4 +767,5 @@ export interface MentorshipFormFields extends Partial<MentorshipData> {
   mentorSkills: string;
   learnSkills: string;
   questionToMentor: string;
+  contactNumber: string;
 }

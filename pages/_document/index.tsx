@@ -9,7 +9,6 @@ import Document, {
 } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 
-
 // #endregion Global Imports
 
 class WebAppDocument extends Document {
@@ -40,9 +39,8 @@ class WebAppDocument extends Document {
   }
 
   render() {
-
     return (
-      <Html>
+      <Html lang="en-us">
         <Head>
           <link rel="shortcut icon" href="/favicon.svg" />
         </Head>

@@ -75,7 +75,6 @@ export const UploadActions = {
         },
         type: ActionConsts.Upload.UPDATE_PROGRESS,
       });
-      console.log("payload type for file upload:" + payload.type);
       if (payload.type === "customModel") {
         dispatch({
           payload: { dataFileId: response.data._id },
@@ -86,6 +85,15 @@ export const UploadActions = {
         dispatch({
           payload: { inputFileId: response.data._id },
           type: ActionConsts.Community.UPDATE_COM_FILE_ID,
+        });
+      }
+      if (payload.type === "escalation") {
+        dispatch({
+          payload: {
+            inputFileId: response.data._id,
+            inputFileLink: response.data.inputURL,
+          },
+          type: ActionConsts.Escalation.REMEDIATE_ESCALATION,
         });
       }
       if (payload.type === "afcService") {

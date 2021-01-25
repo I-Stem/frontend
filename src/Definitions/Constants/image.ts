@@ -1,3 +1,5 @@
+import { stat } from "fs";
+
 const staticPath = "/static/images";
 
 const fileNames = {
@@ -24,6 +26,11 @@ const fileNames = {
   ONBOARD_STAFF: `${staticPath}/onboard-staff.svg`,
   CLOSE_ICON: `${staticPath}/closeIcon.svg`,
   IMPORT_STUDENTS_SAMPLE: `${staticPath}/IMPORT_STUDENTS_SAMPLE.csv`,
+  VECTOR_UP: `${staticPath}/vector-up.svg`,
+  VECTOR_DOWN: `${staticPath}/vector-down.svg`,
+  INFO_ICON: `${staticPath}/info-icon.svg`,
+  MENTORSHIP_DESC: `${staticPath}/mentorship-desc.svg`,
+  JOB_DESC: `${staticPath}/job-desc.svg`,
 };
 
 export default fileNames;

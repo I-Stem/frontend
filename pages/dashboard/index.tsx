@@ -6,6 +6,7 @@ import { Grid } from "@material-ui/core";
 
 // #region Local Imports
 import "./style.scss";
+import { withTranslation } from "@Server/i18n";
 import {
   CreditsService,
   IStemServices,
@@ -34,8 +35,12 @@ const StemServices: NextPage<
   IStemServices.IProps,
   IStemServices.InitialProps
 > = (props: any) => {
-  const { userType, role } = props.user;
-
+  const {
+    userType,
+    role,
+    showOnboardStudentsCard,
+    showOnboardStaffCard,
+  } = props.user;
   const initialFocus = useRef<HTMLDivElement>(null);
   const messageFocus = useRef<HTMLDivElement>(null);
   const [focus, updateFocus] = useState(false);
@@ -121,8 +126,12 @@ const StemServices: NextPage<
       </Head>
       <DashboardLayout userType={userType} role={role} hideBreadcrumb>
         <div className="pl-16 pr-12 flex-1" key="2">
-          {userType === UserType.UNIVERSITY && role === "STAFF" ? (
-            <RecommendedActions />
+          {userType === UserType.UNIVERSITY &&
+          (role === "STAFF" || role === "REMEDIATOR") ? (
+            <RecommendedActions
+              showOnboardStudentsCard={showOnboardStudentsCard}
+              showOnboardStaffCard={showOnboardStaffCard}
+            />
           ) : (
             <></>
           )}
@@ -190,6 +199,8 @@ const mapDispatchToProps = {
   getCredits: CreditsActions.GetCredits,
 };
 
+const Extended = withTranslation("common")(StemServices);
+
 export default PrivateRoute(
-  connect(mapStateToProps, mapDispatchToProps)(StemServices)
+  connect(mapStateToProps, mapDispatchToProps)(Extended)
 );

@@ -51,7 +51,7 @@ const Metrics: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       <Head>
         <title>Metrics | I-Stem</title>
       </Head>
-      <DashboardLayout userType={userType} role={role} hideBreadcrumb={true}>
+      <DashboardLayout userType={userType} role={role} hideBreadcrumb>
         <Row className="stud-row">
           <Col sm={5}>
             <div ref={initialFocus} tabIndex={-1}>

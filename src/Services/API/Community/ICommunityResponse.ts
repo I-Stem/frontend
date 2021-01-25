@@ -49,6 +49,7 @@ export interface MentorshipData {
   cancelMenteeship?: boolean;
   mentorshipStatus?: MentorshipStatus[];
   _id?: string;
+  contactNumber?: string;
 }
 
 export interface MentorshipStatus {

@@ -18,6 +18,7 @@ export * from "@Components/Upload/Upload";
 export * from "@Components/Layouts/Wrapper/Wrapper";
 export * from "@Interfaces/Community";
 export * from "@Interfaces/University";
+export * from "@Interfaces/Escalation";
 // #endregion Component Interfaces
 // #region Redux Interfaces
 export * from "@Redux/IAction";

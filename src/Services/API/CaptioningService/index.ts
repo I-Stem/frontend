@@ -6,7 +6,7 @@ import { Http } from "@Services";
 import {
   CaptioningServiceModel,
   CaptioningServicePatchModel,
-  VCModelsServicesModel
+  VCModelsServicesModel,
 } from "@Interfaces";
 // #endregion Interface Imports
 
@@ -47,13 +47,21 @@ export const CaptioningService = {
     return Http.post(`/vc/${id}/escalate`, undefined, payload.params);
   },
 
-  getVCModels: async (): Promise<VCModelsServicesModel.VCModelsApodResponse> =>{
-    return await Http.get<VCModelsServicesModel.VCModelsApodResponse>("/vc/model");
+  getVCModels: async (): Promise<
+    VCModelsServicesModel.VCModelsApodResponse
+  > => {
+    return await Http.get<VCModelsServicesModel.VCModelsApodResponse>(
+      "/vc/model"
+    );
   },
 
   addVCModel: async (
-    payload:VCModelsServicesModel.PostApodPayload
-    ): Promise<VCModelsServicesModel.PostApodPayload> => {
-      return Http.post("/vc/model", undefined, payload.params)
-    },
+    payload: VCModelsServicesModel.PostApodPayload
+  ): Promise<VCModelsServicesModel.PostApodPayload> => {
+    return Http.post("/vc/model", undefined, payload.params);
+  },
+
+  getVcCount: async (): Promise<any> => {
+    return Http.get<any>("vc/vcCount");
+  },
 };

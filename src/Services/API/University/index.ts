@@ -30,6 +30,7 @@ interface UniversityStudentsParams {
   params: {
     limit: number;
     offset: number;
+    searchString: string;
   };
 }
 
@@ -74,7 +75,9 @@ export const UniversityPortal = {
   updateStudentDetail: async (payload: StudentDetail): Promise<any> => {
     return Http.post("/university/index/student/update", undefined, payload);
   },
-  studentsCount: async (): Promise<any> => {
-    return Http.get("/university/studentsCount");
+  studentsCount: async (payload: {
+    params: { searchString: string };
+  }): Promise<any> => {
+    return Http.get("/university/studentsCount", payload.params);
   },
 };

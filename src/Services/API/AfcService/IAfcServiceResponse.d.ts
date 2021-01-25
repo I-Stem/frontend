@@ -1,3 +1,5 @@
+import { AFCRequestOutputFormat } from "@Definitions/Constants/dashboard-form-constants";
+
 export interface IAfcServiceTag {
   _id: String;
   name: String;
@@ -25,9 +27,10 @@ export interface IAfcServiceDocument {
   inputFileId: string;
   updatedAt: Date;
   inputField: string;
-  outputFormat: number;
+  outputFormat: AFCRequestOutputFormat;
   outputURL?: string;
   review: IAfcServiceReviewResponse;
+  docType: string;
   __v: number;
 }
 

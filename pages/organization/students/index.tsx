@@ -37,14 +37,35 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   const [dialogMessage, setDialogMessage] = useState("");
   const [dialogHeading, setDialogHeading] = useState("");
   const [totalStudents, setTotalStudents] = useState(0);
-  useEffect(() => {
-    initialFocus.current?.focus();
-    UniversityPortal.studentsCount().then(e => {
+  const [searchResult, setSearchResult] = useState(false);
+  const [searchString, setSearchString] = useState("");
+  const studentCount = (searchText: string) => {
+    UniversityPortal.studentsCount({
+      params: { searchString: searchText },
+    }).then(e => {
       setTotalStudents(e.data.count);
       if (e.data.count > 0) {
         setShowTable(true);
       }
     });
+  };
+
+  const getStudentsData = (page: number, searchText: string) => {
+    studentCount(searchText);
+    UniversityPortal.studentsData({
+      params: {
+        limit: 10,
+        offset: (page - 1) * 10,
+        searchString: searchText,
+      },
+    }).then(e => {
+      setStudentData(e.data.studentData);
+    });
+  };
+
+  useEffect(() => {
+    initialFocus.current?.focus();
+    getStudentsData(1, "");
   }, []);
 
   useEffect(() => {
@@ -90,16 +111,6 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   const toggleModal = () => {
     setStudentModal(!studentModal);
   };
-  // window.onscroll = debounce(() => {
-  //   if (reachedEnd) {
-  //     return;
-  //   }
-  //   if (
-  //     window.innerHeight + document.documentElement.scrollTop ===
-  //     document.documentElement.offsetHeight
-  //   ) {
-  //   }
-  // }, 100);
 
   const initialValues: FormData = {
     emails: "",
@@ -109,11 +120,17 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   }
 
   const handlePageNumber = (event: any) => {
+    getStudentsData(Number(event.target.innerText), searchString);
     setCurrentPage(Number(event.target.innerText));
   };
   const renderPageNumbers = pageNumbers.map(number => {
     return (
-      <Pagination.Item key={number} value={number} onClick={handlePageNumber}>
+      <Pagination.Item
+        key={number}
+        value={number}
+        onClick={handlePageNumber}
+        active={currentPage === number}
+      >
         {number}
       </Pagination.Item>
     );
@@ -155,6 +172,13 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
     </Row>
   );
 
+  const handleSearchKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      getStudentsData(1, searchString);
+      if (event.currentTarget.value !== "") setSearchResult(true);
+    }
+  };
+
   return (
     <Wrapper>
       <Head>
@@ -177,9 +201,12 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                   className="stud-search-box "
                   type="text"
                   placeholder="Search student name or roll no"
+                  onKeyUp={handleSearchKeyUp}
+                  onChange={event => setSearchString(event.target.value)}
+                  value={searchString}
                 />
               </Col>
-              <Col sm={3} />
+              <Col sm={2} />
               <Col sm={3}>
                 <div className="">
                   <WhiteButton>
@@ -190,6 +217,28 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                 </div>
               </Col>
             </Row>
+            {searchResult ? (
+              <Row className="mt-3">
+                <Col sm={9}>
+                  <h4 className="lip-subtext font-semibold">Search results</h4>
+                </Col>
+                <Col>
+                  <span
+                    className="lip-subtext"
+                    role="button"
+                    onClick={() => {
+                      setSearchString("");
+                      setSearchResult(false);
+                      getStudentsData(1, "");
+                    }}
+                  >
+                    Clear
+                  </span>
+                </Col>
+              </Row>
+            ) : (
+              <></>
+            )}
             <Table style={{ marginTop: "1rem" }}>
               <thead>
                 <tr style={{ borderTop: "hidden" }}>

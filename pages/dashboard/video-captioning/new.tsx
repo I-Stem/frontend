@@ -44,7 +44,7 @@ const NewVideo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
     props
       .addVc(apiData)
       .then(() => {
-        logEvent("VC", "file_submitted");
+        logEvent(props.user?.id, "VC", "file_submitted");
         router.push(VIDEO_CAPTIONING_SUCCESS);
       })
       .catch((error: any) => {
@@ -208,7 +208,6 @@ NewVideo.getInitialProps = async (
   ctx: ReduxNextPageContext
 ): Promise<IStemServices.InitialProps> => {
   const { user, token } = ctx.store.getState().auth;
-
   return { namespacesRequired: ["common"], token, user };
 };
 const mapDispatchToProps = {

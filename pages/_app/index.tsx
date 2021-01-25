@@ -13,7 +13,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 // #region Local Imports
 import { theme } from "@Definitions/Styled";
-import { AppWithStore } from "@Interfaces";
+import { appWithTranslation } from "@Server/i18n";
+import { AppWithStore, IStore } from "@Interfaces";
 import { makeStore } from "@Redux";
 import { logPageview } from "@Services/monitoring/GoogleAnalytics";
 import "@Static/css/main.scss";
@@ -31,8 +32,9 @@ class WebApp extends App<AppWithStore> {
     return { pageProps };
   }
 
+  userId: string = "";
   handleRouteChange = (url: any) => {
-    logPageview(url);
+    logPageview(this.userId, url);
   };
   componentDidMount() {
     router.events.on("routeChangeComplete", this.handleRouteChange);
@@ -44,6 +46,7 @@ class WebApp extends App<AppWithStore> {
 
   render() {
     const { Component, pageProps, store } = this.props;
+    this.userId = store.getState().auth.user.id;
 
     const persistor = persistStore(store);
 

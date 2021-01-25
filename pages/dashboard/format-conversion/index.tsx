@@ -33,8 +33,15 @@ import SearchDocument from "@Components/StemServices/SearchDocument";
 import { useAppAbility } from "src/Hooks/useAppAbility";
 import PrivateRoute from "../../_privateRoute";
 import Error from "next/error";
+import { AfcDescription } from "@Components/ServiceDescriptions/afc";
+import { Pagination } from "react-bootstrap";
+import { AfcService } from "@Services";
 
-const { ALTERNATE_FORMAT_CONVERSION_SPLASH } = fileNames;
+const {
+  ALTERNATE_FORMAT_CONVERSION_SPLASH,
+  VECTOR_UP,
+  VECTOR_DOWN,
+} = fileNames;
 
 const { Title, Text } = Typography;
 const FormatConversion: NextPage<
@@ -48,45 +55,71 @@ const FormatConversion: NextPage<
   >([]);
   const initialFocus = useRef<HTMLDivElement>(null);
   const [reachedEnd, setEnd] = useState(false);
+  const [searchResults, setSearchResults] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const { userType, role } = props.user;
   const { totalCredits } = props;
   const isCreditEnough = totalCredits > 0;
-  const fetchRequests = useCallback((page: number) => {
-    props.search({ page }).then((result: any) => {
-      const appendData: any = requestTableData.concat(result.data);
-      if (result.data.length === 0) {
-        setEnd(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const indexLastRequest = currentPage * 10;
+  const indexFirstRequest = indexLastRequest - 10;
+  const [requestCount, setRequestCount] = useState(0);
+  const pageNumbers = [];
+  const [showDescription, setShowDescription] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const getAfcCount = (text: string) => {
+    AfcService.getAfcCount({ params: { searchText: text } }).then(res => {
+      if (res.data?.count > 0) {
+        if (text !== "") setSearchResults(true);
+      }
+      setRequestCount(res.data?.count);
+    });
+  };
+  const fetchRequests = (page: number, searchString: string) => {
+    getAfcCount(searchString);
+    props.search({ page, searchString }).then((result: any) => {
+      if (result.data.length) {
+        changeRequestTableData(result.data || []);
       } else {
-        changeRequestTableData(appendData || []);
-        setPageNumber(pageNumber + 1);
+        changeRequestTableData([]);
       }
     });
-  }, []);
+  };
   const fetchResults = (searchString: String) => {
     props.search({ searchString }).then((result: IAfcServiceResponse) => {
       changeRequestTableData(result.data || []);
     });
   };
   useEffect(() => {
-    fetchRequests(1);
+    fetchRequests(1, "");
     initialFocus.current?.focus();
-  }, [fetchRequests]);
+  }, []);
   const searchList = (values: any) => {
     const { searchQuery } = values;
-    fetchResults(searchQuery);
+    setSearchText(searchQuery);
+    fetchRequests(currentPage, searchQuery);
+    if (searchQuery !== "") setSearchResults(true);
   };
-  window.onscroll = debounce(() => {
-    if (reachedEnd) {
-      return;
-    }
-    if (
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight
-    ) {
-      fetchRequests(pageNumber);
-    }
-  }, 100);
+  const handlePageNumber = (event: any) => {
+    fetchRequests(event.target.innerText, searchText);
+    setCurrentPage(Number(event.target.innerText));
+  };
+  for (let i = 1; i <= Math.ceil(requestCount / 10); i++) {
+    pageNumbers.push(i);
+  }
+
+  const renderPageNumbers = pageNumbers.map(number => {
+    return (
+      <Pagination.Item
+        key={number}
+        value={number}
+        onClick={handlePageNumber}
+        active={currentPage === number}
+      >
+        {number}
+      </Pagination.Item>
+    );
+  });
 
   const sideCTA = (
     <Col span={8}>
@@ -104,48 +137,82 @@ const FormatConversion: NextPage<
       </div>
     </Col>
   );
+
   const isNew = (
-    <Row justify="center">
-      <Col span="12">
-        <img
-          className="w-full lip-img"
-          src={ALTERNATE_FORMAT_CONVERSION_SPLASH}
-          alt=""
-        />
-        <div className="mt-4 lip-img">
-          <BlueButton href={AFC_NEW_REQUEST} disabled={!isCreditEnough}>
-            <span className="flex items-center">
-              <span className="ml-2">Convert a document</span>
-            </span>
-          </BlueButton>
-          {!isCreditEnough && (
-            <div aria-describedby="credit-info" aria-hidden={isCreditEnough}>
-              <span id="credit-info">You have insufficient credits</span>
-            </div>
-          )}
-        </div>
-      </Col>
-    </Row>
+    <div>
+      <Row justify="center">
+        <Col span="12">
+          <img
+            className="w-full lip-img"
+            src={ALTERNATE_FORMAT_CONVERSION_SPLASH}
+            alt=""
+          />
+          <div className="mt-4 lip-img">
+            {!isCreditEnough && (
+              <div aria-describedby="credit-info" aria-hidden={isCreditEnough}>
+                <span id="credit-info">You have insufficient credits</span>
+              </div>
+            )}
+          </div>
+        </Col>
+      </Row>
+      <Row justify="start">
+        <AfcDescription />
+      </Row>
+    </div>
   );
   const hasRequests = (
     <div className="m-4">
       <Title level={4}>Previous Requests</Title>
-      <SearchDocument searchAction={searchList} />
+      <SearchDocument
+        searchAction={searchList}
+        onClickAction={() => {
+          fetchRequests(1, "");
+          setSearchText("");
+          setSearchResults(false);
+        }}
+        searchExists={searchResults}
+      />
       <RequestTable
         serviceType="afc"
         updateFunction={fetchResults}
         tableData={requestTableData}
       />
+      <br />
+      {requestCount > 0 && (
+        <div className="lip-pagination">
+          <Pagination>
+            <Pagination.Prev
+              onClick={() => {
+                setCurrentPage(currentPage - 1);
+                fetchRequests(currentPage - 1, searchText);
+              }}
+              disabled={currentPage - 1 === 0}
+            >
+              Previous
+            </Pagination.Prev>
+            {renderPageNumbers}
+            <Pagination.Next
+              onClick={() => {
+                setCurrentPage(currentPage + 1);
+                fetchRequests(currentPage + 1, searchText);
+              }}
+              disabled={currentPage + 1 > pageNumbers[pageNumbers.length - 1]}
+            >
+              Next
+            </Pagination.Next>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
-
   return (
     <Wrapper>
       <Head>
         <title>Document Accessibility Service | I-Stem</title>
       </Head>
       {access ? (
-        <DashboardLayout userType={userType} role={role} hideBreadcrumb={true}>
+        <DashboardLayout userType={userType} role={role} hideBreadcrumb>
           <Row>
             <Col span={16}>
               <div ref={initialFocus} tabIndex={-1}>
@@ -153,18 +220,34 @@ const FormatConversion: NextPage<
                   Document Accessibility Service
                 </Title>
               </div>
-              <Text className="lip-subtext">
-                This I-Stem service lets you convert documents and images in
-                accessible formats
-              </Text>
+              {requestTableData && requestTableData.length ? (
+                <div>
+                  <span
+                    onClick={() => setShowDescription(!showDescription)}
+                    className="lip-subtext display-flex desc-toggle"
+                    role="button"
+                    aria-expanded={showDescription}
+                  >
+                    Show how it works
+                    <img
+                      className="desc-toggle-icon"
+                      src={showDescription ? VECTOR_UP : VECTOR_DOWN}
+                    />
+                  </span>
+                </div>
+              ) : (
+                <Text className="lip-subtext">
+                  Convert an image or inaccessible PDF into accessible digital
+                  content.
+                </Text>
+              )}
             </Col>
-            {requestTableData && requestTableData.length ? (
-              sideCTA
-            ) : (
-              <Fragment />
-            )}
+            {showDescription ? <></> : sideCTA}
           </Row>
-          {requestTableData && requestTableData.length ? hasRequests : isNew}
+          {showDescription ? isNew : <></>}
+          {(requestTableData && requestTableData.length) || searchResults
+            ? hasRequests
+            : isNew}
         </DashboardLayout>
       ) : (
         <Error statusCode={403} title="Access Denied" />

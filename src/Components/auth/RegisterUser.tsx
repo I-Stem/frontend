@@ -14,6 +14,9 @@ import "./auth.scss";
 import { IAuthPayload } from "@Interfaces";
 import AuthDisclaimer from "./AuthDisclaimer";
 import { IAuth } from "./Auth";
+import { GreenButton } from "@Components/HOC/Dashboard";
+import GoogleButton from "react-google-button";
+import Cookies from "js-cookie";
 
 const { Title } = Typography;
 const layout = {
@@ -24,6 +27,13 @@ const layout = {
 const RegisterUser = (props: IAuth.IRegisterUserProps) => {
   const router = useRouter();
   const { userType, email, verificationToken } = props;
+  const loginWithGoogle = () => {
+    Cookies.set("liprodAuthFlow", "register");
+    Cookies.set("userType", userType);
+    Cookies.set("invitationToken", verificationToken ? verificationToken : "");
+    Cookies.set("invitationEmail", email ? email : "");
+    router.push("/api/auth/google/");
+  };
 
   const onFinish = (values: any) => {
     const { fullname, email, password, organizationName } = values;
@@ -52,13 +62,21 @@ const RegisterUser = (props: IAuth.IRegisterUserProps) => {
     // }
   };
 
+  const checkUserType = () => {
+    if (router.query.userType === UserType.I_STEM)
+      return <span className="capitalize">Individual</span>;
+    if (router.query.userType === UserType.VOLUNTEER)
+      return <span className="capitalize">Volunteer or Mentor</span>;
+    return <span className="capitalize">Organization</span>;
+  };
+
   return (
     <section id="registeruser" className="mt-16 auth-form">
       <Title className="lipHead">Welcome to I-Stem!</Title>
       <Title className="lipHead" level={4}>
-        Register your account as{" "}
-        <span className="capitalize"> organization </span>
+        Register your account as {checkUserType()}
       </Title>
+      <GoogleButton label="Register with Google" onClick={loginWithGoogle} />
       <div className="mt-6">
         <Form
           aria-live="polite"
