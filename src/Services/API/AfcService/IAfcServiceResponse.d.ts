@@ -26,7 +26,7 @@ export interface IAfcServiceDocument {
   createdAt: Date;
   inputFileId: string;
   updatedAt: Date;
-  inputField: string;
+  inputFileLink?: string;
   outputFormat: AFCRequestOutputFormat;
   outputURL?: string;
   review: IAfcServiceReviewResponse;

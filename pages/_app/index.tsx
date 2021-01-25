@@ -13,7 +13,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 // #region Local Imports
 import { theme } from "@Definitions/Styled";
-import { appWithTranslation } from "@Server/i18n";
 import { AppWithStore, IStore } from "@Interfaces";
 import { makeStore } from "@Redux";
 import { logPageview } from "@Services/monitoring/GoogleAnalytics";

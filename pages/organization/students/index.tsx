@@ -68,14 +68,6 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
     getStudentsData(1, "");
   }, []);
 
-  useEffect(() => {
-    UniversityPortal.studentsData({
-      params: { limit: 10, offset: (currentPage - 1) * 10 },
-    }).then(e => {
-      setStudentData(e.data.studentData);
-    });
-  }, [currentPage]);
-
   const pageNumbers = [];
   const handleSubmit = (data: any) => {
     const emails = data.emails.split(",").map((email: any) => {

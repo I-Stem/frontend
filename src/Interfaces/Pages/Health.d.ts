@@ -1,7 +1,3 @@
-// #region Global Imports
-import { WithTranslation } from "next-i18next";
-// #endregion Global Imports
-
 declare namespace IHealthPage {
   export interface IProps {}
 

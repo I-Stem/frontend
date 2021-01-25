@@ -6,7 +6,6 @@ import { Grid } from "@material-ui/core";
 
 // #region Local Imports
 import "./style.scss";
-import { withTranslation } from "@Server/i18n";
 import {
   CreditsService,
   IStemServices,
@@ -23,13 +22,12 @@ import ResourcesList from "@Definitions/Constants/Resources";
 import { BlueButton } from "@Components/HOC/Dashboard";
 import imageContent from "@Definitions/Constants/image";
 import { IServiceResponse } from "@Services/API/AccessService/IServiceResponse";
-import PrivateRoute from "../_privateRoute";
-import { AccessService } from "../../src/Services/API/AccessService";
 import { connect } from "react-redux";
 import { RecommendedActions } from "@Components/University/RecommendedActions";
 import { UserType } from "@Definitions/Constants";
-import Error from "next/error";
 import { CreditsActions } from "@Actions";
+import { AccessService } from "../src/Services/API/AccessService";
+import PrivateRoute from "./_privateRoute";
 
 const StemServices: NextPage<
   IStemServices.IProps,
@@ -104,6 +102,7 @@ const StemServices: NextPage<
       </div>
     </div>
   );
+
   const resources = ResourcesList.filter((data: any) => {
     if (
       userType === UserType.VOLUNTEER ||
@@ -199,8 +198,6 @@ const mapDispatchToProps = {
   getCredits: CreditsActions.GetCredits,
 };
 
-const Extended = withTranslation("common")(StemServices);
-
 export default PrivateRoute(
-  connect(mapStateToProps, mapDispatchToProps)(Extended)
+  connect(mapStateToProps, mapDispatchToProps)(StemServices)
 );
