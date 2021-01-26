@@ -1,20 +1,36 @@
 import React, { Fragment, useState } from "react";
 import Moment from "moment";
-import {Menu, MenuList, MenuButton, MenuItem, MenuItems, MenuPopover, MenuLink,} from "@reach/menu-button";
+import {
+  Menu,
+  MenuList,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  MenuPopover,
+  MenuLink,
+} from "@reach/menu-button";
 import "@reach/menu-button/styles.css";
 import { Dropdown, Table } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
+import { MoreOutlined, ReloadOutlined } from "@ant-design/icons";
 import StatusTag from "@Components/StemServices/StatusTag";
-import { IAfcServiceDocument, ICaptioningServiceDocument } from "@Interfaces";
+import {
+  AfcServiceModel,
+  AfcServicePatchModel,
+  IAfcServiceDocument,
+  IAfcServicePayloadPost,
+  ICaptioningServiceDocument,
+} from "@Interfaces";
 import {
   PER_MINUTE_COST,
   PER_PAGE_COST,
   STATUS_COMPLETED,
+  STATUS_FAILED,
 } from "@Definitions/Constants";
 import FeedbackModal from "./FeedbackModal";
 import EscalateRequestModal from "./EscalateRequestModal";
 import { TableProps } from "./StemServices";
 import "./style.scss";
+import { AfcService } from "@Services";
 
 const escalationMessage: { [key: string]: string } = {
   afc: `${PER_PAGE_COST} credits per page`,
@@ -45,7 +61,6 @@ const RequestTable: React.FunctionComponent<TableProps> = props => {
     IAfcServiceDocument | ICaptioningServiceDocument | undefined
   >(undefined);
 
-  
   const closeModal = (e: any) => {
     setEscalateModal(false);
     setReviewModal(false);
@@ -55,7 +70,27 @@ const RequestTable: React.FunctionComponent<TableProps> = props => {
     service: IAfcServiceDocument | ICaptioningServiceDocument
   ) => {
     setReviewModal(true);
-        selectService(service);
+    selectService(service);
+  };
+  const retryService = (service: IAfcServiceDocument) => {
+    const payload: AfcServiceModel.PostApodPayload = {
+      params: {
+        documentName: service.documentName,
+        tag: service.tag,
+        outputFormat: service.outputFormat,
+        inputFileId: service.inputFileId,
+        docType: service.docType,
+        inputFileLink: service.inputFileLink || "",
+        status: 0,
+      },
+    };
+    AfcService.updateAfc(service._id!)
+      .then(e => console.log("Updated Afc request", e))
+      .catch(err => console.log("Error occured in updating AFC", err));
+    AfcService.add(payload)
+      .then(e => console.log("Successfully Added a new request", e))
+      .catch(err => console.error("Error occured", err));
+    props.updateFunction();
   };
   const escalateService = (
     service: IAfcServiceDocument | ICaptioningServiceDocument
@@ -67,18 +102,28 @@ const RequestTable: React.FunctionComponent<TableProps> = props => {
     service: IAfcServiceDocument | ICaptioningServiceDocument
   ) => {
     return (
-        <MenuList>
-          <MenuLink href={service.outputURL} key="DOWNLOAD">
-              <span className="font-semibold">Download converted file</span>
-          </MenuLink>
-          <MenuItem onSelect={() => {reviewService(service)}} key="REVIEW">
-            <span className="font-semibold">Add review</span>
-          </MenuItem>
-          <MenuItem onSelect={() => {escalateService(service)}} key="ESCALATE">
-            <div className="font-semibold">Escalate request</div>
-            <div className="">{escalationMessage[serviceType]}</div>
-          </MenuItem>
-        </MenuList>
+      <MenuList>
+        <MenuLink href={service.outputURL} key="DOWNLOAD">
+          <span className="font-semibold">Download converted file</span>
+        </MenuLink>
+        <MenuItem
+          onSelect={() => {
+            reviewService(service);
+          }}
+          key="REVIEW"
+        >
+          <span className="font-semibold">Add review</span>
+        </MenuItem>
+        <MenuItem
+          onSelect={() => {
+            escalateService(service);
+          }}
+          key="ESCALATE"
+        >
+          <div className="font-semibold">Escalate request</div>
+          <div className="">{escalationMessage[serviceType]}</div>
+        </MenuItem>
+      </MenuList>
     );
   };
   const columns: any = [
@@ -121,9 +166,22 @@ const RequestTable: React.FunctionComponent<TableProps> = props => {
         if (index.status === STATUS_COMPLETED) {
           return (
             <Menu>
-              <MenuButton><MoreOutlined /></MenuButton>
+              <MenuButton>
+                <MoreOutlined />
+              </MenuButton>
               {kebabMenu(index)}
             </Menu>
+          );
+        }
+        if (index.status === STATUS_FAILED) {
+          return (
+            <ReloadOutlined
+              onClick={() => {
+                retryService(index as IAfcServiceDocument);
+              }}
+              role="button"
+              aria-label="Retry"
+            />
           );
         }
         return <Fragment />;

@@ -3,6 +3,8 @@ export const STATUS_IN_PROGRESS = 1;
 export const STATUS_COMPLETED = 2;
 export const STATUS_FAILED = 3;
 export const STATUS_ESCALATED = 4;
+export const STATUS_ESCALATED_RESOLVED = 5;
+export const STATUS_RETRIED = 6;
 
 export const STATUS_MAP: { [index: number]: string } = {
   "0": "Initiated",
@@ -10,6 +12,8 @@ export const STATUS_MAP: { [index: number]: string } = {
   "2": "Completed",
   "3": "Failed",
   "4": "Escalated",
+  "5": "Escalation Resolved",
+  "6": "Retried",
 };
 
 export const STATUS_CLASS_MAP: { [index: string]: string } = {
@@ -18,4 +22,5 @@ export const STATUS_CLASS_MAP: { [index: string]: string } = {
   Completed: "tag-bg completed-tag",
   Failed: "tag-bg failed-tag",
   Escalated: "tag-bg escalated-tag",
+  Retried: "tag-bg failed-tag",
 };

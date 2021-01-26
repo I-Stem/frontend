@@ -65,31 +65,43 @@ export const UploadActions = {
       payload,
       progressCallback,
       cancelCallback
-      ).then((response: UploadModel.PostApodResponse) => {
+    ).then((response: UploadModel.PostApodResponse) => {
       dispatch({
         payload: {
           ...payload,
           progress: 100,
           inputFileId: response.data._id,
+          inputFileLink: response.data.inputURL,
         },
         type: ActionConsts.Upload.UPDATE_PROGRESS,
       });
-      console.log("payload type for file upload:" + payload.type);
-      if(payload.type === "customModel") {
+      if (payload.type === "customModel") {
         dispatch({
           payload: { dataFileId: response.data._id },
           type: ActionConsts.VC.UPDATE_VC_DATA_FILE_ID,
         });
       }
-      if(payload.type === "community") {
+      if (payload.type === "community") {
         dispatch({
           payload: { inputFileId: response.data._id },
           type: ActionConsts.Community.UPDATE_COM_FILE_ID,
         });
       }
+      if (payload.type === "escalation") {
+        dispatch({
+          payload: {
+            inputFileId: response.data._id,
+            inputFileLink: response.data.inputURL,
+          },
+          type: ActionConsts.Escalation.REMEDIATE_ESCALATION,
+        });
+      }
       if (payload.type === "afcService") {
         dispatch({
-          payload: { inputFileId: response.data._id },
+          payload: {
+            inputFileId: response.data._id,
+            inputFileLink: response.data.inputURL,
+          },
           type: ActionConsts.Afc.UPDATE_AFC_FILE_ID,
         });
         const { afcService } = getState();
@@ -104,7 +116,10 @@ export const UploadActions = {
       }
       if (payload.type === "vcService") {
         dispatch({
-          payload: { inputFileId: response.data._id },
+          payload: {
+            inputFileId: response.data._id,
+            inputFileLink: response.data.inputURL,
+          },
           type: ActionConsts.VC.UPDATE_VC_FILE_ID,
         });
         const { vcService } = getState();

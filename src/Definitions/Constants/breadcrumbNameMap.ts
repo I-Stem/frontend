@@ -28,6 +28,23 @@ export const MENU_ITEMS = [
     link: "/credits",
   },
 ];
-
+export const UNIVERSITY_MENU_ITEMS = [
+  {
+    name: "Metrics",
+    link: "/organization/metrics",
+  },
+  {
+    name: "Students",
+    link: "/organization/students",
+  },
+  {
+    name: "Settings",
+    link: "/organization/settings",
+  },
+  {
+    name: "Escalations",
+    link: "/organization/escalation",
+  },
+];
 export const VC_BASE_URL = "/dashboard/video-captioning";
 export const AFC_BASE_URL = "/dashboard/format-conversion";

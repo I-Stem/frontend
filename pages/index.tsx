@@ -6,7 +6,12 @@ import { Grid } from "@material-ui/core";
 
 // #region Local Imports
 import "./style.scss";
-import { IStemServices, IStore, ReduxNextPageContext } from "@Interfaces";
+import {
+  CreditsService,
+  IStemServices,
+  IStore,
+  ReduxNextPageContext,
+} from "@Interfaces";
 import { StemService } from "@Components/StemServices";
 import { DashboardLayout } from "@Components/Layouts/DashboardLayout/index";
 import { useAppAbility } from "src/Hooks/useAppAbility";
@@ -17,21 +22,27 @@ import ResourcesList from "@Definitions/Constants/Resources";
 import { BlueButton } from "@Components/HOC/Dashboard";
 import imageContent from "@Definitions/Constants/image";
 import { IServiceResponse } from "@Services/API/AccessService/IServiceResponse";
-import PrivateRoute from "../_privateRoute";
-import { AccessService } from "../../src/Services/API/AccessService";
 import { connect } from "react-redux";
-import { AuthActions } from "@Actions";
-import Cookie from "js-cookie";
+import { RecommendedActions } from "@Components/University/RecommendedActions";
+import { UserType } from "@Definitions/Constants";
+import { CreditsActions } from "@Actions";
+import { AccessService } from "../src/Services/API/AccessService";
+import PrivateRoute from "./_privateRoute";
 
 const StemServices: NextPage<
   IStemServices.IProps,
   IStemServices.InitialProps
-> = (t, props) => {
+> = (props: any) => {
+  const {
+    userType,
+    role,
+    showOnboardStudentsCard,
+    showOnboardStaffCard,
+  } = props.user;
   const initialFocus = useRef<HTMLDivElement>(null);
   const messageFocus = useRef<HTMLDivElement>(null);
   const [focus, updateFocus] = useState(false);
   const [request, setRequest] = useState(false);
-  const userType = Cookie.get("userType");
   useEffect(() => {
     AccessService.getRequestAccess().then((res: IServiceResponse) => {
       if (res.data) {
@@ -43,6 +54,11 @@ const StemServices: NextPage<
       messageFocus.current?.focus();
     }
   }, [focus]);
+
+  useEffect(() => {
+    props.getCredits();
+  }, []);
+
   const { can } = useAppAbility();
   const access: boolean = can("VIEW", "AI_SERVICES");
   const requestAccess = () => (
@@ -86,13 +102,15 @@ const StemServices: NextPage<
       </div>
     </div>
   );
-  console.log("userType", userType);
-  var resources = ResourcesList.filter((data: any) => {
-    if (userType == "2" || userType == "5") {
+
+  const resources = ResourcesList.filter((data: any) => {
+    if (
+      userType === UserType.VOLUNTEER ||
+      (userType === UserType.UNIVERSITY && role == "STAFF")
+    ) {
       return data.ServiceName !== "Job Opportunities";
-    } else {
-      return data.ServiceName !== "";
     }
+    return data.ServiceName !== "";
   }).map(service => {
     return (
       <Grid item sm={6} md={6} lg={4} key={service.ServiceName}>
@@ -100,14 +118,22 @@ const StemServices: NextPage<
       </Grid>
     );
   });
-
   return (
     <section className="lipbg flex flex-col">
       <Head>
         <title>Dashboard | I-Stem</title>
       </Head>
-      <DashboardLayout hideBreadcrumb>
+      <DashboardLayout userType={userType} role={role} hideBreadcrumb>
         <div className="pl-16 pr-12 flex-1" key="2">
+          {userType === UserType.UNIVERSITY &&
+          (role === "STAFF" || role === "REMEDIATOR") ? (
+            <RecommendedActions
+              showOnboardStudentsCard={showOnboardStudentsCard}
+              showOnboardStaffCard={showOnboardStaffCard}
+            />
+          ) : (
+            <></>
+          )}
           <Grid item className="pt-4">
             <div ref={initialFocus} tabIndex={-1}>
               <h2 className="font-semibold text-xl heading-color">
@@ -161,4 +187,17 @@ StemServices.getInitialProps = async (
   return { namespacesRequired: ["common"], token, user };
 };
 
-export default PrivateRoute(StemServices);
+const mapStateToProps = (store: IStore) => {
+  const { auth } = store;
+  return {
+    user: auth.user,
+  };
+};
+
+const mapDispatchToProps = {
+  getCredits: CreditsActions.GetCredits,
+};
+
+export default PrivateRoute(
+  connect(mapStateToProps, mapDispatchToProps)(StemServices)
+);

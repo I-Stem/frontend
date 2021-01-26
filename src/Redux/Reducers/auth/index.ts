@@ -1,5 +1,6 @@
 // #region Local Imports
 import { ActionConsts } from "@Definitions";
+import { UserType } from "@Definitions/Constants";
 // #endregion Local Imports
 
 // #region Interface Imports
@@ -11,9 +12,10 @@ const INITIAL_STATE: IAuth.IAuthStateProps = {
     fullname: "",
     email: "",
     password: "",
-    userType: 0,
+    userType: UserType.I_STEM,
   },
   token: "",
+  organizationStatus: "",
 };
 
 type IMapPayload = IAuthSuccess;
@@ -38,6 +40,7 @@ export const AuthReducer = (
         ...state,
         token: action.payload?.token,
         user: action.payload?.user,
+        organizationStatus: action.payload?.organizationStatus,
       };
 
     case ActionConsts.Auth.ResetReducer:

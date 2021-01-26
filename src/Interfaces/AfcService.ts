@@ -10,11 +10,13 @@ export declare module IAfcService {
     tagId: string;
     outputFormat: number;
     inputFileId: string;
+    inputFileLink: string;
   }
 
   module Actions {
     export interface IMapPayload {
       inputFileId: string;
+      inputFileLink: string;
     }
     export interface IMapResponse {}
   }

@@ -1,14 +1,14 @@
 // #region Global Imports
-import { WithTranslation } from "next-i18next";
 import { IAuthUser } from "@Services/API/Auth/IAuthResponse";
 // #endregion Global Imports
 
 declare module IAuth {
-  export interface IProps extends WithTranslation {}
+  export interface IProps {}
 
   export interface IAuthStateProps {
     user: IAuthUser;
     token: string;
+    organizationStatus: string;
   }
 
   export interface InitialProps {

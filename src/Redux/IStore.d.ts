@@ -8,7 +8,9 @@ import {
   IMessage,
   IUpload,
   IVCService,
-  IAuth
+  IAuth,
+  IUniversity,
+  IEscalations,
 } from "@Interfaces";
 // #endregion Interface Imports
 
@@ -22,4 +24,6 @@ export interface IStore {
   credits: ICreditsData;
   feedback: FeedbackData;
   communityService: ICommunityService.IStateProps;
+  university: IUniversity.IStateProps;
+  escalation: IEscalations.IStateProps;
 }

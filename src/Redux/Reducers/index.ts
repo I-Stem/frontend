@@ -10,7 +10,9 @@ import { UploadReducer } from "./upload";
 import { AfcReducer } from "./afc";
 import { CreditsReducer } from "./credits";
 import { VCReducer } from "./vc";
-import {CommunityReducer} from "./community"
+import { CommunityReducer } from "./community";
+import { UniversityReducer } from "./university";
+import { EscalationReducer } from "./escalation";
 // #endregion Local Imports
 
 export default combineReducers({
@@ -21,5 +23,7 @@ export default combineReducers({
   afcService: AfcReducer,
   credits: CreditsReducer,
   vcService: VCReducer,
-  communityService: CommunityReducer
+  communityService: CommunityReducer,
+  university: UniversityReducer,
+  escalation: EscalationReducer,
 });

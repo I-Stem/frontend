@@ -5,6 +5,9 @@ import { IStore } from "@Interfaces";
 import { AuthActions } from "@Actions";
 import "./auth.scss";
 import fileNames from "@Definitions/Constants/image";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { LOGIN_PAGE_ROUTE } from "@Definitions/Constants";
 
 const { Title } = Typography;
 const { REGISTRATION_SUCCESS_IMAGE } = fileNames;
@@ -15,7 +18,7 @@ const SuccessScreen = (props: any) => {
       props.clearAuthMessage();
     };
   }, [props]);
-
+  const router = useRouter();
   const { message, user } = props;
   return (
     <div className="text-center">
@@ -26,13 +29,24 @@ const SuccessScreen = (props: any) => {
           <br />
           {user.email}
         </Title>
-        <div className="text-white">
-          Please verify your email. If you could not find the verification email in your inbox, please check your{" "}
-          <span className="font-bold">SPAM</span> folder.
-          {/* or <span className="ml-2 underline">
+        {!router.query.registerAs ? (
+          <div className="text-white">
+            Please verify your email. If you could not find the verification
+            email in your inbox, please check your{" "}
+            <span className="font-bold">SPAM</span> folder.
+            {/* or <span className="ml-2 underline">
             click here to send the link again.
           </span> */}
-        </div>
+          </div>
+        ) : (
+          <div className="text-white" style={{ fontSize: "18px" }}>
+            Please{" "}
+            <Link href={LOGIN_PAGE_ROUTE}>
+              <a>Click Here</a>
+            </Link>{" "}
+            to Log In.
+          </div>
+        )}
       </div>
     </div>
   );

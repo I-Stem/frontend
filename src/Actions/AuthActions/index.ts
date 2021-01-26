@@ -12,6 +12,7 @@ import {
   IAuthForgotPasswordPayload,
   IAuthPayload,
   IAuthResetPasswordPayload,
+  IAuthUser,
   IAuthVerifyPayload,
 } from "@Interfaces";
 // #endregion Interface Imports
@@ -53,6 +54,14 @@ export const AuthActions = {
         return { ...e, error: true };
       });
   },
+
+  User: (payload: IAuthUser): any => (dispatch: Dispatch) => {
+    dispatch({
+      payload,
+      type: ActionConsts.Auth.LOGIN_SUCCESS,
+    });
+  },
+
   Login: (payload: IAuthPayload) => async (dispatch: Dispatch) => {
     return AuthService.login({
       params: payload,

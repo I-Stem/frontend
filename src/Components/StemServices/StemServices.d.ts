@@ -13,7 +13,7 @@ declare namespace IStemServices {
 }
 
 export interface TableProps {
-  tableData: [IAfcServiceDocument] | [ICaptioningServiceDocument] | [];
+  tableData: IAfcServiceDocument[] | [ICaptioningServiceDocument] | [];
   updateFunction: Function;
   serviceType: string;
 }
@@ -44,6 +44,8 @@ export interface FeedbackModalProps {
 
 export interface ISearchDocument {
   searchAction?: (values: Store) => void;
+  onClickAction?: () => void;
+  searchExists?: boolean;
 }
 
 export interface TagProps {

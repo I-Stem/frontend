@@ -28,6 +28,13 @@ export const AfcService = {
   ): Promise<AfcServicePatchModel.PatchApodResponse> => {
     return Http.patch(`/afc/${id}`, undefined, payload.params);
   },
+
+  updateAfc: async (
+    id: string
+  ): Promise<AfcServicePatchModel.PatchApodResponse> => {
+    return Http.post(`/afc/failed/${id}`, undefined);
+  },
+
   review: async (
     id: string,
     payload: AfcServicePatchModel.PatchApodPayload
@@ -39,5 +46,11 @@ export const AfcService = {
     payload: AfcEscalateRequestModel.PatchApodPayload
   ): Promise<AfcEscalateRequestModel.PatchApodResponse> => {
     return Http.post(`/afc/${id}/escalate`, undefined, payload.params);
+  },
+
+  getAfcCount: async (payload: {
+    params: { searchText: string };
+  }): Promise<any> => {
+    return Http.get<any>("afc/afcCount", payload.params);
   },
 };

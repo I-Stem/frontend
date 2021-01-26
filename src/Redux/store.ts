@@ -11,12 +11,12 @@ import storage from "redux-persist/lib/storage";
 import Reducers from "./Reducers";
 // #endregion Local Imports
 
-let store:any = undefined;
+let store: any = undefined;
 export const makeStore = (initialState: {}) => {
-  if(store !== undefined) {
-    console.log("returning already created store instance")
-    return store
-  }
+  // if(store !== undefined) {
+  //   console.log("returning already created store instance")
+  //   return store
+  // }
   const persistConfig = {
     key: "root",
     storage,

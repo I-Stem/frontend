@@ -8,12 +8,15 @@ import {
   LOGIN_PAGE_ROUTE,
   VALID_PASSWORD,
   VERIFICATION_URL,
-  userType,
+  UserType,
 } from "@Definitions/Constants";
 import "./auth.scss";
 import { IAuthPayload } from "@Interfaces";
 import AuthDisclaimer from "./AuthDisclaimer";
 import { IAuth } from "./Auth";
+import { GreenButton } from "@Components/HOC/Dashboard";
+import GoogleButton from "react-google-button";
+import Cookies from "js-cookie";
 
 const { Title } = Typography;
 const layout = {
@@ -23,49 +26,62 @@ const layout = {
 
 const RegisterUser = (props: IAuth.IRegisterUserProps) => {
   const router = useRouter();
+  const { userType, email, verificationToken } = props;
+  const loginWithGoogle = () => {
+    Cookies.set("liprodAuthFlow", "register");
+    Cookies.set("userType", userType);
+    Cookies.set("invitationToken", verificationToken ? verificationToken : "");
+    Cookies.set("invitationEmail", email ? email : "");
+    router.push("/api/auth/google/");
+  };
+
   const onFinish = (values: any) => {
-    const { fullname, email, password } = values;
-    if (props.userType === "organisation") {
-      props.saveBusinessCredentials({
+    const { fullname, email, password, organizationName } = values;
+    props
+      .register({
         fullname,
         email,
+        organizationName,
         password,
-        userType: userType[props.userType],
+        userType: userType,
+        verificationLink: `${BASE_URL}${VERIFICATION_URL}`,
+        verifyToken: verificationToken,
+      })
+      .then((result: IAuthPayload) => {
+        if (result.error) {
+          router.push(`${LOGIN_PAGE_ROUTE}?email=${encodeURIComponent(email)}`);
+        } else if (router.query.verificationToken) {
+          router.push({
+            pathname: "/register/success",
+            query: { registerAs: "invited" },
+          });
+        } else {
+          router.push("/register/success");
+        }
       });
-      router.push("/register/business/setup");
-    } else {
-      props
-        .register({
-          fullname,
-          email,
-          password,
-          userType: userType[props.userType],
-          verificationLink: `${BASE_URL}${VERIFICATION_URL}`,
-        })
-        .then((result: IAuthPayload) => {
-          if (result.error) {
-            router.push(
-              `${LOGIN_PAGE_ROUTE}?email=${encodeURIComponent(email)}`
-            );
-          } else {
-            router.push("/register/success");
-          }
-        });
-    }
+    // }
+  };
+
+  const checkUserType = () => {
+    if (router.query.userType === UserType.I_STEM)
+      return <span className="capitalize">Individual</span>;
+    if (router.query.userType === UserType.VOLUNTEER)
+      return <span className="capitalize">Volunteer or Mentor</span>;
+    return <span className="capitalize">Organization</span>;
   };
 
   return (
     <section id="registeruser" className="mt-16 auth-form">
       <Title className="lipHead">Welcome to I-Stem!</Title>
       <Title className="lipHead" level={4}>
-        Register your account as{" "}
-        <span className="capitalize"> {props.userType} </span>
+        Register your account as {checkUserType()}
       </Title>
+      <GoogleButton label="Register with Google" onClick={loginWithGoogle} />
       <div className="mt-6">
         <Form
-          aria-live='polite'
+          aria-live="polite"
           name="basic"
-          initialValues={{ remember: true }}
+          initialValues={{ remember: true, email: email }}
           onFinish={onFinish}
           hideRequiredMark
         >
@@ -79,7 +95,7 @@ const RegisterUser = (props: IAuth.IRegisterUserProps) => {
                 rules={[{ required: true, message: "Name is required" }]}
               >
                 <Input
-                  aria-live="off" 
+                  aria-live="off"
                   className="auth-input"
                   placeholder="John Doe"
                   size="large"
@@ -102,13 +118,41 @@ const RegisterUser = (props: IAuth.IRegisterUserProps) => {
                 validateTrigger="onSubmit"
               >
                 <Input
-                  aria-live="off" 
+                  aria-live="off"
                   className="auth-input"
                   placeholder="user@email.com"
                   size="large"
+                  disabled={email}
                 />
               </Form.Item>
             </Col>
+            {!router.query.verificationToken &&
+            (UserType.VOLUNTEER === userType ||
+              UserType.UNIVERSITY === userType) ? (
+              <Col xs={24} md={12}>
+                <Form.Item
+                  {...layout}
+                  aria-live="polite"
+                  label="Organization name"
+                  name="organizationName"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Organization name is required",
+                    },
+                  ]}
+                >
+                  <Input
+                    aria-live="off"
+                    className="auth-input"
+                    placeholder="I-Stem"
+                    size="large"
+                  />
+                </Form.Item>
+              </Col>
+            ) : (
+              <></>
+            )}
           </Row>
           <Row gutter={24} className="mt-2">
             <Col xs={24} md={12}>

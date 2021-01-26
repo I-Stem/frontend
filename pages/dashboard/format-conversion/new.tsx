@@ -48,9 +48,9 @@ const NewFile: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
     props
       .addAfc(documentData)
       .then((result: any) => {
+        logEvent(props.user?.id, "AFC", "file_submitted");
         if (result.inputFileId) {
           console.log("Successfully uploaded the file.", result.inputFileId);
-          logEvent("AFC", "file_submitted");
           router.push(AFC_SUCCESS);
         } else {
           console.log("Uploading the file.", result);
