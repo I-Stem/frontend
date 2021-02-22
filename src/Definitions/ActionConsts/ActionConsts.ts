@@ -64,7 +64,4 @@ export const ActionConsts = {
     SAVE_REVIEW_COUNT: "SAVE_REVIEW_COUNT",
     SAVE_REQUEST_COUNT: "SAVE_REQUEST_COUNT",
   },
-  Escalation: {
-    REMEDIATE_ESCALATION: "REMEDIATE_ESCALATION",
-  },
 };

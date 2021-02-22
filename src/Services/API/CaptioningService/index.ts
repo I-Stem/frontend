@@ -66,4 +66,8 @@ export const CaptioningService = {
   ): Promise<VCModelsServicesModel.PostApodPayload> => {
     return Http.post("/vc/model", undefined, payload.params);
   },
+
+  getVcCount: async (): Promise<any> => {
+    return Http.get<any>("vc/vcCount");
+  },
 };

@@ -26,11 +26,9 @@ import { IServiceResponse } from "@Services/API/AccessService/IServiceResponse";
 import { connect } from "react-redux";
 import { RecommendedActions } from "@Components/University/RecommendedActions";
 import { UserType } from "@Definitions/Constants";
-import Error from "next/error";
-import { Spinner } from "react-bootstrap";
 import { AuthActions, CreditsActions } from "@Actions";
-import { AccessService } from "../../src/Services/API/AccessService";
-import PrivateRoute from "../_privateRoute";
+import { AccessService } from "../src/Services/API/AccessService";
+import PrivateRoute from "./_privateRoute";
 
 const StemServices: NextPage<
   IStemServices.IProps,
