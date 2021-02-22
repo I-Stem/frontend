@@ -21,15 +21,16 @@ import { IRegister } from "@Interfaces";
 
 const { Content } = Layout;
 const { AUTH_BACKGROUND_IMAGE } = fileName;
-const [currentUserType, setCurrentUserType] = useState<UserType>(
-  UserType.I_STEM
-);
 
 export const Register: NextPage<
   IRegister.IProps,
   IRegister.InitialProps
 > = () => {
   const router = useRouter();
+  const [currentUserType, setCurrentUserType] = useState<UserType>(
+    UserType.I_STEM
+  );
+
   useEffect(() => {
     if (router.query.userType === UserType.I_STEM) {
       setCurrentUserType(UserType.I_STEM);

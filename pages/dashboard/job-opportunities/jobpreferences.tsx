@@ -10,6 +10,8 @@ import { ErrorMessage, Form as FormikForm, Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import FormErrorFocus from "../../../src/Components/FormErrorFocus";
+import { CommunityService } from "@Services";
+
 // #endregion Global Imports
 
 // #region Local Imports
@@ -19,9 +21,6 @@ import {
   DisabilitiesData,
   IStemServices,
   IStore,
-  IVCModels,
-  IndustryData,
-  ReduxNextPageContext,
   JobPreferencesData,
 } from "@Interfaces";
 import { Wrapper } from "@Components";
@@ -48,13 +47,24 @@ const JobPreferences: NextPage<
   const [closeButtonDialog, setCloseButtonDialog] = useState(false);
   const fileFocus = React.useRef<HTMLDivElement>(null);
   const [fixFocus, setFixFocus] = useState<boolean>(false);
+  const { INFO_ICON } = fileNames;
+  const [showDescription, setShowDescription] = useState(false);
   useEffect(() => {
     props.resetList();
-    initialFocus.current?.focus();
+    // initialFocus.current?.focus();
+    CommunityService.getJobPreference(props.user.id).then(response => {
+      if (!response.data.length) {
+        setShowDescription(true);
+      }
+    });
     props.GetDisabilities().then((response: any) => {
       setDisabilities(response);
     });
   }, []);
+
+  useEffect(() => {
+    initialFocus.current?.focus();
+  }, [showDescription]);
 
   const initialValues: JobPreferencesData = {
     seekingJob: "",
@@ -422,7 +432,8 @@ const JobPreferences: NextPage<
                       />
                     </Form.Group>
                     <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
-                      Where are you currently based? *
+                      Select which of these disabilities do you closely
+                      associate with? *
                     </h3>
                     <fieldset
                       className="space-bottom"
@@ -616,9 +627,10 @@ const JobPreferences: NextPage<
 };
 
 const mapStateToProps = (store: IStore) => {
-  const { communityService } = store;
+  const { communityService, auth } = store;
   return {
     inputFileId: communityService.inputFileId,
+    user: auth.user,
   };
 };
 

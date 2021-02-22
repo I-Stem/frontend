@@ -21,4 +21,5 @@ export const GENERATING_CAPTIONS = "/dashboard/video-captioning/generating";
 export const THANKYOU = "/dashboard/job-opportunities/thankyou";
 export const JOB_PREFERENCES = "/dashboard/job-opportunities/jobpreferences";
 export const THANKYOU_MENTORSHIP = "/dashboard/mentorship/thankyou";
+export const HIRING = "/dashboard/hiring";
 export const THANKYOU_HACKATHON = "/dashboard/hackathon/thankyou";

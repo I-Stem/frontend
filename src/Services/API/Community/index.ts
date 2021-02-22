@@ -32,6 +32,9 @@ export const CommunityService = {
   getMentorship: async (): Promise<MentorshipModal.GetApodResponse> => {
     return Http.get<MentorshipModal.GetApodResponse>("/mentorship");
   },
+  getJobPreference: async (userId: string): Promise<any> => {
+    return Http.get<any>(`/job/${userId}`);
+  },
 
   postJobPreferences: async (
     payload: JobPreferencesModal.PostJobPreferences
@@ -51,5 +54,9 @@ export const CommunityService = {
       .catch((error: any) => {
         console.log("Error occurred while sending request.", error);
       });
+  },
+
+  postMentorship: async (params: MentorshipData) => {
+    return Http.post("/mentorship", undefined, params);
   },
 };

@@ -31,6 +31,7 @@ interface UniversityStudentsParams {
   params: {
     limit: number;
     offset: number;
+    searchString: string;
   };
 }
 
@@ -79,6 +80,12 @@ export const UniversityPortal = {
     params: { searchString: string };
   }): Promise<any> => {
     return Http.get("/university/studentsCount", payload.params);
+  },
+  updateUserCardPreferences: async (payload: CardPreferences): Promise<any> => {
+    return Http.post("/university/onboardCards", undefined, payload);
+  },
+  emailStudentsReport: async (): Promise<any> => {
+    return Http.get("/university/emailReport");
   },
   handleUniversity: async (
     organizationCode: string,

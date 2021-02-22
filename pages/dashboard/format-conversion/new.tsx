@@ -17,7 +17,7 @@ import {
   outputFormatsListAFC,
 } from "@Definitions/Constants/dashboard-form-constants";
 import { FormLayout } from "@Components/HOC/Dashboard/FormHOC";
-import { AfcServiceActions, UploadActions } from "@Actions";
+import { AfcServiceActions, UploadActions, TagsActions } from "@Actions";
 import {
   AFC_SUCCESS,
   AFC_SUCCESS_UPLOADING,
@@ -51,7 +51,6 @@ const NewFile: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
         logEvent(props.user?.id, "AFC", "file_submitted");
         if (result.inputFileId && result.inputFileLink) {
           console.log("Successfully uploaded the file.", result.inputFileId);
-          logEvent("AFC", "file_submitted");
           router.push(AFC_SUCCESS);
         } else {
           console.log("Uploading the file.", result);
@@ -255,6 +254,7 @@ NewFile.getInitialProps = async (
 const mapDispatchToProps = {
   addAfc: AfcServiceActions.Add,
   resetList: UploadActions.resetUploadList,
+  searchTag: TagsActions.Search,
 };
 
 const Extended = connect(null, mapDispatchToProps)(NewFile);

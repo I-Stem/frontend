@@ -30,7 +30,11 @@ import { AfcDescription } from "@Components/ServiceDescriptions/afc";
 import { AfcService } from "@Services";
 import Pagination from "@Components/HOC/Pagination";
 
-const { ALTERNATE_FORMAT_CONVERSION_SPLASH } = fileNames;
+const {
+  ALTERNATE_FORMAT_CONVERSION_SPLASH,
+  VECTOR_UP,
+  VECTOR_DOWN,
+} = fileNames;
 
 const { Title, Text } = Typography;
 const FormatConversion: NextPage<
@@ -115,28 +119,29 @@ const FormatConversion: NextPage<
       </div>
     </Col>
   );
+
   const isNew = (
-    <Row justify="center">
-      <Col span="12">
-        <img
-          className="w-full lip-img"
-          src={ALTERNATE_FORMAT_CONVERSION_SPLASH}
-          alt=""
-        />
-        <div className="mt-4 lip-img">
-          <BlueButton href={AFC_NEW_REQUEST} disabled={!isCreditEnough}>
-            <span className="flex items-center">
-              <span className="ml-2">Convert a document</span>
-            </span>
-          </BlueButton>
-          {!isCreditEnough && (
-            <div aria-describedby="credit-info" aria-hidden={isCreditEnough}>
-              <span id="credit-info">You have insufficient credits</span>
-            </div>
-          )}
-        </div>
-      </Col>
-    </Row>
+    <div>
+      <Row justify="center">
+        <Col span="12">
+          <img
+            className="w-full lip-img"
+            src={ALTERNATE_FORMAT_CONVERSION_SPLASH}
+            alt=""
+          />
+          <div className="mt-4 lip-img">
+            {!isCreditEnough && (
+              <div aria-describedby="credit-info" aria-hidden={isCreditEnough}>
+                <span id="credit-info">You have insufficient credits</span>
+              </div>
+            )}
+          </div>
+        </Col>
+      </Row>
+      <Row justify="start">
+        <AfcDescription />
+      </Row>
+    </div>
   );
   const hasRequests = (
     <div className="m-4">
@@ -184,18 +189,34 @@ const FormatConversion: NextPage<
                   Document Accessibility Service
                 </Title>
               </div>
-              <Text className="lip-subtext">
-                This I-Stem service lets you convert documents and images in
-                accessible formats
-              </Text>
+              {requestTableData && requestTableData.length ? (
+                <div>
+                  <span
+                    onClick={() => setShowDescription(!showDescription)}
+                    className="lip-subtext display-flex desc-toggle"
+                    role="button"
+                    aria-expanded={showDescription}
+                  >
+                    Show how it works
+                    <img
+                      className="desc-toggle-icon"
+                      src={showDescription ? VECTOR_UP : VECTOR_DOWN}
+                    />
+                  </span>
+                </div>
+              ) : (
+                <Text className="lip-subtext">
+                  Convert an image or inaccessible PDF into accessible digital
+                  content.
+                </Text>
+              )}
             </Col>
-            {requestTableData && requestTableData.length ? (
-              sideCTA
-            ) : (
-              <Fragment />
-            )}
+            {showDescription ? <></> : sideCTA}
           </Row>
-          {requestTableData && requestTableData.length ? hasRequests : isNew}
+          {showDescription ? isNew : <></>}
+          {(requestTableData && requestTableData.length) || searchResults
+            ? hasRequests
+            : isNew}
         </DashboardLayout>
       ) : (
         <Error statusCode={403} title="Access Denied" />

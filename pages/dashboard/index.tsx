@@ -6,7 +6,6 @@ import { Grid } from "@material-ui/core";
 
 // #region Local Imports
 import "./style.scss";
-import { withTranslation } from "@Server/i18n";
 import {
   CardPreferences,
   CreditsService,
@@ -27,6 +26,8 @@ import { IServiceResponse } from "@Services/API/AccessService/IServiceResponse";
 import { connect } from "react-redux";
 import { RecommendedActions } from "@Components/University/RecommendedActions";
 import { UserType } from "@Definitions/Constants";
+import Error from "next/error";
+import { Spinner } from "react-bootstrap";
 import { AuthActions, CreditsActions } from "@Actions";
 import { AccessService } from "../../src/Services/API/AccessService";
 import PrivateRoute from "../_privateRoute";
@@ -40,6 +41,7 @@ const StemServices: NextPage<
   const messageFocus = useRef<HTMLDivElement>(null);
   const [focus, updateFocus] = useState(false);
   const [request, setRequest] = useState(false);
+
   useEffect(() => {
     AccessService.getRequestAccess().then((res: IServiceResponse) => {
       if (res.data) {
@@ -105,20 +107,6 @@ const StemServices: NextPage<
       </div>
     </div>
   );
-  console.log("userType", userType);
-  var resources = ResourcesList.filter((data: any) => {
-    if (userType == "2" || userType == "5") {
-      return data.ServiceName !== "Job Opportunities";
-    } else {
-      return data.ServiceName !== "";
-    }
-  }).map(service => {
-    return (
-      <Grid item sm={6} md={6} lg={4} key={service.ServiceName}>
-        <StemService serviceInstance={service} />
-      </Grid>
-    );
-  });
 
   const resources = ResourcesList.filter((data: any) => {
     if (
@@ -235,8 +223,6 @@ const mapDispatchToProps = {
   updatePreferences: AuthActions.updateCardPreferences,
 };
 
-const Extended = withTranslation("common")(StemServices);
-
 export default PrivateRoute(
-  connect(mapStateToProps, mapDispatchToProps)(Extended)
+  connect(mapStateToProps, mapDispatchToProps)(StemServices)
 );

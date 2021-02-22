@@ -34,3 +34,20 @@ export function getInvitationResponseMessage(
   }
   return message;
 }
+export const formatFilterName = (name: string) => {
+  let formattedString = "";
+  for (let i = 0; i < name.length; i++) {
+    if (i === 0) {
+      formattedString += name[i].toUpperCase();
+    } else {
+      const ascii = name.charCodeAt(i);
+      if (ascii >= 65 && ascii <= 90) {
+        formattedString += " ";
+        formattedString += name[i];
+      } else {
+        formattedString += name[i];
+      }
+    }
+  }
+  return formattedString;
+};

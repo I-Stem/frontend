@@ -230,10 +230,17 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                 <input
                   className="stud-search-box "
                   type="text"
-                  placeholder="Search student name or roll no"
+                  placeholder={
+                    userType === UserType.BUSINESS
+                      ? "Search employee name or roll no"
+                      : "Search student name or roll no"
+                  }
+                  onKeyUp={handleSearchKeyUp}
+                  onChange={event => setSearchString(event.target.value)}
+                  value={searchString}
                 />
               </Col>
-              <Col sm={3} />
+              <Col sm={2} />
               <Col sm={3}>
                 <div>
                   <WhiteButton
@@ -248,38 +255,42 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                 </div>
               </Col>
             </Row>
-            <Table style={{ marginTop: "1rem" }} responsive="md">
+            {searchResult ? (
+              <Row className="mt-3">
+                <Col sm={9}>
+                  <h4 className="lip-subtext font-semibold">Search results</h4>
+                </Col>
+                <Col>
+                  <span
+                    className="lip-subtext"
+                    role="button"
+                    onClick={() => {
+                      setSearchString("");
+                      setSearchResult(false);
+                      getStudentsData(1, "");
+                    }}
+                  >
+                    Clear
+                  </span>
+                </Col>
+              </Row>
+            ) : (
+              <></>
+            )}
+            <Table style={{ marginTop: "1rem" }}>
               <thead>
                 <tr style={{ borderTop: "hidden" }}>
-                  <th>STUDENT NAME </th>
+                  <th>
+                    {userType === UserType.BUSINESS ? "EMPLOYEES" : "STUDENTS"}{" "}
+                    NAME
+                  </th>
                   <th>EMAIL</th>
                   <th>ROLL NUMBER</th>
                   <th>TOTAL REQUESTS</th>
                   <th>ESCALATED REQUESTS</th>
                 </tr>
               </thead>
-              <tbody>
-                {studentData.map((student, ind) => (
-                  <tr>
-                    <td
-                      onClick={() => {
-                        setIndex(ind);
-                        toggleModal();
-                      }}
-                      style={{
-                        textDecoration: "underline",
-                      }}
-                      className="pointer"
-                    >
-                      {student.name}
-                    </td>
-                    <td>{student.email}</td>
-                    <td>{student.roll}</td>
-                    <td>{student.totalRequests}</td>
-                    <td>{student.escalatedRequests}</td>
-                  </tr>
-                ))}
-              </tbody>
+              {studentData && <tbody>{rows}</tbody>}
             </Table>
             <Pagination
               currentPage={currentPage}

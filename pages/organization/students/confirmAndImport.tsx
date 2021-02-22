@@ -17,6 +17,7 @@ import { Table } from "react-bootstrap";
 import { UniversityPortal } from "@Services";
 import { STUDENTS } from "@Definitions/Constants/universityRoutes";
 import { DialogMessageBox } from "@Components/Basic/Dialog";
+import { UserType } from "@Definitions/Constants";
 import { UniversityPortalActions } from "src/Actions/UniversityActions";
 import { getInvitationResponseMessage } from "@Services/helper/utils";
 import Pagination from "@Components/HOC/Pagination";
@@ -160,7 +161,7 @@ const mapStateToProps = (store: IStore) => {
   return {
     csvFile: university?.csvFile,
     csvErrors: university?.csvErrors,
-    user: auth.user,
+    user: auth?.user,
   };
 };
 

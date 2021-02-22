@@ -1,69 +1,66 @@
-import {makeStore} from "@Redux/store"
-import ReactGa from 'react-ga'
+import ReactGa from "react-ga";
 declare global {
-interface Window {
-  GA_INITIALIZED:Boolean 
-}
+  interface Window {
+    GA_INITIALIZED: Boolean;
+  }
 }
 
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_TRACKING_ID;
-const MONITORING_ENABLED:Boolean = process.env.NEXT_PUBLIC_MONITORING_ENABLED === 'true' ? true : false;
+const MONITORING_ENABLED: Boolean =
+  process.env.NEXT_PUBLIC_MONITORING_ENABLED === "true" ? true : false;
 
-export const initGA = () => {
+export const initGA = (userId: string) => {
+  if (!window.GA_INITIALIZED) {
+    ReactGa.initialize(<string>process.env.NEXT_PUBLIC_GA_TRACKING_ID, {
+      debug: false,
+      gaOptions: {
+        siteSpeedSampleRate: 100,
+      },
+    });
+    window.GA_INITIALIZED = true;
+  }
 
-  if(!window.GA_INITIALIZED)
-  {
-  ReactGa.initialize(<string>process.env.NEXT_PUBLIC_GA_TRACKING_ID, {
-    debug: false,
-    gaOptions: {
-      siteSpeedSampleRate:100
-    }
-  });
-  window.GA_INITIALIZED = true;
-}
+  ReactGa.set({ userId: userId });
+};
 
-const userId = makeStore({}).getState().auth.user.id;
+export const setGAField = (
+  userId: string,
+  fieldName: string,
+  fieldValue: string
+) => {
+  if (!MONITORING_ENABLED) return;
+  initGA(userId);
+  ReactGa.set({ [fieldName]: fieldValue });
+};
 
-ReactGa.set({userId: userId});
-
-}
-
-
-
-export const setGAField= (fieldName:string, fieldValue:string) => {
-  if(!MONITORING_ENABLED)
-  return;
-  initGA();
-  ReactGa.set({[fieldName]: fieldValue})
-}
-
-export const logPageview = (url:string) => {
-  if(!MONITORING_ENABLED)
-  return;
-  initGA();
+export const logPageview = (userId: string, url: string) => {
+  if (!MONITORING_ENABLED) return;
+  initGA(userId);
   ReactGa.pageview(url);
-}
+};
 
-export const logEventWithLabel = (category:string, action:string, label:string) => {
-  if(!MONITORING_ENABLED)
-  return;
+export const logEventWithLabel = (
+  userId: string,
+  category: string,
+  action: string,
+  label: string
+) => {
+  if (!MONITORING_ENABLED) return;
 
-  initGA();
- ReactGa.event({
-  category: category,
-  action: action,
-  label: label
-})
-}
-
-export const logEvent = (category:string, action:string) => {
-  if(!MONITORING_ENABLED)
-  return;
-
-  initGA();
+  initGA(userId);
   ReactGa.event({
     category: category,
-    action: action
-  })
-  }
-  
+    action: action,
+    label: label,
+  });
+};
+
+export const logEvent = (userId: string, category: string, action: string) => {
+  if (!MONITORING_ENABLED) return;
+
+  initGA(userId);
+  ReactGa.event({
+    category: category,
+    action: action,
+  });
+};
