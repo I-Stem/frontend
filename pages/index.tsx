@@ -41,7 +41,6 @@ const StemServices: NextPage<
   const messageFocus = useRef<HTMLDivElement>(null);
   const [focus, updateFocus] = useState(false);
   const [request, setRequest] = useState(false);
-
   useEffect(() => {
     AccessService.getRequestAccess().then((res: IServiceResponse) => {
       if (res.data) {

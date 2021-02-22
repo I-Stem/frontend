@@ -1,3 +1,5 @@
+import { stat } from "fs";
+
 const staticPath = "/static/images";
 
 const fileNames = {

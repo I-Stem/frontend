@@ -13,7 +13,7 @@ declare namespace IStemServices {
 }
 
 export interface TableProps {
-  tableData: [IAfcServiceDocument] | [ICaptioningServiceDocument] | [];
+  tableData: IAfcServiceDocument[] | [ICaptioningServiceDocument] | [];
   updateFunction: Function;
   serviceType: string;
 }

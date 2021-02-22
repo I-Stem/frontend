@@ -10,7 +10,7 @@ import { FORGOT_PASSWORD_ROUTE } from "@Definitions/Constants/pageroutes";
 import { IAuthResponse, IStore } from "@Interfaces";
 import AuthDisclaimer from "./AuthDisclaimer";
 import { IAuth } from "./Auth";
-import { UserType } from "@Definitions/Constants";
+import { UserType, VALID_PASSWORD } from "@Definitions/Constants";
 import { Modal } from "react-bootstrap";
 import { GreenButton } from "@Components/HOC/Dashboard";
 import GoogleButton from "react-google-button";
@@ -192,7 +192,14 @@ const LoginForm = (props: IAuth.ILoginProps) => {
           aria-live="polite"
           label="Password"
           name="password"
-          rules={[{ required: true, message: "Password is required" }]}
+          rules={[
+            { required: true, message: "Password is required" },
+            {
+              pattern: new RegExp(VALID_PASSWORD),
+              message: "Password must be atleast 8 characters",
+            },
+          ]}
+          validateTrigger="onSubmit"
         >
           <Input.Password
             aria-live="off"

@@ -11,8 +11,8 @@ import { GreenButton } from "@Components/HOC/Dashboard/CTAButtons";
 import { AFC_HOME_ROUTE } from "@Definitions/Constants";
 
 const message =
-  "We will send you a notification on the portal and in mail when the results are ready (It takes between 1 min to 2 hours depending on file size).";
-const title = "Your document is being uploaded. ";
+  "We will send you an email with the link to download converted file when the results are ready.";
+const title = "Your document is being converted.";
 
 const FileUploading: NextPage<
   IStemServices.IProps,
