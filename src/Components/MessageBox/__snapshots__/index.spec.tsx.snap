@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessageBox should match snapshot 1`] = `
+<div>
+  <ul>
+    <li
+      class="notes-li"
+    >
+      <div>
+        <p
+          class="notes-by"
+        >
+          ABCD
+        </p>
+        <p
+          class="notes-p"
+        >
+          Invalid date
+        </p>
+      </div>
+      <p
+        class=""
+      >
+        Test MessageBox
+      </p>
+    </li>
+  </ul>
+</div>
+`;

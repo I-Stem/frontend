@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`InviteModal should match snapshot 1`] = `
+<div
+  aria-hidden="true"
+/>
+`;
+
+exports[`MetricsReportDialog should match snapshot 1`] = `
+<div
+  aria-hidden="true"
+/>
+`;
+
 exports[`Recomended Actions should match snapshot 1`] = `
 <div>
   <div>
@@ -118,4 +130,10 @@ exports[`Recomended Actions should match snapshot 1`] = `
     </div>
   </div>
 </div>
+`;
+
+exports[`StudentDetails should match snapshot 1`] = `
+<div
+  aria-hidden="true"
+/>
 `;

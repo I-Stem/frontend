@@ -45,7 +45,7 @@ exports[`Afc Description should match snapshot 1`] = `
       Output formats
     </h4>
     <p>
-      HTML, docx, txt and MP3 for non-math content, HTML and docx for math content
+      HTML, docx and txt for non-math content, HTML and docx for math content
     </p>
     <h4
       class="des-heading"
