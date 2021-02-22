@@ -11,6 +11,17 @@ export interface IAuthUser {
   updatedAt?: string;
   organizationName?: string;
   organizationCode?: string;
+  userPreferences?: UserPreferences;
+  escalationSetting?: string;
+}
+
+export interface UserPreferences {
+  cardPreferences: CardPreferences;
+  darkMode?: boolean;
+}
+export interface CardPreferences {
+  showOnboardStaffCard?: boolean;
+  showOnboardStudentsCard?: boolean;
 }
 export interface IAuthSuccess {
   user?: IAuthUser;
@@ -29,6 +40,7 @@ export interface IAuthResponse {
     organizationStatus: string;
     token: string;
     token_expires_in: number;
+    contextPath?: string;
   };
   code: number;
   error: boolean;

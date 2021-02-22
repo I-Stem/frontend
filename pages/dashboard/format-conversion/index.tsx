@@ -1,16 +1,8 @@
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useState,
-  useRef,
-} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 import { NextPage } from "next";
 import Head from "next/head";
 import { Col, Row, Typography } from "antd";
-import { FileAddOutlined } from "@ant-design/icons";
-import debounce from "lodash.debounce";
 // #endregion Global Imports
 
 // #region Local Imports
@@ -33,6 +25,10 @@ import SearchDocument from "@Components/StemServices/SearchDocument";
 import { useAppAbility } from "src/Hooks/useAppAbility";
 import PrivateRoute from "../../_privateRoute";
 import Error from "next/error";
+import { AfcDescription } from "@Components/ServiceDescriptions/afc";
+// import { Pagination } from "react-bootstrap";
+import { AfcService } from "@Services";
+import Pagination from "@Components/HOC/Pagination";
 
 const { ALTERNATE_FORMAT_CONVERSION_SPLASH } = fileNames;
 
@@ -47,46 +43,61 @@ const FormatConversion: NextPage<
     [IAfcServiceDocument] | []
   >([]);
   const initialFocus = useRef<HTMLDivElement>(null);
-  const [reachedEnd, setEnd] = useState(false);
-  const [pageNumber, setPageNumber] = useState(1);
-  const { userType, role } = props.user;
+  const [searchResults, setSearchResults] = useState(false);
+  const { userType, role, escalationSetting } = props.user;
   const { totalCredits } = props;
   const isCreditEnough = totalCredits > 0;
-  const fetchRequests = useCallback((page: number) => {
-    props.search({ page }).then((result: any) => {
-      const appendData: any = requestTableData.concat(result.data);
-      if (result.data.length === 0) {
-        setEnd(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [requestCount, setRequestCount] = useState(0);
+  const [showDescription, setShowDescription] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const getAfcCount = (text: string) => {
+    AfcService.getAfcCount({ params: { searchText: text } }).then(res => {
+      if (res.data?.count > 0) {
+        if (text !== "") setSearchResults(true);
+      }
+      setRequestCount(res.data?.count);
+    });
+  };
+  const fetchRequests = (page: number, searchString: string) => {
+    getAfcCount(searchString);
+    props.search({ page, searchString }).then((result: any) => {
+      if (result.data.length) {
+        changeRequestTableData(result.data || []);
       } else {
-        changeRequestTableData(appendData || []);
-        setPageNumber(pageNumber + 1);
+        changeRequestTableData([]);
       }
     });
-  }, []);
+  };
   const fetchResults = (searchString: String) => {
     props.search({ searchString }).then((result: IAfcServiceResponse) => {
       changeRequestTableData(result.data || []);
     });
   };
   useEffect(() => {
-    fetchRequests(1);
+    fetchRequests(1, "");
     initialFocus.current?.focus();
-  }, [fetchRequests]);
+  }, []);
   const searchList = (values: any) => {
     const { searchQuery } = values;
-    fetchResults(searchQuery);
+    setSearchText(searchQuery);
+    fetchRequests(currentPage, searchQuery);
+    if (searchQuery !== "") setSearchResults(true);
   };
-  window.onscroll = debounce(() => {
-    if (reachedEnd) {
-      return;
-    }
-    if (
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight
-    ) {
-      fetchRequests(pageNumber);
-    }
-  }, 100);
+  const handlePageNumber = (val: any) => {
+    fetchRequests(val, searchText);
+    setCurrentPage(Number(val));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+    fetchRequests(currentPage + 1, searchText);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+    fetchRequests(currentPage - 1, searchText);
+  };
 
   const sideCTA = (
     <Col span={8}>
@@ -130,22 +141,42 @@ const FormatConversion: NextPage<
   const hasRequests = (
     <div className="m-4">
       <Title level={4}>Previous Requests</Title>
-      <SearchDocument searchAction={searchList} />
+      <SearchDocument
+        searchAction={searchList}
+        onClickAction={() => {
+          fetchRequests(1, "");
+          setSearchText("");
+          setSearchResults(false);
+        }}
+        searchExists={searchResults}
+      />
       <RequestTable
         serviceType="afc"
         updateFunction={fetchResults}
         tableData={requestTableData}
       />
+      <br />
+      <Pagination
+        totalItems={requestCount}
+        currentPage={currentPage}
+        handleNextPage={handleNextPage}
+        handlePageNumber={handlePageNumber}
+        handlePreviousPage={handlePreviousPage}
+      />
     </div>
   );
-
   return (
     <Wrapper>
       <Head>
         <title>Document Accessibility Service | I-Stem</title>
       </Head>
       {access ? (
-        <DashboardLayout userType={userType} role={role} hideBreadcrumb={true}>
+        <DashboardLayout
+          userType={userType}
+          role={role}
+          escalationSetting={escalationSetting}
+          hideBreadcrumb
+        >
           <Row>
             <Col span={16}>
               <div ref={initialFocus} tabIndex={-1}>

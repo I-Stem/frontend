@@ -18,15 +18,15 @@ const Thankyou: NextPage = () => {
   let message = "";
   let title = "";
 
-  if (router.query.signupAs === "mentee") {
+  if (router.query.signupAs === "MENTEE") {
     message =
       "We will be in touch with you as soon as we find a matching mentor for you.";
     title = "Thank you for signing up as a mentee.";
-  } else if (router.query.signupAs === "mentor") {
+  } else if (router.query.signupAs === "MENTOR") {
     message =
       "Your experience and advice will go a long way in helping our community grow, and we hope that you will find this experience to be rewarding as well. We will follow up with mentee requests as per the cadence you specified.";
     title = "Thank you for offering to be a mentor. ";
-  } else if (router.query.signupAs === "both") {
+  } else if (router.query.signupAs === "BOTH") {
     message =
       "Thank you for signing up as a mentee and mentor. We will be in touch with a mentor match and any prospective mentee matches as per the cadence specified by you.";
     title = "Thank you for signing up as a mentee and mentor.";

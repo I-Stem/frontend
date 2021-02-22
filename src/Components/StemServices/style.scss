@@ -1,7 +1,7 @@
 @import "../../../public/static/css/colors";
 $error-color: #ffa594;
 .service-component {
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.08);
   color: #595959 !important;
 }
@@ -10,7 +10,7 @@ $error-color: #ffa594;
     background-color: var(--color-btn-blue);
   }
 }
-.navbar__Logout{
+.navbar__Logout {
   font-family: Poppins;
   float: left;
   font-style: normal;
@@ -19,19 +19,18 @@ $error-color: #ffa594;
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
-  color: #FFFFFF;
-  }
+  color: #ffffff;
+}
 
-.lip-button{
+.lip-button {
   height: 52px !important;
   font-size: 16px !important;
   font-weight: 600 !important;
 }
-.lip-cselect__control{
+.lip-cselect__control {
   height: 52px !important;
- 
-}  
-.lip-cselect__placeholder{
+}
+.lip-cselect__placeholder {
   color: #bfbfbf !important;
 }
 .tag-bg {
@@ -80,16 +79,15 @@ thead[class*="ant-table-thead"] th {
 }
 
 [data-reach-menu-list] {
-  padding:2px 0 !important;
+  padding: 2px 0 !important;
 }
 
 [data-reach-menu-item] {
   font: small-caption !important;
-  padding: 10px 20px !important; 
-
+  padding: 10px 20px !important;
 }
 [data-reach-menu-item][data-selected] {
-  background:#002852 !important;
+  background: #002852 !important;
 }
 .auth-form {
   .ant-page-header-heading-title {
@@ -118,5 +116,16 @@ thead[class*="ant-table-thead"] th {
   }
   .ant-form label {
     font-size: 30px;
- }
+  }
+}
+.selected-values {
+  margin-right: 0.5rem;
+}
+.remove-selected {
+  cursor: pointer;
+}
+.downshift-input::placeholder {
+  font-size: 16px;
+  font-weight: 600;
+  padding-left: -5px;
 }

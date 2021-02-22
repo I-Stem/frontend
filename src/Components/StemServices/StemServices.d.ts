@@ -44,6 +44,8 @@ export interface FeedbackModalProps {
 
 export interface ISearchDocument {
   searchAction?: (values: Store) => void;
+  onClickAction?: () => void;
+  searchExists?: boolean;
 }
 
 export interface TagProps {

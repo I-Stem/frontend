@@ -1,3 +1,4 @@
+import { CardPreferences } from "@Interfaces";
 import { Http } from "@Services";
 import { MetricsData, MetricsResponse } from "./IUniversityResponse";
 
@@ -74,7 +75,26 @@ export const UniversityPortal = {
   updateStudentDetail: async (payload: StudentDetail): Promise<any> => {
     return Http.post("/university/index/student/update", undefined, payload);
   },
-  studentsCount: async (): Promise<any> => {
-    return Http.get("/university/studentsCount");
+  studentsCount: async (payload: {
+    params: { searchString: string };
+  }): Promise<any> => {
+    return Http.get("/university/studentsCount", payload.params);
+  },
+  handleUniversity: async (
+    organizationCode: string,
+    action: string,
+    payload: { id: string }
+  ): Promise<any> => {
+    return Http.post(
+      `/university/organ/req/${organizationCode}/${action}`,
+      undefined,
+      payload
+    );
+  },
+  handleDomainAccess: async (
+    action: string,
+    payload: { code: string; id: string }
+  ): Promise<any> => {
+    return Http.post(`university/domainAcess/${action}`, undefined, payload);
   },
 };

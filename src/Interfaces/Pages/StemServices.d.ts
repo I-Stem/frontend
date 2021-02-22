@@ -1,7 +1,7 @@
 // #region Global Imports
 import { WithTranslation } from "next-i18next";
 import { IAuthUser } from "@Services/API/Auth/IAuthResponse";
-import { ICreditsResponse } from "@Services/API/Credits/ICreditsResponse";
+import { ICreditsResponse } from "@Interfaces";
 // #endregion Global Imports
 
 export declare module IStemServices {

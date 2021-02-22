@@ -15,6 +15,7 @@ declare namespace IAuth {
     email?: any;
     verificationToken?: any;
     organisation?: any;
+    context?: string;
   }
   export interface ILoginProps {
     message?: string;

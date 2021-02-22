@@ -10,6 +10,8 @@ import {
   IVCService,
   IAuth,
   IUniversity,
+  IEscalations,
+  IAdmin,
 } from "@Interfaces";
 // #endregion Interface Imports
 
@@ -24,4 +26,6 @@ export interface IStore {
   feedback: FeedbackData;
   communityService: ICommunityService.IStateProps;
   university: IUniversity.IStateProps;
+  escalation: IEscalations.IStateProps;
+  admin: IAdmin;
 }

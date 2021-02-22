@@ -3,6 +3,12 @@ import { ServiceInstance } from "@Components/StemServices/ServiceInstance";
 
 const ResourcesList: ServiceInstance[] = [
   new ServiceInstance(
+    "Hackathon",
+    "Work together, ideate and develop solutions to some of the most pressing accessibility problems.",
+    imageConstants.HACKER,
+    "/dashboard/hackathon"
+  ),
+  new ServiceInstance(
     "Mentorship",
     "Sign up as a mentee or mentor to learn and grow.",
     imageConstants.MENTORSHIP,

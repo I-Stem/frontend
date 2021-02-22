@@ -29,4 +29,10 @@ export const UniversityPortalActions = {
       type: ActionConsts.University.CSV_ERRORS,
     });
   },
+  ResetCsvData: (): any => (dispatch: Dispatch) => {
+    dispatch({ type: ActionConsts.University.RESET_CSV_DATA });
+  },
+  ResetEscalation: (): any => (dispatch: Dispatch) => {
+    dispatch({ type: ActionConsts.Escalation.RESET_ESCALATION });
+  },
 };

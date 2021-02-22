@@ -13,7 +13,6 @@ import fileName from "@Definitions/Constants/image";
 
 // #region Interface Imports
 import { ILogin } from "@Interfaces";
-
 // #endregion Interface Imports
 
 const { Content } = Layout;
@@ -21,7 +20,6 @@ const { AUTH_BACKGROUND_IMAGE } = fileName;
 
 export const Login: NextPage<ILogin.IProps, ILogin.InitialProps> = () => {
   // eslint-disable-next-line prefer-destructuring
-
   return (
     <section className="auth-bg" id="login">
       <Wrapper>

@@ -24,6 +24,15 @@ const fileNames = {
   ONBOARD_STAFF: `${staticPath}/onboard-staff.svg`,
   CLOSE_ICON: `${staticPath}/closeIcon.svg`,
   IMPORT_STUDENTS_SAMPLE: `${staticPath}/IMPORT_STUDENTS_SAMPLE.csv`,
+  VECTOR_UP: `${staticPath}/vector-up.svg`,
+  VECTOR_DOWN: `${staticPath}/vector-down.svg`,
+  INFO_ICON: `${staticPath}/info-icon.svg`,
+  MENTORSHIP_DESC: `${staticPath}/mentorship-desc.svg`,
+  JOB_DESC: `${staticPath}/job-desc.svg`,
+  HACKER: `${staticPath}/hacker.svg`,
+  HACKATHON_DESC: `${staticPath}/hackathon.png`,
+  MESSAGE_ICON: `${staticPath}/message.svg`,
+  MESSAGE_CIRCLE: `${staticPath}/message-circle.svg`,
 };
 
 export default fileNames;

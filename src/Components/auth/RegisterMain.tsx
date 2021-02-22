@@ -14,7 +14,11 @@ import { UserType } from "@Definitions/Constants";
 
 const { Title } = Typography;
 
-const RegisterMain = () => {
+interface RegisterMainProps {
+  registrationContext: string | string[];
+}
+
+const RegisterMain = (props: RegisterMainProps) => {
   return (
     <section id="registermain" className="mt-16 auth-form">
       <Head>
@@ -28,16 +32,33 @@ const RegisterMain = () => {
         <Link
           href={{
             pathname: REGISTER_STUDENT_ROUTE,
-            query: { userType: UserType.I_STEM },
+            query: {
+              userType: UserType.I_STEM,
+            },
           }}
         >
           <Button className="register-buttons mt-6" block>
-            STUDENT OR PERSONAL
+            INDIVIDUAL
           </Button>
         </Link>
-        <Link href={REGISTER_BUSINESS_ROUTE}>
+        <Link
+          href={{
+            pathname: REGISTER_BUSINESS_ROUTE,
+            query: { userType: UserType.UNIVERSITY },
+          }}
+        >
           <Button className="register-buttons mt-6" block>
-            UNIVERSITY OR BUSINESS REPRESENTATIVE
+            UNIVERSITY REPRESENTATIVE
+          </Button>
+        </Link>
+        <Link
+          href={{
+            pathname: REGISTER_BUSINESS_ROUTE,
+            query: { userType: UserType.BUSINESS },
+          }}
+        >
+          <Button className="register-buttons mt-6" block>
+            BUSINESS REPRESENTATIVE
           </Button>
         </Link>
         <Link

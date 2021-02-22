@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RadioCheck should match snapshot 1`] = `
+<div>
+  <div
+    class="lip-radio-div"
+  >
+    <input
+      aria-label="TestRadio"
+      class="lip-radio"
+      id="test"
+      name="test"
+      type="radio"
+      value="Yes"
+    />
+    <label
+      aria-hidden="true"
+      class="lip-label-r"
+      for="test"
+    >
+      TestRadio
+    </label>
+  </div>
+</div>
+`;

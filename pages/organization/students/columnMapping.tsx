@@ -20,6 +20,8 @@ import {
   CONFIRM_IMPORT,
 } from "@Definitions/Constants/universityRoutes";
 import { UniversityPortalActions } from "src/Actions/UniversityActions";
+import { useAppAbility } from "src/Hooks/useAppAbility";
+import Error from "next/error";
 
 const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   props: any
@@ -28,6 +30,8 @@ const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   const router = useRouter();
   const [headers, setHeaders] = useState<string[]>([]);
   const fileData = props.csvFile;
+  const { can } = useAppAbility();
+  const access = can("VIEW", "STUDENTS");
   useEffect(() => {
     initialFocus?.current?.focus();
     setHeaders(Object.keys(props.csvFile[0]));
@@ -66,7 +70,7 @@ const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
     email: headers[headers.indexOf("EMAIL")],
     roll_no: headers[headers.indexOf("ROLL_NO")],
   };
-  return (
+  return access ? (
     <Wrapper>
       <Head>
         <title>Column Mapping | I-Stem</title>
@@ -98,8 +102,12 @@ const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                       placeholder="Select csv column"
                       className="stud-select"
                       as="select"
+                      value="none"
                       {...formik.getFieldProps("name")}
                     >
+                      <option value="none" hidden>
+                        Select csv column
+                      </option>
                       {headers.map(header => (
                         <option key={header} className="csv-dropdown-item">
                           {header}
@@ -115,8 +123,12 @@ const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                       placeholder="Select csv column"
                       className="stud-select"
                       as="select"
+                      value="none"
                       {...formik.getFieldProps("email")}
                     >
+                      <option value="none" hidden>
+                        Select csv column
+                      </option>
                       {headers.map(header => (
                         <option key={header} className="csv-dropdown-item">
                           {header}
@@ -132,8 +144,12 @@ const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                       className="stud-select"
                       placeholder="Select csv column"
                       as="select"
+                      value="none"
                       {...formik.getFieldProps("roll_no")}
                     >
+                      <option value="none" hidden>
+                        Select csv column
+                      </option>
                       {headers.map(header => (
                         <option key={header} className="csv-dropdown-item">
                           {header}
@@ -151,6 +167,8 @@ const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
         </div>
       </FormLayout>
     </Wrapper>
+  ) : (
+    <Error title="Page Not Found" statusCode={404} />
   );
 };
 

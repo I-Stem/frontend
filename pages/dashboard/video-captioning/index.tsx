@@ -19,11 +19,7 @@ import { Wrapper } from "@Components";
 import { DashboardLayout } from "@Components/Layouts/DashboardLayout/index";
 import { BlueButton } from "@Components/HOC/Dashboard/CTAButtons";
 import fileNames from "@Definitions/Constants/image";
-import {
-  VIDEO_CAPTIONING_NEW_REQUEST,
-  VC_STEPTWO,
-  VC_STEPONE,
-} from "@Definitions/Constants/pageroutes";
+import { VC_STEPONE } from "@Definitions/Constants/pageroutes";
 import { CreditsActions, VcServiceActions } from "@Actions";
 import RequestTable from "@Components/StemServices/RequestTable";
 import SearchDocument from "@Components/StemServices/SearchDocument";
@@ -45,7 +41,7 @@ const VideoCaptioning: NextPage<
   const [searchPayload, setSearchPayload] = useState({ page: 1 });
   const { can } = useAppAbility();
   const access: boolean = can("VIEW", "AI_SERVICES");
-  const { userType, role } = props.user;
+  const { userType, role, escalationSetting } = props.user;
   const { totalCredits } = props;
   const isCreditEnough = totalCredits > 0;
   const fetchRequests = (payload: any) => {
@@ -149,7 +145,12 @@ const VideoCaptioning: NextPage<
         <title>Audio/Video Accessibility Service | I-Stem</title>
       </Head>
       {access ? (
-        <DashboardLayout userType={userType} role={role} hideBreadcrumb>
+        <DashboardLayout
+          userType={userType}
+          role={role}
+          escalationSetting={escalationSetting}
+          hideBreadcrumb
+        >
           <Row>
             <Col span={16}>
               <div ref={initialFocus} tabIndex={-1}>

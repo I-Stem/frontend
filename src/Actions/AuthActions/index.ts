@@ -1,5 +1,6 @@
 // #region Global Imports
 import { Dispatch } from "redux";
+import storage from "redux-persist/lib/storage";
 // #endregion Global Imports
 
 // #region Local Imports
@@ -12,6 +13,7 @@ import {
   IAuthForgotPasswordPayload,
   IAuthPayload,
   IAuthResetPasswordPayload,
+  IAuthUser,
   IAuthVerifyPayload,
 } from "@Interfaces";
 // #endregion Interface Imports
@@ -53,6 +55,14 @@ export const AuthActions = {
         return { ...e, error: true };
       });
   },
+
+  User: (payload: IAuthUser): any => (dispatch: Dispatch) => {
+    dispatch({
+      payload,
+      type: ActionConsts.Auth.LOGIN_SUCCESS,
+    });
+  },
+
   Login: (payload: IAuthPayload) => async (dispatch: Dispatch) => {
     return AuthService.login({
       params: payload,
@@ -126,6 +136,7 @@ export const AuthActions = {
   },
   Logout: () => (dispatch: Dispatch) => {
     AuthToken.clearToken();
+    storage.removeItem("persist:root");
     dispatch({ type: ActionConsts.Auth.ResetReducer });
   },
   ClearAuthMessage: () => (dispatch: Dispatch) => {
@@ -136,6 +147,12 @@ export const AuthActions = {
   VerifyToken: (payload: IAuthVerifyPayload) => async () => {
     return AuthService.verifyToken({
       params: payload,
+    });
+  },
+  updateCardPreferences: (user: IAuthPayload) => async (dispatch: Dispatch) => {
+    dispatch({
+      payload: { ...user },
+      type: ActionConsts.Auth.SetReducer,
     });
   },
 };

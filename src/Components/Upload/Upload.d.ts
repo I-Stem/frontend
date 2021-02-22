@@ -1,4 +1,5 @@
 import { IUploadPayload } from "@Services/API/Upload/IUploadPayload";
+import { serviceTypeEnum } from "./constants";
 
 export declare module IUpload {
   export interface IProps {
@@ -12,6 +13,7 @@ export declare module IUpload {
     onUpload?: (filename: string) => void;
     required?: boolean;
     label?: string;
+    serviceType: serviceTypeEnum;
   }
 
   export interface IProgressProps {

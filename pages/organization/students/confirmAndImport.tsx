@@ -13,11 +13,14 @@ import { FormLayout } from "@Components/HOC/Dashboard/FormHOC";
 import PrivateRoute from "../../_privateRoute";
 import { useAppAbility } from "src/Hooks/useAppAbility";
 import { BlueButton } from "@Components/HOC/Dashboard";
-import { Pagination, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { UniversityPortal } from "@Services";
 import { STUDENTS } from "@Definitions/Constants/universityRoutes";
-import { cpuUsage } from "process";
 import { DialogMessageBox } from "@Components/Basic/Dialog";
+import { UniversityPortalActions } from "src/Actions/UniversityActions";
+import { getInvitationResponseMessage } from "@Services/helper/utils";
+import Pagination from "@Components/HOC/Pagination";
+import Error from "next/error";
 
 const StepThree: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   props: any
@@ -25,17 +28,17 @@ const StepThree: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   const initialFocus = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { can } = useAppAbility();
+  const access = can("VIEW", "STUDENTS");
   const studentData = props.csvFile;
 
   const [currentPage, setCurrentPage] = useState(1);
   const indexLastStud = currentPage * 10;
   const indexFirstStud = indexLastStud - 10;
   const currentStudents = studentData.slice(indexFirstStud, indexLastStud);
-  const pageNumbers = [];
   const [messageBox, setMessageBox] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [dialogHeading, setDialogHeading] = useState("");
-  const { organizationCode } = props.user;
+  const { organizationCode, userType } = props.user;
   useEffect(() => {
     initialFocus?.current?.focus();
   });
@@ -48,23 +51,19 @@ const StepThree: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       </tr>
     );
   });
-  for (let i = 1; i <= Math.ceil(studentData.length / 10); i++) {
-    pageNumbers.push(i);
-  }
-  const handlePageNumber = (event: any) => {
-    setCurrentPage(Number(event.target.innerText));
+  const handlePageNumber = (val: any) => {
+    setCurrentPage(Number(val));
   };
   const toggleMessageModal = () => {
     setMessageBox(!messageBox);
   };
 
-  const renderPageNumbers = pageNumbers.map(number => {
-    return (
-      <Pagination.Item key={number} value={number} onClick={handlePageNumber}>
-        {number}
-      </Pagination.Item>
-    );
-  });
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
   const fullNames = Object.values(props.csvFile).map((data: any) =>
     String(data.NAME)
   );
@@ -85,9 +84,14 @@ const StepThree: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
     })
       .then((results: any) => {
         if (results.code === 200) {
-          setDialogMessage("Invitations sent successfully to given emails");
+          const message = getInvitationResponseMessage(
+            results.data.newUsers,
+            results.data.existingUsers
+          );
+          setDialogMessage(message);
           setDialogHeading("Invitation Success");
           setMessageBox(!messageBox);
+          props.resetCsv();
         }
       })
       .catch((err: any) => {
@@ -99,7 +103,7 @@ const StepThree: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       });
   };
 
-  return (
+  return access ? (
     <Wrapper>
       <Head>
         <title>Confirm and Import | I-Stem</title>
@@ -108,7 +112,8 @@ const StepThree: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
         <div className="lip-margin">
           <div tabIndex={-1} ref={initialFocus}>
             <h2 className="mt-8 lip-title">
-              STEP 3: CONFIRM AND IMPORT ({studentData.length} STUDENTS)
+              STEP 3: CONFIRM AND IMPORT ({studentData.length}{" "}
+              {userType === UserType.BUSINESS ? "EMPLOYEES" : "STUDENTS"})
             </h2>
           </div>
           <div className="">
@@ -123,24 +128,13 @@ const StepThree: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
               <tbody>{rows}</tbody>
             </Table>
           </div>
-          <div className="lip-pagination">
-            <Pagination>
-              <Pagination.Prev
-                onClick={() => setCurrentPage(currentPage - 1)}
-                disabled={currentPage - 1 == 0}
-              >
-                Previous
-              </Pagination.Prev>
-              {renderPageNumbers}
-              <Pagination.Next
-                onClick={() => setCurrentPage(currentPage + 1)}
-                disabled={currentPage + 1 > pageNumbers[pageNumbers.length - 1]}
-              >
-                Next
-              </Pagination.Next>
-            </Pagination>
-          </div>
-
+          <Pagination
+            totalItems={studentData.length}
+            currentPage={currentPage}
+            handleNextPage={handleNextPage}
+            handlePreviousPage={handlePreviousPage}
+            handlePageNumber={handlePageNumber}
+          />
           <div style={{ width: "35%" }}>
             <BlueButton htmlType="button" onClick={handleConfirm}>
               CONFIRM AND IMPORT
@@ -156,6 +150,8 @@ const StepThree: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
         route={STUDENTS}
       />
     </Wrapper>
+  ) : (
+    <Error statusCode={404} title="Page Not Found" />
   );
 };
 
@@ -168,4 +164,10 @@ const mapStateToProps = (store: IStore) => {
   };
 };
 
-export default PrivateRoute(connect(mapStateToProps, null)(StepThree));
+const mapDispatchToProps = {
+  resetCsv: UniversityPortalActions.ResetCsvData,
+};
+
+export default PrivateRoute(
+  connect(mapStateToProps, mapDispatchToProps)(StepThree)
+);

@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Button, Col, Form, Input, Modal, Row, Select, Typography } from "antd";
+import { Button, Col, Input, Modal, Row, Select, Typography } from "antd";
+import { Form, Table } from "react-bootstrap";
+import * as Yup from "yup";
 import "./style.scss";
 import {
   IAfcServiceDocument,
   ICaptioningServiceDocument,
   IStore,
 } from "@Interfaces";
-import { WhiteButton } from "@Components/HOC/Dashboard/CTAButtons";
 import {
   PER_MINUTE_COST,
   PER_PAGE_COST,
@@ -17,6 +18,7 @@ import { AfcServiceActions, CreditsActions, VcServiceActions } from "@Actions";
 import { findPageCount } from "@Services/helper/utils";
 
 import { ModalProps } from "./StemServices";
+import { Formik } from "formik";
 
 const { Text, Title } = Typography;
 const layout = {
@@ -49,7 +51,11 @@ const EscalateRequestModal: React.FunctionComponent<ModalProps> = ({
     if (serviceType === "vc") {
       if ((videoLength / 60) * PER_MINUTE_COST < credits.totalCredits) {
         props
-          .vcEscalate(service?.id, { ...payload, requestType: option })
+          .vcEscalate(service?.id, {
+            ...payload,
+            requestType: option,
+            description: values.description,
+          })
           .then(() => {
             updateFunction("");
             secondaryAction(null);
@@ -79,7 +85,11 @@ const EscalateRequestModal: React.FunctionComponent<ModalProps> = ({
       } else {
         try {
           props
-            .afcEscalate(service?.id, { ...payload, escalatedPageRange: range })
+            .afcEscalate(service?.id, {
+              ...payload,
+              escalatedPageRange: range,
+              description: values.description,
+            })
             .then(() => {
               props.updateCredits({ cost });
               updateFunction("");
@@ -95,9 +105,19 @@ const EscalateRequestModal: React.FunctionComponent<ModalProps> = ({
       return error;
     }
   }
-  const optionSelected = (value: string) => {
-    setOption(value);
+  const optionSelected = (event: any) => {
+    if (event.target.name == "pages") setOption(event.target.value);
   };
+
+  const initialValues = {
+    pages: "",
+    range: "",
+    description: "",
+  };
+  const initialValuesVC = {
+    service: "",
+  };
+  const rangeExp = RegExp("[0-9]+-[0-9]+(?:,[0-9]+-[0-9]+)*");
 
   return serviceType === "afc" ? (
     <Modal
@@ -108,64 +128,118 @@ const EscalateRequestModal: React.FunctionComponent<ModalProps> = ({
       closable={false}
     >
       <div className="auth-form">
-        <Form name="escalateForm" {...layout} onFinish={submitEscalateRequest}>
-          <Title className="text-white" level={4}>
-            Escalate request
-          </Title>
-          <Text className="text-white">
-            {service?.documentName} ({" "}
-            {(service as IAfcServiceDocument)?.pageCount} {"Page Document )"}
-          </Text>
-          <Form.Item
-            rules={[{ required: true, message: "Please select an option" }]}
-            label="Pages"
-            name="pages"
-          >
-            <Select onSelect={optionSelected} placeholder="All / Custom">
-              <Select.Option value="All">All</Select.Option>
-              <Select.Option value="Custom">Custom</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item
-            label="Custom Page range"
-            style={option !== "Custom" ? { display: "none" } : {}}
-            name="range"
-            rules={[
-              {
-                type: "regexp",
-                pattern: new RegExp("[0-9]+-[0-9]+(?:,[0-9]+-[0-9]+)*"),
-                message: "Please enter proper format like: 1-2",
-              },
-            ]}
-          >
-            <Input
-              className="lip-button"
-              placeholder="Custom range 1-5,8-10,10-15"
-            />
-          </Form.Item>
-          <div className="p-4">
-            <span className="escalate-error">{errorMsg}</span>
-          </div>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={Yup.object().shape({
+            pages: Yup.string().required("Please select an option"),
+            range: Yup.string().matches(
+              rangeExp,
+              "Please enter proper format like: 1-2"
+            ),
+            description: Yup.string(),
+          })}
+          onSubmit={submitEscalateRequest}
+        >
+          {formik => (
+            <Form
+              onChange={optionSelected}
+              name="escalateForm"
+              {...layout}
+              onSubmit={formik.handleSubmit}
+              id="escalationForm"
+            >
+              <Title className="text-white" level={4}>
+                Escalate request
+              </Title>
+              <Text className="text-white">
+                {service?.documentName} ({" "}
+                {(service as IAfcServiceDocument)?.pageCount}{" "}
+                {"Page Document )"}
+              </Text>
 
-          <Row gutter={12}>
-            <Col span={12}>
-              <Button
-                className="lip-button"
-                block
-                type="primary"
-                key="submit"
-                htmlType="submit"
-              >
-                {primaryButtonText}
-              </Button>
-            </Col>
-            <Col span={12}>
-              <Button className="lip-button" block onClick={secondaryAction}>
-                {secondaryButtonText}
-              </Button>
-            </Col>
-          </Row>
-        </Form>
+              <Form.Group className="mt-3" controlId="pages">
+                <Form.Label>
+                  <h3 className="text-white">Pages</h3>
+                </Form.Label>
+                <Form.Control
+                  className="lip-button"
+                  as="select"
+                  value="none"
+                  {...formik.getFieldProps("pages")}
+                >
+                  <option value="none" hidden>
+                    All/Custom
+                  </option>
+                  <option value="All">All</option>
+                  <option value="Custom">Custom</option>
+                </Form.Control>
+              </Form.Group>
+              {formik.errors.pages && formik.touched.pages ? (
+                <div className="error">{formik.errors.pages}</div>
+              ) : null}
+              {option === "Custom" ? (
+                <>
+                  <Form.Group
+                    controlId="range"
+                    style={option !== "Custom" ? { display: "none" } : {}}
+                  >
+                    <Form.Label>
+                      <h3 className="text-white">Custom Page range</h3>
+                    </Form.Label>
+                    <Form.Control
+                      className="lip-button"
+                      placeholder="Custom range 1-5,8-10,10-15"
+                      {...formik.getFieldProps("range")}
+                    />
+                  </Form.Group>
+
+                  {formik.errors.range && formik.touched.range ? (
+                    <div className="error">{formik.errors.range}</div>
+                  ) : null}
+                </>
+              ) : (
+                <></>
+              )}
+              <Form.Group controlId="description">
+                <Form.Label>
+                  <h3 className="text-white">Escalation description</h3>
+                </Form.Label>
+                <Form.Control
+                  className="lip-button"
+                  placeholder="Where did the service go wrong?"
+                  {...formik.getFieldProps("description")}
+                />
+              </Form.Group>
+              <div className="p-4">
+                <span className="escalate-error">{errorMsg}</span>
+              </div>
+
+              <Row gutter={12}>
+                <Col span={12}>
+                  <Button
+                    className="lip-button"
+                    block
+                    type="primary"
+                    key="submit"
+                    htmlType="submit"
+                    form="escalationForm"
+                  >
+                    {primaryButtonText}
+                  </Button>
+                </Col>
+                <Col span={12}>
+                  <Button
+                    className="lip-button"
+                    block
+                    onClick={secondaryAction}
+                  >
+                    {secondaryButtonText}
+                  </Button>
+                </Col>
+              </Row>
+            </Form>
+          )}
+        </Formik>
       </div>
     </Modal>
   ) : (
@@ -177,56 +251,83 @@ const EscalateRequestModal: React.FunctionComponent<ModalProps> = ({
       closable={false}
     >
       <div className="auth-form">
-        <Form name="escalateForm" {...layout} onFinish={submitEscalateRequest}>
-          <Title className="text-white" level={4}>
-            Escalate request
-          </Title>
-          <Text className="text-white">
-            {`${Math.ceil(videoLength / 60)} minute video`}
-          </Text>
-          <Form.Item
-            rules={[{ required: true, message: "Please select an option" }]}
-            label="What do you want to escalate"
-            name="service"
-          >
-            <Select onSelect={optionSelected} placeholder="Select service">
-              <Select.Option value="CAPTION">Caption</Select.Option>
-              <Select.Option value="OCR">
-                Text extraction from video images
-              </Select.Option>
-              <Select.Option value="OCR_CAPTION">Both</Select.Option>
-            </Select>
-          </Form.Item>
-          <div className="text-center text-white mb-4 text-base leading-normal font-semibold">
-            {`${Math.ceil(videoLength / 60) *
-              PER_MINUTE_COST} credits will be used in escalating this ${Math.ceil(
-              videoLength / 60
-            )} minute video. Do you
-            want to proceed with escalation?`}
-          </div>
-          <div className="p-4">
-            <span className="escalate-error">{errorMsg}</span>
-          </div>
+        <Formik
+          initialValues={initialValuesVC}
+          validationSchema={Yup.object().shape({
+            service: Yup.string().required("Please select an option"),
+          })}
+          onSubmit={submitEscalateRequest}
+        >
+          {formik => (
+            <Form
+              name="escalateForm"
+              {...layout}
+              onSubmit={formik.handleSubmit}
+            >
+              <Title className="text-white" level={4}>
+                Escalate request
+              </Title>
+              <Text className="text-white">
+                {`${Math.ceil(videoLength / 60)} minute video`}
+              </Text>
 
-          <Row gutter={12}>
-            <Col span={12}>
-              <Button
-                className="lip-button"
-                block
-                type="primary"
-                key="submit"
-                htmlType="submit"
-              >
-                {primaryButtonText}
-              </Button>
-            </Col>
-            <Col span={12}>
-              <Button className="lip-button" block onClick={secondaryAction}>
-                {secondaryButtonText}
-              </Button>
-            </Col>
-          </Row>
-        </Form>
+              <Form.Group className="mt-3" controlId="service">
+                <Form.Label>
+                  <h3 className="text-white">What do you want to escalate</h3>
+                </Form.Label>
+                <Form.Control
+                  className="lip-button"
+                  as="select"
+                  defaultValue="none"
+                  {...formik.getFieldProps("service")}
+                >
+                  <option value="none" hidden>
+                    Select service
+                  </option>
+                  <option value="CAPTION">Caption</option>
+                  <option value="OCR">Text extraction from video images</option>
+                  <option value="OCR_CAPTION">Both</option>
+                </Form.Control>
+              </Form.Group>
+              {formik.errors.service && formik.touched.service ? (
+                <div className="error">{formik.errors.service}</div>
+              ) : null}
+              <div className="text-center text-white mb-4 text-base leading-normal font-semibold">
+                {`${Math.ceil(videoLength / 60) *
+                  PER_MINUTE_COST} credits will be used in escalating this ${Math.ceil(
+                  videoLength / 60
+                )} minute video. Do you
+            want to proceed with escalation?`}
+              </div>
+              <div className="p-4">
+                <span className="escalate-error">{errorMsg}</span>
+              </div>
+
+              <Row gutter={12}>
+                <Col span={12}>
+                  <Button
+                    className="lip-button"
+                    block
+                    type="primary"
+                    key="submit"
+                    htmlType="submit"
+                  >
+                    {primaryButtonText}
+                  </Button>
+                </Col>
+                <Col span={12}>
+                  <Button
+                    className="lip-button"
+                    block
+                    onClick={secondaryAction}
+                  >
+                    {secondaryButtonText}
+                  </Button>
+                </Col>
+              </Row>
+            </Form>
+          )}
+        </Formik>
       </div>
     </Modal>
   );

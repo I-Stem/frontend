@@ -13,12 +13,18 @@ import PrivateRoute from "../../_privateRoute";
 import { BlueButton } from "@Components/HOC/Dashboard";
 import { Table } from "react-bootstrap";
 import { UPLOAD_STUDENTS } from "@Definitions/Constants/universityRoutes";
+import { UserType } from "@Definitions/Constants";
+import { useAppAbility } from "src/Hooks/useAppAbility";
+import Error from "next/error";
 
 const ResolveErrors: NextPage<
   IStemServices.IProps,
   IStemServices.InitialProps
 > = (props: any) => {
   const initialFocus = useRef<HTMLDivElement>(null);
+  const { userType, role, organizationCode } = props.user;
+  const { can } = useAppAbility();
+  const access = can("VIEW", "STUDENTS");
   const rows = props.csvErrors.validationResult.map((data: any) => {
     return (
       <tr key={data.row}>
@@ -32,7 +38,7 @@ const ResolveErrors: NextPage<
   useEffect(() => {
     initialFocus?.current?.focus();
   });
-  return (
+  return access ? (
     <Wrapper>
       <Head>
         <title>Resolve Errors | I-Stem</title>
@@ -51,7 +57,10 @@ const ResolveErrors: NextPage<
                 <tr style={{ borderTop: "hidden" }}>
                   <th style={{ width: "15%" }}>Row</th>
                   <th>Email</th>
-                  <th>Student Name</th>
+                  <th>
+                    {userType === UserType.BUSINESS ? "Employee" : "Student"}{" "}
+                    Name
+                  </th>
                   <th>Roll Number</th>
                 </tr>
               </thead>
@@ -64,14 +73,17 @@ const ResolveErrors: NextPage<
         </div>
       </FormLayout>
     </Wrapper>
+  ) : (
+    <Error title="Page Not Found" statusCode={404} />
   );
 };
 
 const mapStateToProps = (store: IStore) => {
-  const { university } = store;
+  const { university, auth } = store;
   return {
     csvFile: university?.csvFile,
     csvErrors: university?.csvErrors,
+    user: auth.user,
   };
 };
 

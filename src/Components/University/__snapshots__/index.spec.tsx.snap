@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Recomended Actions should match snapshot 1`] = `
+<div>
+  <div>
+    <h2
+      class="font-semibold text-xl heading-color"
+    >
+      RECOMMENDED ACTIONS
+    </h2>
+    <div
+      class="onboard-tiles row"
+    >
+      <div
+        class="col-sm-6"
+        style="margin-top: 1rem;"
+      >
+        <h3
+          class="font-semibold text-l heading-color"
+        >
+          Get started by inviting your students to the I-Stem platform.
+        </h3>
+        <p>
+          Or you can always go to Students &gt; INVITE STUDENTS / IMPORT STUDENTS to invite students.
+        </p>
+        <div
+          class="onboard-button"
+        >
+          <div
+            class="w-full"
+          >
+            <button
+              class="ant-btn ant-btn-block text-center blue-btn"
+              type="button"
+            >
+              <span
+                class="font-semibold text-lg text-white leading-6"
+              >
+                ONBOARD STUDENTS
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-sm-4"
+        style="margin-left: 8rem;"
+      >
+        <img
+          alt="decorative"
+          aria-hidden="true"
+          class="w-full lip-img"
+          src="/static/images/onboard-students.svg"
+        />
+      </div>
+      <div>
+        <img
+          alt="Close tile"
+          class="close-tiles"
+          role="button"
+          src="/static/images/closeIcon.svg"
+        />
+      </div>
+    </div>
+    <div
+      class="onboard-tiles row"
+    >
+      <div
+        class="col-sm-6"
+        style="margin-top: 1rem;"
+      >
+        <h3
+          class="font-semibold text-l heading-color"
+        >
+          Get started by inviting your staff to the I-Stem platform.
+        </h3>
+        <p>
+          Or you can always go to Settings &gt; INVITE STAFF to invite staff.
+        </p>
+        <div
+          class="onboard-button"
+        >
+          <div
+            class="w-full"
+          >
+            <button
+              class="ant-btn ant-btn-block text-center blue-btn"
+              type="button"
+            >
+              <span
+                class="font-semibold text-lg text-white leading-6"
+              >
+                ONBOARD STAFF
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-sm-4"
+        style="margin-left: 8rem;"
+      >
+        <img
+          alt="decorative"
+          aria-hidden="true"
+          class="w-full lip-img"
+          src="/static/images/onboard-staff.svg"
+        />
+      </div>
+      <div>
+        <img
+          alt="Close tile"
+          class="close-tiles"
+          role="button"
+          src="/static/images/closeIcon.svg"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

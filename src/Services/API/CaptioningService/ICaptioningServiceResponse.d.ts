@@ -19,14 +19,15 @@ export interface ICaptioningServiceDocument {
   status: number;
   videoLength: number;
   inputFileId: string;
-  customModelName?:string;
+  modelName: string;
   confidenceScore: number;
   createdAt: Date;
   updatedAt: Date;
   inputField: string;
-  outputFormat: number;
+  outputFormat: string;
   outputURL?: string;
   review: ICaptioningServiceReviewResponse;
+  requestType: string;
   __v: number;
 }
 
@@ -40,12 +41,12 @@ export interface ICaptioningServiceResponse {
 export interface IVCModels {
   modelId: string;
   name: string;
-} 
+}
 
 export interface IVCModelsResponse {
   flag: string;
   message: string;
   data?: IVCModels[];
   code: number;
-  error?: string;  
+  error?: string;
 }

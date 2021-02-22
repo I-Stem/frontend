@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 import { NextPage } from "next";
 import Head from "next/head";
-import debounce from "lodash.debounce";
 // #endregion Global Imports
 
 // #region Local Imports
@@ -19,19 +18,25 @@ import PrivateRoute from "@Pages/_privateRoute";
 import { RadioCheck } from "@Components/HOC/Dashboard/RadioCheck";
 import router from "next/router";
 import { DialogMessageBox } from "@Components/Basic/Dialog";
+import { InviteModal } from "@Components/University/InviteModal";
+import { getInvitationResponseMessage } from "@Services/helper/utils";
+import { UserType } from "@Definitions/Constants";
+import { useAppAbility } from "src/Hooks/useAppAbility";
+import Error from "next/error";
 
 const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   props: any
 ) => {
   const initialFocus = useRef<HTMLDivElement>(null);
-  const [reachedEnd, setEnd] = useState(false);
   const [showInvite, setShowInvite] = useState(false);
   const [showDomain, setShowDomain] = useState(false);
   const [universityData, setUniversityData] = useState<UniversityData>();
   const [messageBox, setMessageBox] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [dialogHeading, setDialogHeading] = useState("");
-  const { userType, role, organizationCode } = props.user;
+  const [domainAccessStatus, setDomainAccessStatus] = useState("");
+  const [remediatorInvite, setRemediatorInvite] = useState(false);
+  const { userType, role, organizationCode, escalationSetting } = props.user;
   useEffect(() => {
     initialFocus.current?.focus();
     UniversityPortal.getUniversity().then((response: any) => {
@@ -39,30 +44,59 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       if (response.data.domainAccess === "AUTO") {
         setShowDomain(true);
       }
+      setDomainAccessStatus(response.data.domainAccessStatusLog.pop().status);
     });
   }, []);
+  const { can } = useAppAbility();
+  const access = can("VIEW", "SETTINGS");
+  enum domainAccessStatusEnum {
+    VERIFIED = "Verified",
+    NOTVERIFIED = "Not verified(We will contact you on your mail to verify your domain name)",
+    PENDING = "In-Progress",
+    REJECTED = "Rejected",
+  }
+
+  const domainAccessStatusMapper = (status: string) => {
+    switch (status) {
+      case "VERIFIED":
+        return domainAccessStatusEnum.VERIFIED;
+      case "NOT_VERIFIED":
+        return domainAccessStatusEnum.NOTVERIFIED;
+      case "PENDING":
+        return domainAccessStatusEnum.PENDING;
+      default:
+        return domainAccessStatusEnum.REJECTED;
+    }
+  };
 
   const handleSubmit = (data: any) => {
     const emails = data.emails.split(",").map((email: any) => {
       return email.trim();
     });
+    const userRole = remediatorInvite ? "REMEDIATOR" : "STAFF";
     UniversityPortal.studentInvite({
       fullNames: [],
       emails,
       organization: organizationCode,
       rollNos: [],
-      role: "STAFF",
+      role: userRole,
     })
       .then((results: any) => {
         if (results.code === 200) {
-          setShowInvite(false);
-          setDialogMessage("Invitations sent successfully to given emails");
+          if (userRole === "REMEDIATOR") setRemediatorInvite(false);
+          else setShowInvite(false);
+          const message = getInvitationResponseMessage(
+            results.data.newUsers,
+            results.data.existingUsers
+          );
+          setDialogMessage(message);
           setDialogHeading("Invitation Success");
           setMessageBox(!messageBox);
         }
       })
       .catch((err: any) => {
-        setShowInvite(false);
+        if (userRole === "REMEDIATOR") setRemediatorInvite(false);
+        else setShowInvite(false);
         setDialogMessage(
           "Error occurred while sending invitations through emails. Try Again!"
         );
@@ -81,23 +115,13 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       domain: data.domain,
       escalationHandledBy: data.escalationHandledBy,
     }).then((results: any) => {
-      if (results.code == 200) {
+      if (results.code === 200) {
         router.push("/dashboard");
       } else {
         console.log("Error", results.message);
       }
     });
   };
-  window.onscroll = debounce(() => {
-    if (reachedEnd) {
-      return;
-    }
-    if (
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight
-    ) {
-    }
-  }, 100);
 
   const initialValues: FormData = {
     emails: "",
@@ -105,24 +129,38 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
     escalationHandledBy: universityData?.escalationHandledBy || "",
     domain: universityData?.domain || "",
   };
-  return (
+  return access ? (
     <Wrapper>
       <Head>
         <title>Settings | I-Stem</title>
       </Head>
-      <DashboardLayout userType={userType} role={role} hideBreadcrumb={true}>
+      <DashboardLayout
+        userType={userType}
+        role={role}
+        escalationSetting={escalationSetting}
+        hideBreadcrumb
+      >
         <div className="">
           <Row className="stud-row">
-            <Col sm={6}>
+            <Col sm={4}>
               <div ref={initialFocus} tabIndex={-1}>
                 <h2 className="lip-title mt-4">SETTINGS</h2>
               </div>
             </Col>
-            <Col sm={6}>
-              <div className="mt-3 u-button">
+            <Col sm={4}>
+              <div className="mt-3">
                 <GreenButton onClick={() => setShowInvite(true)}>
                   <span className="flex items-center">
-                    <span className="ml-2">INVITE STAFF</span>
+                    <span className="ml-2">INVITE STAFFS</span>
+                  </span>
+                </GreenButton>
+              </div>
+            </Col>
+            <Col sm={4}>
+              <div className="mt-3">
+                <GreenButton onClick={() => setRemediatorInvite(true)}>
+                  <span className="flex items-center">
+                    <span className="ml-2">INVITE REMEDIATORS</span>
                   </span>
                 </GreenButton>
               </div>
@@ -138,9 +176,12 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                 <Form onSubmit={formik.handleSubmit}>
                   <fieldset className="mt-4">
                     <h3 className="lip-subtext lip-label font-semibold text-xl leading-9 settings-font">
-                      Choose between automatically allowing students from
-                      insititute domain or manually giving them access to the
-                      platform.
+                      Choose between automatically allowing{" "}
+                      {userType === UserType.BUSINESS
+                        ? "employees"
+                        : "students"}{" "}
+                      from insititute domain or manually giving them access to
+                      the platform.
                     </h3>
                     <RadioCheck
                       htmlType="radio"
@@ -179,6 +220,10 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                         placeholder="Institute domain"
                         {...formik.getFieldProps("domain")}
                       />
+                      <span className="font-16">
+                        <b>Status: </b>
+                        {domainAccessStatusMapper(domainAccessStatus)}
+                      </span>
                     </Form.Group>
                   ) : (
                     <></>
@@ -225,43 +270,24 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
             </Formik>
           </div>
         </div>
-        <Modal
-          show={showInvite}
-          onHide={() => setShowInvite(false)}
-          animation={true}
+        <InviteModal
+          formSubmit={handleSubmit}
+          isOpen={showInvite}
+          toggleModal={() => setShowInvite(false)}
+          invitationFor="STAFFS"
         >
-          <Modal.Header closeButton>
-            <Modal.Title>
-              <h3 className="lip-title">INVITE STAFFS</h3>
-            </Modal.Title>
-          </Modal.Header>
-          <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-            {formik => (
-              <Form onSubmit={formik.handleSubmit}>
-                <Modal.Body>
-                  Enter staff email address or multiple addresses separated by
-                  commas to invite. A link will be mailed to them to sign up.
-                  <Form.Group controlId="emails">
-                    <Form.Control
-                      className="stud-search-box email"
-                      placeholder="Enter staff email"
-                      {...formik.getFieldProps("emails")}
-                    />
-                  </Form.Group>
-                </Modal.Body>
-                <Modal.Footer>
-                  <div style={{ width: "40%" }}>
-                    <GreenButton htmlType="submit">
-                      <span className="flex items-center">
-                        <span className="ml-2">SEND INVITE</span>
-                      </span>
-                    </GreenButton>
-                  </div>
-                </Modal.Footer>
-              </Form>
-            )}
-          </Formik>
-        </Modal>
+          Enter staff email address or multiple addresses separated by commas to
+          invite. A link will be mailed to them to sign up.
+        </InviteModal>
+        <InviteModal
+          formSubmit={handleSubmit}
+          isOpen={remediatorInvite}
+          toggleModal={() => setRemediatorInvite(false)}
+          invitationFor="REMEDIATORS"
+        >
+          Enter remediator email address or multiple addresses separated by
+          commas to invite. A link will be mailed to them to sign up.
+        </InviteModal>
         <DialogMessageBox
           showModal={messageBox}
           message={dialogMessage}
@@ -270,8 +296,11 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
         />
       </DashboardLayout>
     </Wrapper>
+  ) : (
+    <Error title="Page Not Found" statusCode={404} />
   );
 };
+
 const mapStateToProps = (store: IStore) => {
   const { auth } = store;
   return {

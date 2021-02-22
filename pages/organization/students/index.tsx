@@ -2,60 +2,81 @@ import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 import { NextPage } from "next";
 import Head from "next/head";
-import debounce from "lodash.debounce";
 // #endregion Global Imports
 
 // #region Local Imports
 import "../style.scss";
-import { IStemServices, IStore, ReduxNextPageContext } from "@Interfaces";
+import { IStemServices, IStore } from "@Interfaces";
 import { Wrapper } from "@Components";
 import { DashboardLayout } from "@Components/Layouts/DashboardLayout/index";
 import { GreenButton, WhiteButton } from "@Components/HOC/Dashboard/CTAButtons";
 import fileNames from "@Definitions/Constants/image";
-import { Col, Form, Modal, Pagination, Row, Table } from "react-bootstrap";
-import { Formik } from "formik";
+import { Col, Row, Table } from "react-bootstrap";
 import { UniversityPortal } from "@Services";
 import PrivateRoute from "@Pages/_privateRoute";
 import { UPLOAD_STUDENTS } from "@Definitions/Constants/universityRoutes";
 import { StudentDetails } from "@Components/University/StuentDetails";
 import { DialogMessageBox } from "@Components/Basic/Dialog";
+import { MetricsReportDialog } from "@Components/University/MetricsReport";
+import { InviteModal } from "@Components/University/InviteModal";
+import { getInvitationResponseMessage } from "@Services/helper/utils";
+import { UserType } from "@Definitions/Constants";
+import Pagination from "@Components/HOC/Pagination";
+import Error from "next/error";
+import { useAppAbility } from "src/Hooks/useAppAbility";
 
 const { STUDENTS } = fileNames;
 const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   props: any
 ) => {
   const initialFocus = useRef<HTMLDivElement>(null);
-  const [reachedEnd, setEnd] = useState(false);
   const [showInvite, setShowInvite] = useState(false);
   const [showTable, setShowTable] = useState(false);
   const [studentModal, setStudentModal] = useState(false);
   const [index, setIndex] = useState(0);
-  const [studentData, setStudentData] = useState<StudentDetails[]>([]);
+  const [studentData, setStudentData] = useState<StudentDetails[] | undefined>(
+    undefined
+  );
+  const { can } = useAppAbility();
+  const access = can("VIEW", "STUDENTS");
   const [currentPage, setCurrentPage] = useState(1);
-  const { userType, role, organizationCode } = props.user;
+  const { userType, role, organizationCode, escalationSetting } = props.user;
   const [messageBox, setMessageBox] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [dialogHeading, setDialogHeading] = useState("");
   const [totalStudents, setTotalStudents] = useState(0);
-  useEffect(() => {
-    initialFocus.current?.focus();
-    UniversityPortal.studentsCount().then(e => {
+  const [searchResult, setSearchResult] = useState(false);
+  const [searchString, setSearchString] = useState("");
+  const [metricsModal, setMetricsModal] = useState(false);
+  const studentCount = (searchText: string) => {
+    UniversityPortal.studentsCount({
+      params: { searchString: searchText },
+    }).then(e => {
       setTotalStudents(e.data.count);
       if (e.data.count > 0) {
         setShowTable(true);
       }
     });
-  }, []);
+  };
 
-  useEffect(() => {
+  const getStudentsData = (page: number, searchText: string) => {
+    studentCount(searchText);
     UniversityPortal.studentsData({
-      params: { limit: 10, offset: (currentPage - 1) * 10 },
+      params: {
+        limit: 10,
+        offset: (page - 1) * 10,
+        searchString: searchText,
+      },
     }).then(e => {
       setStudentData(e.data.studentData);
     });
-  }, [currentPage]);
+  };
 
-  const pageNumbers = [];
+  useEffect(() => {
+    initialFocus.current?.focus();
+    getStudentsData(1, "");
+  }, []);
+
   const handleSubmit = (data: any) => {
     const emails = data.emails.split(",").map((email: any) => {
       return email.trim();
@@ -70,7 +91,11 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       .then((results: any) => {
         if (results.code === 200) {
           setShowInvite(false);
-          setDialogMessage("Invitations sent successfully to given emails");
+          const message = getInvitationResponseMessage(
+            results.data.newUsers,
+            results.data.existingUsers
+          );
+          setDialogMessage(message);
           setDialogHeading("Invitation Success");
           setMessageBox(!messageBox);
         }
@@ -90,41 +115,20 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   const toggleModal = () => {
     setStudentModal(!studentModal);
   };
-  // window.onscroll = debounce(() => {
-  //   if (reachedEnd) {
-  //     return;
-  //   }
-  //   if (
-  //     window.innerHeight + document.documentElement.scrollTop ===
-  //     document.documentElement.offsetHeight
-  //   ) {
-  //   }
-  // }, 100);
-
-  const initialValues: FormData = {
-    emails: "",
+  const handlePageNumber = (val: any) => {
+    getStudentsData(Number(val), searchString);
+    setCurrentPage(Number(val));
   };
-  for (let i = 1; i <= Math.ceil(totalStudents / 10); i++) {
-    pageNumbers.push(i);
-  }
-
-  const handlePageNumber = (event: any) => {
-    setCurrentPage(Number(event.target.innerText));
-  };
-  const renderPageNumbers = pageNumbers.map(number => {
-    return (
-      <Pagination.Item key={number} value={number} onClick={handlePageNumber}>
-        {number}
-      </Pagination.Item>
-    );
-  });
   const inviteStudents = (
     <Row className="justify-center">
       <Col sm={4}>
         <div className="mt-4">
           <WhiteButton href={UPLOAD_STUDENTS}>
             <span className="flex items-center">
-              <span className="ml-2">IMPORT STUDENT DATA</span>
+              <span className="ml-2">
+                IMPORT{" "}
+                {userType === UserType.BUSINESS ? "EMPLOYEES" : "STUDENTS"} DATA
+              </span>
             </span>
           </WhiteButton>
         </div>
@@ -133,7 +137,10 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
         <div className="mt-4">
           <GreenButton onClick={() => setShowInvite(true)}>
             <span className="flex items-center">
-              <span className="ml-2">INVITE STUDENTS</span>
+              <span className="ml-2">
+                INVITE{" "}
+                {userType === UserType.BUSINESS ? "EMPLOYEES" : "STUDENTS"}{" "}
+              </span>
             </span>
           </GreenButton>
         </div>
@@ -145,8 +152,10 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       <Col sm="12">
         <img className="stud-img" src={STUDENTS} alt="decorative" />
         <Row className="justify-center lip-subtext mt-4">
-          Please invite your students to the platform or import an already
-          existing list with name and email address.
+          Please invite your{" "}
+          {userType === UserType.BUSINESS ? "employees" : "students"} to the
+          platform or import an already existing list with name and email
+          address.
         </Row>
         <div>
           <div>{inviteStudents}</div>
@@ -155,16 +164,61 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
     </Row>
   );
 
-  return (
+  const handleSearchKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      getStudentsData(1, searchString);
+      if (event.currentTarget.value !== "") setSearchResult(true);
+    }
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const rows = studentData?.map((student, ind) => (
+    <tr>
+      <td
+        onClick={() => {
+          setIndex(ind);
+          toggleModal();
+        }}
+        style={{
+          cursor: "pointer",
+          textDecoration: "underline",
+        }}
+      >
+        {student.name}
+      </td>
+      <td>{student.email}</td>
+      <td>{student.roll}</td>
+      <td>{student.totalRequests}</td>
+      <td>{student.escalatedRequests}</td>
+    </tr>
+  ));
+
+  return access ? (
     <Wrapper>
       <Head>
-        <title>Students | I-Stem</title>
+        <title>
+          {userType === UserType.BUSINESS ? "Employees" : "Students"} | I-Stem
+        </title>
       </Head>
-      <DashboardLayout userType={userType} role={role} hideBreadcrumb>
+      <DashboardLayout
+        userType={userType}
+        role={role}
+        escalationSetting={escalationSetting}
+        hideBreadcrumb
+      >
         <Row className="stud-row">
           <Col sm={3}>
             <div ref={initialFocus} tabIndex={-1}>
-              <h2 className="lip-title mt-4">STUDENTS</h2>
+              <h2 className="lip-title mt-4">
+                {userType === UserType.BUSINESS ? "EMPLOYEES" : "STUDENTS"}{" "}
+              </h2>
             </div>
           </Col>
           {showTable ? <Col>{inviteStudents}</Col> : <></>}
@@ -181,19 +235,23 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
               </Col>
               <Col sm={3} />
               <Col sm={3}>
-                <div className="">
-                  <WhiteButton>
+                <div>
+                  <WhiteButton
+                    onClick={() => {
+                      setMetricsModal(!metricsModal);
+                    }}
+                  >
                     <span className="flex items-center">
-                      <span className="ml-2">SEARCH</span>
+                      <span className="ml-2">GENERATE REPORT</span>
                     </span>
                   </WhiteButton>
                 </div>
               </Col>
             </Row>
-            <Table style={{ marginTop: "1rem" }}>
+            <Table style={{ marginTop: "1rem" }} responsive="md">
               <thead>
                 <tr style={{ borderTop: "hidden" }}>
-                  <th>STUDENT NAME</th>
+                  <th>STUDENT NAME </th>
                   <th>EMAIL</th>
                   <th>ROLL NUMBER</th>
                   <th>TOTAL REQUESTS</th>
@@ -209,9 +267,9 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                         toggleModal();
                       }}
                       style={{
-                        cursor: "pointer",
                         textDecoration: "underline",
                       }}
+                      className="pointer"
                     >
                       {student.name}
                     </td>
@@ -223,82 +281,54 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                 ))}
               </tbody>
             </Table>
-            <div className="lip-pagination">
-              <Pagination>
-                <Pagination.Prev
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                  disabled={currentPage - 1 == 0}
-                >
-                  Previous
-                </Pagination.Prev>
-                {renderPageNumbers}
-                <Pagination.Next
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                  disabled={
-                    currentPage + 1 > pageNumbers[pageNumbers.length - 1]
-                  }
-                >
-                  Next
-                </Pagination.Next>
-              </Pagination>
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              handleNextPage={handleNextPage}
+              handlePreviousPage={handlePreviousPage}
+              handlePageNumber={handlePageNumber}
+              totalItems={totalStudents}
+            />
           </div>
         ) : (
           <div>{isNew}</div>
         )}
-        <Modal show={showInvite} onHide={() => setShowInvite(false)} animation>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              <h3 className="lip-title">INVITE STUDENTS</h3>
-            </Modal.Title>
-          </Modal.Header>
-          <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-            {formik => (
-              <Form onSubmit={formik.handleSubmit}>
-                <Modal.Body>
-                  Enter student email address or multiple addresses separated by
-                  commas to invite. A link will be mailed to them to sign up.
-                  <Form.Group controlId="emails">
-                    <Form.Control
-                      className="stud-search-box email"
-                      placeholder="Enter student email"
-                      {...formik.getFieldProps("emails")}
-                    />
-                  </Form.Group>
-                </Modal.Body>
-                <Modal.Footer>
-                  <div style={{ width: "40%" }}>
-                    <GreenButton htmlType="submit">
-                      <span className="flex items-center">
-                        <span className="ml-2">SEND INVITE</span>
-                      </span>
-                    </GreenButton>
-                  </div>
-                </Modal.Footer>
-              </Form>
-            )}
-          </Formik>
-        </Modal>
         <>
-          {StudentDetails({
-            showModal: studentModal,
-            toggleModal,
-            studentId: studentData[index]?.id,
-            studentDetails: {
-              name: studentData[index]?.name || "",
-              email: studentData[index]?.email || "",
-              roll: studentData[index]?.roll || "",
-            },
-          })}
+          <InviteModal
+            formSubmit={handleSubmit}
+            isOpen={showInvite}
+            toggleModal={() => setShowInvite(false)}
+            invitationFor={
+              userType === UserType.BUSINESS ? "EMPLOYEES" : "STUDENTS"
+            }
+          >
+            Enter student email address or multiple addresses separated by
+            commas to invite. A link will be mailed to them to sign up.
+          </InviteModal>
+          <StudentDetails
+            showModal={studentModal}
+            toggleModal={toggleModal}
+            studentId={(studentData && studentData[index]?.id) || ""}
+            studentDetails={{
+              name: (studentData && studentData[index]?.name) || "",
+              email: (studentData && studentData[index]?.email) || "",
+              roll: (studentData && studentData[index]?.roll) || "",
+            }}
+          />
           <DialogMessageBox
             showModal={messageBox}
             message={dialogMessage}
             heading={dialogHeading}
             toggleDialog={toggleMessageModal}
           />
+          <MetricsReportDialog
+            showModal={metricsModal}
+            toggleDialog={() => setMetricsModal(!metricsModal)}
+          />
         </>
       </DashboardLayout>
     </Wrapper>
+  ) : (
+    <Error title="Page Not Found" statusCode={404} />
   );
 };
 const mapStateToProps = (store: IStore) => {
@@ -309,11 +339,7 @@ const mapStateToProps = (store: IStore) => {
 };
 
 const Extended = connect(mapStateToProps, null)(Students);
-
 export default PrivateRoute(Extended);
-export interface FormData {
-  emails: string;
-}
 
 export interface StudentDetails {
   name: string;
@@ -322,10 +348,4 @@ export interface StudentDetails {
   id: string;
   totalRequests: string;
   escalatedRequests: string;
-}
-
-interface UserRequestActivity {
-  title: string;
-  lastUpdatedAt: string;
-  currentStatus: string;
 }

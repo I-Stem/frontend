@@ -26,6 +26,7 @@ import { VALID_FILE_NAME } from "@Definitions/Constants";
 import PrivateRoute from "../../_privateRoute";
 import { useAppAbility } from "src/Hooks/useAppAbility";
 import Error from "next/error";
+import { serviceTypeEnum } from "@Components/Upload/constants";
 
 const NewVideo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   props: any
@@ -111,13 +112,18 @@ const NewVideo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                   <Upload
                     label="Upload File"
                     type="vcService"
-                    size={200}
+                    size={700}
                     accept={
                       router.query.requestType === "OCR"
                         ? "video/*"
                         : "audio/*,video/*"
                     }
                     onUpload={setFilenameValue}
+                    serviceType={
+                      router.query.requestType === "OCR"
+                        ? serviceTypeEnum.ocr
+                        : serviceTypeEnum.caption
+                    }
                   />
                 </div>
               </Form.Item>

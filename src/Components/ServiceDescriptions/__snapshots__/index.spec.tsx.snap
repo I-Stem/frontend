@@ -1,0 +1,309 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Afc Description should match snapshot 1`] = `
+<div>
+  <div
+    class="col"
+  >
+    <h4
+      class="des-heading"
+    >
+      Input file formats supported
+    </h4>
+    <p>
+      PDF and image formats (JPEG, GIF, GIF, TIFF etc.) under 20 mb.
+    </p>
+    <h4
+      class="des-heading"
+    >
+       Features 
+    </h4>
+    <ul
+      class="ul-list"
+    >
+      <li>
+        Support for heavy math documents.
+      </li>
+      <li>
+        Handle two-columns, headings, tables, lists etc. for non-math documents.
+      </li>
+      <li>
+        You can create and use optional tags during the conversion process which help you to organize your files better. Think of them as folders.
+      </li>
+    </ul>
+    <h4
+      class="des-heading"
+    >
+      Current limitations
+    </h4>
+    <p>
+      Does not handle two-column layouts for math documents, support for languages other than English is coming soon
+    </p>
+    <h4
+      class="des-heading"
+    >
+      Output formats
+    </h4>
+    <p>
+      HTML, docx, txt and MP3 for non-math content, HTML and docx for math content
+    </p>
+    <h4
+      class="des-heading"
+    >
+      Credits used
+    </h4>
+    <p>
+      1 credit/page
+    </p>
+    <h4
+      class="des-heading"
+    >
+      How it works?
+    </h4>
+    <p>
+      Once the file is converted, you will receive an email to a link to download the file and the file will also be available on the I-Stem portal under the "document accessibility" tab.
+    </p>
+    <h4
+      class="des-heading"
+    >
+      Providing feedback
+    </h4>
+    <p>
+      Post your conversion, we would appreciate if you can leave feedback for the request by selecting the "add review" option which is available under the "more" menu against your request on the I-Stem portal.
+    </p>
+    <h4
+      class="des-heading"
+    >
+      Manual remediation
+    </h4>
+    <p>
+      In case of recognition failures or unsatisfactory results, you can escalate your document for manual remediation which is also available under the "more" menu against the request on the portal.
+    </p>
+    <h4
+      class="des-heading"
+    >
+      Credits used for manual remediation
+    </h4>
+    <p>
+      200 credits/page
+    </p>
+    <p>
+      For any questions/concerns, email us at info@inclusivestem.org
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Job Opportunities Description should match snapshot 1`] = `
+<div>
+  <div
+    class="row"
+  >
+    <div
+      class="col"
+    >
+      <p>
+        This service helps people with disabilities to submit their resumes and credentials for being considered for internship and full-time opportunities with our corporate partners.
+      </p>
+      <p>
+        Please be as thorough as possible when completing the job opportunities form.
+      </p>
+      <p>
+        Make sure that your resume is professional, grammatically correct and well-formatted.
+      </p>
+      <p>
+        If you would like help with your resume or portfolio, please check the option at the end of the form to request such assistance. Note that I-Stem cannot guarantee this assistance and is totally contingent on the availability of a suitable mentor/job coach.
+      </p>
+      <p>
+        Once you complete this form, I-Stem will share your details with our corporate partners who will reach out to you should there be a match.
+      </p>
+      <p>
+        Know that completing this form does not guarantee any job whatsoever.
+      </p>
+    </div>
+    <div
+      class="col"
+    >
+      <img
+        aria-hidden="true"
+        src="/static/images/job-desc.svg"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Mentorship Description should match snapshot 1`] = `
+<div>
+  <div
+    class="row"
+  >
+    <div
+      class="col"
+    >
+      <p>
+        This service helps you connect with fellow community members to learn or offer your knowledge. You can sign up as mentee, mentor or both.
+      </p>
+      <h3
+        class="des-heading"
+      >
+        FOR MENTEES
+      </h3>
+      <p>
+        Mentorship cycles are two weeks. This means that once you submit a mentorship request, you cannot submit another one until two weeks end.
+      </p>
+      <p>
+        Only sign up when you are ready to meet with a mentor for a specific query within the next two weeks of you submitting a request. In other words, you should be ready for a mentor call within the next two weeks of you submitting the form.
+      </p>
+      <p>
+        When matched, mentors are only committing to interacting with you over one 45 Mins. call and any additional time they spend with you is totally at their discretion. If you require long-term mentorship, please indicate that in the form.
+      </p>
+      <p>
+        Mentorship is a privilege and you are required to show respect for mentor's time and effort. Please be prepared with specific questions before a mentorship call. Please ensure to include I-Stem (info@inclusivestem.org) in all of your communication with the mentor to the extent possible. All communication as part of this service remains strictly confidential.
+      </p>
+      <p>
+        You have 24 Hrs. after submission of your form to cancel your mentorship request. Cancelling your mentorship calls more than twice after 24 Hrs. of submitting the request will result in you being denied this service.
+      </p>
+      <h3
+        class="des-heading"
+      >
+         FOR MENTORS 
+      </h3>
+      <p>
+        Every mentorship request is a 45 Mins. call. You may choose to engage with the mentee beyond the 45 Mins. call, but that is totally at your discretion.
+      </p>
+      <p>
+        Once you complete this form, your mentorship profile remains active in our system until you "pause" mentorship on the "mentorship" tab on the I-Stem portal.
+      </p>
+      <p>
+        You can specify the cadence at which you are willing to mentor new mentees. Feel free to edit this at any time.
+      </p>
+      <p>
+        When there is a match, the I-Stem team will introduce you with your mentee via an email. We recommend keeping the I-Stem team copied on all communication with the mentee to the extent possible so that we can provide any support as needed.
+      </p>
+      <p>
+        It is totally okay to not have answers to every question that the mentee might have, especially questions around disability or accessibility in case you do not have any experience in the field. Please refer the mentee to the I-Stem team for any such questions.
+      </p>
+      <p>
+        Thank you for considering to share your time and knowledge with our community. We hope you will find this to be a rewarding experience.
+      </p>
+    </div>
+    <div
+      class="col"
+    >
+      <img
+        aria-hidden="true"
+        src="/static/images/mentorship-desc.svg"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`VC Description should match snapshot 1`] = `
+<div>
+  <div
+    class="col"
+  >
+    <h4
+      class="des-heading"
+    >
+      Service options
+    </h4>
+    <p>
+      Captions, text extraction or both
+    </p>
+    <h4
+      class="des-heading"
+    >
+      Input formats
+    </h4>
+    <p>
+      An audio/video (MP3, MP4, WAV etc.) under 200MB.
+    </p>
+    <h4
+      class="des-heading"
+    >
+       Features 
+    </h4>
+    <ul
+      class="ul-list"
+    >
+      <li>
+        In case of captions, you can optionally train a custom model if your audio/video contains domain-specific content (e.g., in case of specialized courses such as Indian History, Biology etc.) by uploading relevant content (e.g. textbook). This will produce better captions.
+      </li>
+      <li>
+        You can create and use optional tags during the conversion process which help you to organize your files better. Think of them as folders.
+      </li>
+    </ul>
+    <h4
+      class="des-heading"
+    >
+       Output formats 
+    </h4>
+    <ul
+      class="ul-list"
+    >
+      <li>
+        Output format for captions: SRT or TXT
+      </li>
+      <li>
+        Output format for text extraction from videos: TXT
+      </li>
+      <li>
+        Output format for both: zip file containing both the outputs
+      </li>
+    </ul>
+    <h4
+      class="des-heading"
+    >
+       Credits used 
+    </h4>
+    <ul
+      class="ul-list"
+    >
+      <li>
+        1 credit/10 s for video captioning/text extraction
+      </li>
+      <li>
+        1 credit/page for training custom model
+      </li>
+    </ul>
+    <h4
+      class="des-heading"
+    >
+      How it works?
+    </h4>
+    <p>
+      Once the file is converted, you will receive an email to a link to download the file and the file will also be available on the I-Stem portal under the "audio/video accessibility" tab.
+    </p>
+    <h4
+      class="des-heading"
+    >
+      Providing feedback
+    </h4>
+    <p>
+      Post your conversion, we would appreciate if you can leave feedback for the request by selecting the "add review" option which is available under the "more" menu against your request on the I-Stem portal.
+    </p>
+    <h4
+      class="des-heading"
+    >
+      Manual remediation
+    </h4>
+    <p>
+      In case of recognition failures or unsatisfactory results, you can escalate your document for manual remediation which is also available under the "more" menu against the request on the portal.
+    </p>
+    <h4
+      class="des-heading"
+    >
+      Credits used for manual remediation
+    </h4>
+    <p>
+      25 credits/Min.
+    </p>
+    <p>
+      For any questions/concerns, email us at info@inclusivestem.org
+    </p>
+  </div>
+</div>
+`;

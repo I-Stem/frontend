@@ -28,12 +28,22 @@ const UploadProgress: React.FunctionComponent<IUpload.IProgressProps> = (
   useEffect(() => {
     initialFocus.current?.focus();
     return () => {
-      console.log("component will unmount");
       if (props.onChangeFocus) {
         props.onChangeFocus(true);
       }
     };
   }, []);
+
+  const calculateRemainingTime = (initiatedAt: string, progress: number) => {
+    const currentTime = new Date();
+    const elapsedTime: any =
+      (currentTime as any) - (new Date(initiatedAt) as any);
+    const totalTime = (elapsedTime / progress) * 100;
+    const remaining = totalTime - elapsedTime;
+    const minutes = Math.floor(remaining / 60000);
+    const seconds = Number(((remaining % 60000) / 1000).toFixed(0));
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
 
   return isUploading ? (
     <section id="upload" className="progress-section">
@@ -67,6 +77,11 @@ const UploadProgress: React.FunctionComponent<IUpload.IProgressProps> = (
                     style={{ width: `${file.progress}%` }}
                   />
                 </div>
+              </div>
+              <div>
+                Remaining Time:{" "}
+                {calculateRemainingTime(file.initiatedAt, file.progress)}{" "}
+                minutes
               </div>
             </div>
           );

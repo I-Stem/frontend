@@ -38,8 +38,20 @@ export const UNIVERSITY_MENU_ITEMS = [
     link: "/organization/students",
   },
   {
+    name: "Employees",
+    link: "/organization/students",
+  },
+  {
     name: "Settings",
     link: "/organization/settings",
+  },
+  {
+    name: "Hiring",
+    link: "/dashboard/hiring",
+  },
+  {
+    name: "Escalations",
+    link: "/organization/escalation",
   },
 ];
 export const VC_BASE_URL = "/dashboard/video-captioning";

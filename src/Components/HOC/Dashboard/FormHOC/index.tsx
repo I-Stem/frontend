@@ -30,7 +30,7 @@ const FormLayoutContainer: React.FunctionComponent<FormProps> = ({
       <Row>
         <Header>
           <div className="text-white float-right pt-1">
-            <CloseOutlined onClick={handleClose} />
+            <CloseOutlined onClick={handleClose} role="button" />
           </div>
         </Header>
       </Row>

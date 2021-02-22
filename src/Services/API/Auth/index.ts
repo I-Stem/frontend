@@ -8,6 +8,7 @@ import {
   AuthModel,
   AuthResetModel,
   AuthVerifyModel,
+  IAuthUser,
 } from "@Interfaces";
 // #endregion Interface Imports
 

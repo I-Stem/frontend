@@ -1,5 +1,6 @@
 module.exports = {
-  moduleFileExtensions: ["js", "jsx", "ts", "tsx"],
+  moduleFileExtensions: ["tsx", "ts", "js", "jsx"],
+  roots: ["<rootDir>/src"],
   globals: {
     "ts-jest": {
       tsConfig: "tsconfig.jest.json",
@@ -7,9 +8,13 @@ module.exports = {
       diagnostics: false,
     },
   },
+  transform: {
+    "^.+\\.tsx?$": "ts-jest"
+  },
   coveragePathIgnorePatterns: ["/node_modules/", "/server/"],
   setupFilesAfterEnv: ["<rootDir>/test/jest.setup.ts"],
   coverageReporters: ["json", "lcov", "text", "text-summary"],
+  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
   moduleNameMapper: {
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
       "<rootDir>/test/mocks.ts",

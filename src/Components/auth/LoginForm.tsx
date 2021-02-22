@@ -13,6 +13,10 @@ import { IAuth } from "./Auth";
 import { UserType } from "@Definitions/Constants";
 import { Modal } from "react-bootstrap";
 import { GreenButton } from "@Components/HOC/Dashboard";
+import GoogleButton from "react-google-button";
+import Cookies from "js-cookie";
+import { UniversityStatus } from "@Definitions/Constants/UniversityConstants";
+import { getContextPathFromUserCreationContext } from "@Definitions/Constants/user/ContextualRedirects";
 
 const { Title } = Typography;
 
@@ -51,6 +55,10 @@ const LoginForm = (props: IAuth.ILoginProps) => {
     }
   };
 
+  const loginWithGoogle = () => {
+    router.push("/api/auth/google?authFlow=login");
+  };
+
   useEffect(() => {
     return () => {
       // Clear message state on component unmount
@@ -69,19 +77,40 @@ const LoginForm = (props: IAuth.ILoginProps) => {
       if (!result.error) {
         setRespMessage("");
         props.clearAuthMessage();
+
         if (
-          result.data.user.userType === UserType.UNIVERSITY &&
+          (result.data.user.userType === UserType.UNIVERSITY ||
+            result.data.user.userType === UserType.BUSINESS) &&
           result.data.user.role === "STAFF"
         ) {
-          if (result.data.organizationStatus === "REGISTRATION_COMPLETE") {
+          if (
+            result.data.organizationStatus ===
+            UniversityStatus.REGISTRATION_COMPLETE
+          ) {
             router.push("/dashboard");
           } else if (
-            result.data.organizationStatus === "REGISTRATION_PENDING"
+            result.data.organizationStatus ===
+            UniversityStatus.REGISTRATION_PENDING
           ) {
             router.push({
               pathname: "/register/business/setup",
               query: { organizationName: result.data.user.organizationName },
             });
+          } else if (
+            result.data.organizationStatus ===
+            UniversityStatus.REGISTRATION_REJECTED
+          ) {
+            setOrgMessage("Your registration for the university was rejected.");
+            setShowDialog(true);
+            setRespMessage("");
+          } else if (
+            result.data.organizationStatus === UniversityStatus.APPROVAL_PENDING
+          ) {
+            setOrgMessage(
+              "Your registration for the university is pending approval from I-Stem. You will be notified through email once approved."
+            );
+            setShowDialog(true);
+            setRespMessage("");
           }
           // else if (
           //   result.data.organizationStatus === "REGISTRATION_REJECTED"
@@ -95,23 +124,16 @@ const LoginForm = (props: IAuth.ILoginProps) => {
           //   setShowDialog(true);
           // }
         } else {
-          router.push("/dashboard");
+          if (result.data?.contextPath)
+            router.push(
+              getContextPathFromUserCreationContext(result.data?.contextPath)
+            );
+          else router.push("/dashboard");
         }
-      } else if (result.code === 403) {
-        setOrgMessage("Your registration for the university was rejected.");
-        setShowDialog(true);
-        setRespMessage("");
-      } else if (result.code === 400) {
-        setOrgMessage(
-          "Your registration for the university is pending approval from I-Stem. You will be notified through email once approved."
-        );
-        setShowDialog(true);
-        setRespMessage("");
-      } else {
-        setRespMessage(result.message);
-      }
+      } else setRespMessage(result.message);
     });
   };
+
   const { email } = router.query;
   return (
     <div className="mt-16 auth-form">
@@ -119,11 +141,12 @@ const LoginForm = (props: IAuth.ILoginProps) => {
         <title>Sign in | I-Stem</title>
       </Head>
       <div ref={headref} tabIndex={-1}>
-        <Title className="lipHead">{message || heading}</Title>
+        <Title className="lipHead">{router.query.message || heading}</Title>
       </div>
       <Title className="lipHead" level={4}>
         {subtitle}
       </Title>
+      <GoogleButton onClick={loginWithGoogle} />
       <div className="h-4" />
       <Form
         aria-live="polite"

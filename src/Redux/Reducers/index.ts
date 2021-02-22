@@ -12,6 +12,8 @@ import { CreditsReducer } from "./credits";
 import { VCReducer } from "./vc";
 import { CommunityReducer } from "./community";
 import { UniversityReducer } from "./university";
+import { EscalationReducer } from "./escalation";
+import { AdminReducer } from "./admin";
 // #endregion Local Imports
 
 export default combineReducers({
@@ -24,4 +26,6 @@ export default combineReducers({
   vcService: VCReducer,
   communityService: CommunityReducer,
   university: UniversityReducer,
+  escalation: EscalationReducer,
+  admin: AdminReducer,
 });

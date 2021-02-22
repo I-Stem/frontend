@@ -11,4 +11,5 @@ export interface IAuthPayload {
   noStudentsWithDisability?: string;
   verificationLink?: string;
   verifyToken?: string;
+  context?: string;
 }
