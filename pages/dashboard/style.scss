@@ -252,7 +252,7 @@ legend {
   cursor: pointer;
 }
 .desc-toggle-icon {
-  padding: 0.4rem;
+  padding: 0.8rem;
   margin-top: -0.3rem;
 }
 .lip-pagination {
@@ -260,4 +260,101 @@ legend {
 }
 .lip-pagination ul {
   display: inline-flex !important;
+}
+.filter-col {
+  margin-bottom: -5rem;
+  border-left-width: 2px;
+  transition: all 2s linear;
+}
+.font-14 {
+  font-size: 14px !important;
+}
+.display-inline {
+  display: inline;
+  line-height: 2rem;
+}
+.detail-button {
+  height: 52px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+  text-align: center;
+  font-family: Poppins;
+  color: #595959;
+  background-color: white;
+  padding: 15px 19px;
+  border-color: #e8e8e8 !important;
+  margin-top: 8px !important;
+  margin-right: 16px;
+}
+
+.detail-button:hover,
+.detail-button:focus,
+.detail-button:active {
+  background-color: seagreen !important;
+}
+.express-interest {
+  margin-left: 1rem;
+}
+.m-botttom {
+  margin-bottom: -1rem !important;
+}
+.filter-toasts {
+  display: inline-table !important;
+  margin-left: 1rem !important;
+  width: fit-content;
+  border: 1px solid #a4d0ff;
+}
+.bg-toasts {
+  background: #f2f8ff;
+}
+.reset-button {
+  border-width: 0px;
+  margin-top: -2.3rem;
+  font-size: 14px !important;
+  width: 50%;
+  margin-left: 5rem;
+  padding-top: 2px;
+}
+.reset-button:hover,
+.reset-button:focus,
+.reset-button:active {
+  border-width: 0px !important;
+}
+.lip-pagination {
+  text-align: center;
+  margin-top: 1rem;
+}
+.lip-pagination ul {
+  display: inline-flex !important;
+}
+.padding-head {
+  padding-left: 0px !important;
+}
+.hide-filters {
+  float: right;
+}
+.show-filters {
+  float: right;
+  font-size: 18px;
+}
+.email-subject {
+  height: 52px !important;
+}
+.email-labels {
+  width: 22%;
+  padding-top: 0.5rem;
+}
+.action-buttons {
+  display: flex;
+  float: right;
+  margin-right: 16px;
+}
+.user-info-buttons {
+  display: flex;
+  margin-left: 16px;
+}
+.modal-title {
+  font-size: 16px;
+  font: 600;
 }

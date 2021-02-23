@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
+import "./style.scss";
 
 import { GreenButton } from "../../HOC/Dashboard/CTAButtons/GreenButton";
 
+/**
+ * Basic Dialog message box to display general information.
+ * @param props
+ */
 export const DialogMessageBox: React.FC<DialogMessageProps> = (
   props: DialogMessageProps
 ) => {
@@ -20,13 +25,13 @@ export const DialogMessageBox: React.FC<DialogMessageProps> = (
     }
   };
   return (
-    <Modal show={open} onHide={toggleDialog}>
+    <Modal show={open} onHide={toggleDialog} animation>
       <Modal.Header closeButton>
         <Modal.Title>{heading}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{message}</Modal.Body>
+      <Modal.Body className="space-pre-line">{message}</Modal.Body>
       <Modal.Footer>
-        <div style={{ width: "40%" }}>
+        <div className="width-40">
           <GreenButton htmlType="button" onClick={handleClose}>
             <span className="flex items-center">
               <span className="ml-2">Close</span>

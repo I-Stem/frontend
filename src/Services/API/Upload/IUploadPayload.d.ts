@@ -5,4 +5,5 @@ export interface IUploadPayload {
   progress: number;
   hash?: string;
   fileName?: string;
+  initiatedAt?: string;
 }

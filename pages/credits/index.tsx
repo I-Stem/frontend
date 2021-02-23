@@ -33,7 +33,7 @@ const Credits: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   const [credits, setCredits] = useState<ICreditsData>({
     totalCredits: 0,
   });
-  const { userType, role } = props.user;
+  const { userType, role, escalationSetting } = props.user;
 
   const [feedbackFlags, setFeedbackFlags] = useState<FeedbackFlagsData>();
 
@@ -84,7 +84,12 @@ const Credits: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       <Head>
         <title>Credit Balance | I-Stem</title>
       </Head>
-      <DashboardLayout userType={userType} role={role} hideBreadcrumb>
+      <DashboardLayout
+        userType={userType}
+        role={role}
+        hideBreadcrumb
+        escalationSetting={escalationSetting}
+      >
         {credits && (
           <>
             <div className="flex justify-between credit-bar">

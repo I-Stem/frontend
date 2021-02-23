@@ -2,220 +2,156 @@ import React, { useEffect, useRef, useState } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
 import { connect } from "react-redux";
-import { useRouter } from "next/router";
+import Error from "next/error";
 // #endregion Global Imports
 
 // #region Local Imports
 import "../style.scss";
 import { IStemServices, IStore } from "@Interfaces";
 import { Wrapper } from "@Components";
-import { FormLayout } from "@Components/HOC/Dashboard/FormHOC";
-import { useAppAbility } from "src/Hooks/useAppAbility";
-import { Button, Modal, Table } from "react-bootstrap";
+import { Button, Form, Modal, Table } from "react-bootstrap";
 import PrivateRoute from "@Pages/_privateRoute";
-import { Menu, MenuButton, MenuItem, MenuList } from "@reach/menu-button";
-import { MoreOutlined } from "@ant-design/icons";
 import Upload from "@Components/Upload";
 import { EscalationService } from "@Services/API/Escalations";
 import {
   EscalationDetails,
-  EscalationDetailsParams,
   EscalationsData,
 } from "@Services/API/Escalations/IEscalationResponse";
 import { GreenButton } from "@Components/HOC/Dashboard";
 import Moment from "moment";
 import { DashboardLayout } from "@Components/Layouts/DashboardLayout";
+import { UploadActions } from "@Actions";
+import { useAppAbility } from "src/Hooks/useAppAbility";
+import { EscalationStatus, ServiceType } from "@Definitions/Constants";
+import Link from "next/link";
 
 const Escalations: NextPage<
   IStemServices.IProps,
   IStemServices.InitialProps
 > = (props: any) => {
+  const { can } = useAppAbility();
+  const access: boolean = can("VIEW", "ESCALATIONS");
   const initialFocus = useRef<HTMLDivElement>(null);
-  const [escalationData, setEscalationData] = useState<EscalationsData[]>([]);
-  const [escalationDetails, setEscalationDetails] = useState<
-    EscalationDetails
-  >();
-  const { userType, role } = props.user;
-  const [showModel, setShowModel] = useState(false);
-  const [showResolve, setShowResolve] = useState(false);
+  const [escalationData, setEscalationData] = useState<
+    EscalationsData[] | undefined
+  >(undefined);
+  const { userType, role, escalationSetting } = props.user;
+  const [filters, setFilters] = useState<{ status: string; service: string }>({
+    status: "ALL",
+    service: "ALL",
+  });
+  const fetchEscalationData = () => {
+    const { service, status } = filters;
+    EscalationService.getEscalations({
+      params: { status, service },
+    }).then(response => {
+      setEscalationData(response.data);
+    });
+  };
   useEffect(() => {
     initialFocus?.current?.focus();
-    EscalationService.getEscalations().then(response => {
-      setEscalationData(response?.data || []);
-    });
   }, []);
-  const ecalationModal = (id: string) => {
-    EscalationService.getEscalationDetails({ params: { id } }).then(
-      response => {
-        setEscalationDetails(response.data);
-        setShowModel(true);
-      }
-    );
-  };
+  useEffect(() => {
+    fetchEscalationData();
+  }, [filters]);
 
-  const button = (text: string, link: string | undefined) => (
-    <Button
-      variant="primary"
-      className="detail-button"
-      href={link}
-      style={{ marginTop: "10px" }}
-    >
-      {text}
-    </Button>
-  );
+  const rows = escalationData?.map((data: EscalationsData) => (
+    <tr key={data.escalationId}>
+      <td>
+        <Link href={`/organization/escalation/${data.escalationId}`}>
+          <a>{data.documentName}</a>
+        </Link>
+      </td>
 
-  const assignMe = (escalationId: string) => {
-    EscalationService.assignEscalation({ id: escalationId }).then(response => {
-      if (response.error) {
-        console.log("Error occured", response.error);
-      } else {
-        setShowModel(false);
-      }
-    });
-  };
+      <td>
+        {data.escalationForService === ServiceType.AFC
+          ? "Document Accessibility"
+          : "Video Captioning"}
+      </td>
+      {data?.escalationForService === ServiceType.AFC ? (
+        <td>{data.pageRanges}</td>
+      ) : (
+        <td>{data.videoPortions}</td>
+      )}
+      <td>{Moment(data.escaltionDate).format("DD MMM, hh:mm a")}</td>
+      <td>{data.resolverName === "" ? "Unassigned" : data.resolverName}</td>
+      <td>{data.status?.replace(/[_]/, " ")}</td>
+    </tr>
+  ));
 
-  const resolveEscalation = (escalationId: string | undefined) => {
-    EscalationService.resolveEscalation({
-      id: escalationId,
-      inputFileLink: props.escalation.inputFileLink,
-    }).then(response => {
-      setShowModel(false);
-    });
-  };
-
-  const rows = escalationData?.map((data: EscalationsData) => {
+  const statusDropdown = () => {
     return (
-      <tr key={data.escalationId}>
-        <td
-          onClick={() => {
-            ecalationModal(data.escalationId);
-          }}
-          style={{ cursor: "pointer", textDecoration: "underline" }}
+      <Form.Group>
+        <Form.Label>Status</Form.Label>
+        <Form.Control
+          as="select"
+          onChange={event =>
+            setFilters({ ...filters, status: event.target.value })
+          }
         >
-          {data.documentName}
-        </td>
-        <td>
-          {data.escalationForService === "afc"
-            ? "Document Accessibility"
-            : "Video Captioning"}
-        </td>
-        {data?.escalationForService === "afc" ? (
-          <td>{data.pageRanges}</td>
-        ) : (
-          <td>{data.videoPortions}</td>
-        )}
-        <td>{Moment(data.escaltionDate).format("DD MMM, hh:mm a")}</td>
-        <td>{data.resolverName === "" ? "Unassigned" : data.resolverName}</td>
-      </tr>
+          <option value="ALL">All Status</option>
+          <option value={EscalationStatus.UNASSIGNED}>Unassigned</option>
+          <option value={EscalationStatus.INPROGRESS}>In Progress</option>
+          <option value={EscalationStatus.RESOLVED}>Resolved</option>
+        </Form.Control>
+      </Form.Group>
     );
-  });
+  };
 
-  const checkResolver = (resolverId: string) => {
-    if (props.user.id === resolverId) {
-      return (
-        <div className="display-flex">
-          <div className="remediate-upload">
-            <Upload
-              type="escalation"
-              size={20}
-              accept=".srt, .txt, .html, .mp3, .docx"
-              label="Remediated file"
-              onUpload={(fileName: string) => {
-                setShowResolve(true);
-              }}
-            />
-          </div>
-          {showResolve && (
-            <div className="resolve-escalation">
-              <GreenButton
-                onClick={() =>
-                  resolveEscalation(escalationDetails?.escalationId)
-                }
-              >
-                Resolve
-              </GreenButton>
-            </div>
-          )}
-        </div>
-      );
-    }
-    if (resolverId === "") {
-      return (
-        <GreenButton
-          onClick={() => assignMe(escalationDetails?.escalationId || "")}
+  const serviceDropdown = () => {
+    return (
+      <Form.Group>
+        <Form.Label>For Service</Form.Label>
+        <Form.Control
+          as="select"
+          onChange={event =>
+            setFilters({ ...filters, service: event.target.value })
+          }
         >
-          Assign to me
-        </GreenButton>
-      );
-    }
-    return <></>;
+          <option value="ALL">All Services</option>
+          <option value={ServiceType.AFC}>Document Accessibility</option>
+          <option value={ServiceType.VC}>Video Captioning</option>
+        </Form.Control>
+      </Form.Group>
+    );
   };
 
   return (
     <Wrapper>
-      <Head>
-        <title>Escalations | I-Stem</title>
-      </Head>
-      <DashboardLayout role={role} hideBreadcrumb userType={userType}>
-        <div className="lip-margin">
-          <div tabIndex={-1} ref={initialFocus}>
-            <h2 className="mt-8 lip-title">ESCALATIONS</h2>
-          </div>
-          <div className="">
-            <Table style={{ marginTop: "1rem" }}>
-              <thead>
-                <tr style={{ borderTop: "hidden" }}>
-                  <th>Document Name</th>
-                  <th>For Service</th>
-                  <th>Page ranges / Video portions</th>
-                  <th>Escalated on</th>
-                  <th>Assigned to</th>
-                </tr>
-              </thead>
-              <tbody>{rows}</tbody>
-            </Table>
-          </div>
-        </div>
-        <Modal show={showModel} onHide={() => setShowModel(false)} animation>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              <h3 className="lip-title">{escalationDetails?.documentName}</h3>
-            </Modal.Title>
-          </Modal.Header>
-
-          <Modal.Body className="escalation-modal">
-            <Table />
-            {escalationDetails?.escalationForService === "afc" ? (
-              <tr>
-                {" "}
-                <th className="height-3rem">Page Ranges:</th>
-                <td> {escalationDetails.pageRanges}</td>
-              </tr>
-            ) : (
-              <tr>
-                <th className="height-3rem">Video Portions:</th>
-                <td> {escalationDetails?.videoPortions}</td>
-              </tr>
-            )}
-            <tr>
-              <th className="height-3rem">Source File: </th>
-              <td>{button("Download", escalationDetails?.sourceFileUrl)}</td>
-            </tr>
-            <tr>
-              <th className="height-3rem">Converted File: </th>
-              <td>
-                {button(
-                  "Download",
-                  escalationDetails?.aiServiceConvertedFileURL
-                )}
-              </td>
-            </tr>
-          </Modal.Body>
-          <Modal.Footer>
-            {checkResolver(escalationDetails?.resolverId || "")}
-          </Modal.Footer>
-        </Modal>
-      </DashboardLayout>
+      {access ? (
+        <>
+          <Head>
+            <title>Escalations | I-Stem</title>
+          </Head>
+          <DashboardLayout
+            role={role}
+            hideBreadcrumb
+            userType={userType}
+            escalationSetting={escalationSetting}
+          >
+            <div>
+              <div tabIndex={-1} ref={initialFocus}>
+                <h2 className="mt-8 lip-title">ESCALATIONS</h2>
+              </div>
+              <Table style={{ marginTop: "1rem" }} responsive="md">
+                <thead>
+                  <tr style={{ borderTop: "hidden" }}>
+                    <th>Document Name</th>
+                    <th style={{ paddingBottom: 0 }}>{serviceDropdown()}</th>
+                    <th>Page ranges / Video portions</th>
+                    <th>Escalated on</th>
+                    <th>Assigned to</th>
+                    <th style={{ paddingBottom: 0 }}>{statusDropdown()}</th>
+                  </tr>
+                </thead>
+                {escalationData && <tbody>{rows}</tbody>}
+              </Table>
+            </div>
+          </DashboardLayout>
+        </>
+      ) : (
+        <Error title="Page Not Found" statusCode={404} />
+      )}
     </Wrapper>
   );
 };

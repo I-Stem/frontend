@@ -1,16 +1,10 @@
 // #region Local Imports
 import { Http } from "@Services";
-import axios from "axios";
-import { response } from "express";
 // #endregion Local Imports
 
 // #region Interface Imports
 
-import {
-  CreditsModel,
-  FeedbackFlagsModal,
-  GenericFeedbackModel,
-} from "./Credits";
+import { CreditsModel, FeedbackFlagsModal } from "./Credits";
 import { FeedbackData } from "./ICreditsResponse";
 // #endregion Interface Imports
 

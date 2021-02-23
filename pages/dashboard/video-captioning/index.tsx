@@ -3,7 +3,6 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { Col, Row, Typography } from "antd";
 import { connect } from "react-redux";
-import debounce from "lodash.debounce";
 // #endregion Global Imports
 
 // #region Local Imports
@@ -45,7 +44,7 @@ const VideoCaptioning: NextPage<
   const [searchPayload, setSearchPayload] = useState({ page: 1 });
   const { can } = useAppAbility();
   const access: boolean = can("VIEW", "AI_SERVICES");
-  const { userType, role } = props.user;
+  const { userType, role, escalationSetting } = props.user;
   const { totalCredits } = props;
   const isCreditEnough = totalCredits > 0;
   const [showDescription, setShowDescription] = useState(false);
@@ -212,7 +211,12 @@ const VideoCaptioning: NextPage<
         <title>Audio/Video Accessibility Service | I-Stem</title>
       </Head>
       {access ? (
-        <DashboardLayout userType={userType} role={role} hideBreadcrumb>
+        <DashboardLayout
+          userType={userType}
+          role={role}
+          escalationSetting={escalationSetting}
+          hideBreadcrumb
+        >
           <Row>
             <Col span={16}>
               <div ref={initialFocus} tabIndex={-1}>

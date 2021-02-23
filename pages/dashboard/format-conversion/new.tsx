@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import { NextPage } from "next";
-import { Form, Input, Radio } from "antd";
+import { Form, Input } from "antd";
 import { Select } from "@material-ui/core";
 import { connect } from "react-redux";
 import { useRouter } from "next/router";
@@ -10,7 +10,6 @@ import { logEvent } from "@Services/monitoring/GoogleAnalytics";
 
 // #region Local Imports
 import "../style.scss";
-import { ITagsData, ITagsResponse } from "@Interfaces";
 import { IStemServices, ReduxNextPageContext } from "@Interfaces";
 import { Wrapper } from "@Components";
 import {
@@ -18,7 +17,7 @@ import {
   outputFormatsListAFC,
 } from "@Definitions/Constants/dashboard-form-constants";
 import { FormLayout } from "@Components/HOC/Dashboard/FormHOC";
-import { AfcServiceActions, UploadActions } from "@Actions";
+import { AfcServiceActions, UploadActions, TagsActions } from "@Actions";
 import {
   AFC_SUCCESS,
   AFC_SUCCESS_UPLOADING,
@@ -30,6 +29,7 @@ import { VALID_FILE_NAME } from "@Definitions/Constants";
 import PrivateRoute from "../../_privateRoute";
 import { useAppAbility } from "src/Hooks/useAppAbility";
 import Error from "next/error";
+import { serviceTypeEnum } from "@Components/Upload/constants";
 
 const NewFile: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   props: any
@@ -49,7 +49,7 @@ const NewFile: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       .addAfc(documentData)
       .then((result: any) => {
         logEvent(props.user?.id, "AFC", "file_submitted");
-        if (result.inputFileId) {
+        if (result.inputFileId && result.inputFileLink) {
           console.log("Successfully uploaded the file.", result.inputFileId);
           router.push(AFC_SUCCESS);
         } else {
@@ -77,14 +77,14 @@ const NewFile: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   const [hideNonMathFormat, setHideNonMathFormat] = useState(false);
 
   const handleMathChange = (event: any) => {
-    if (event.target.value == "MATH") {
+    if (event.target.value === "MATH") {
       setHideNonMathFormat(true);
     } else {
       setHideNonMathFormat(false);
     }
   };
   const outputFormat = Array.from(outputFormatsListAFC)
-    .filter(([key, val]) => {
+    .filter(([key]) => {
       return hideNonMathFormat
         ? [AFCRequestOutputFormat.HTML, AFCRequestOutputFormat.WORD].includes(
             key
@@ -133,8 +133,9 @@ const NewFile: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                 </label>
                 <div className="width-40p pt-4">
                   <Upload
-                    label="Upload File"
                     type="afcService"
+                    label="Upload File"
+                    serviceType={serviceTypeEnum.afc}
                     size={20}
                     accept="image/*,.pdf"
                     onUpload={setFilenameValue}
@@ -253,6 +254,7 @@ NewFile.getInitialProps = async (
 const mapDispatchToProps = {
   addAfc: AfcServiceActions.Add,
   resetList: UploadActions.resetUploadList,
+  searchTag: TagsActions.Search,
 };
 
 const Extended = connect(null, mapDispatchToProps)(NewFile);

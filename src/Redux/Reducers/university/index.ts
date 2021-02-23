@@ -28,6 +28,8 @@ export const UniversityReducer = (
         ...state,
         csvErrors: action.payload?.csvErrors,
       };
+    case ActionConsts.University.RESET_CSV_DATA:
+      return INITIAL_STATE;
     default:
       return state;
   }

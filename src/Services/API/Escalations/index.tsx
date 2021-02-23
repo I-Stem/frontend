@@ -5,8 +5,13 @@ import {
 } from "./IEscalationResponse";
 
 export const EscalationService = {
-  getEscalations: async (): Promise<EscalationResponse> => {
-    return Http.get<EscalationResponse>("/escalation");
+  getEscalations: async (params: {
+    params: {
+      status: string;
+      service: string;
+    };
+  }): Promise<EscalationResponse> => {
+    return Http.get<EscalationResponse>("/escalation", params.params);
   },
   assignEscalation: async (payload: { id: string }): Promise<any> => {
     return Http.post("/escalation/assign", undefined, payload);

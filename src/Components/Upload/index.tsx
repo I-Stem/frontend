@@ -12,6 +12,8 @@ import "./style.scss";
 // #endregion Local Imports
 
 // #region Interface Imports
+
+import { validateFileFormat } from "../../Services/helper/validateFileFormat";
 import { IUpload } from "./Upload";
 // #endregion Interface Imports
 
@@ -31,7 +33,7 @@ const Upload: React.FunctionComponent<IUpload.IProps> = (
   }
 
   function handleFileChange(event: any) {
-    const { type = "", size = 0 } = props;
+    const { type = "", size = 0, serviceType } = props;
     if (
       (event.target as HTMLInputElement).files &&
       (event.target as HTMLInputElement).files?.length
@@ -41,11 +43,15 @@ const Upload: React.FunctionComponent<IUpload.IProps> = (
         alert("File is too big!");
         return;
       }
+      const fileName: string = file.name;
+      if (validateFileFormat(fileName, serviceType) === false) return;
+      const initiatedAt = new Date().toISOString();
       props.initiateUploading({
         file,
         fileName: file.name,
         type,
         progress: 5,
+        initiatedAt,
       });
 
       fileHash(file, function(hash: string) {
@@ -55,6 +61,7 @@ const Upload: React.FunctionComponent<IUpload.IProps> = (
           hash,
           type,
           progress: 10,
+          initiatedAt,
         });
       });
       if (props.onUpload) props.onUpload(file.name);

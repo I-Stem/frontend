@@ -7,6 +7,7 @@ import { Grid } from "@material-ui/core";
 // #region Local Imports
 import "./style.scss";
 import {
+  CardPreferences,
   CreditsService,
   IStemServices,
   IStore,
@@ -25,7 +26,7 @@ import { IServiceResponse } from "@Services/API/AccessService/IServiceResponse";
 import { connect } from "react-redux";
 import { RecommendedActions } from "@Components/University/RecommendedActions";
 import { UserType } from "@Definitions/Constants";
-import { CreditsActions } from "@Actions";
+import { AuthActions, CreditsActions } from "@Actions";
 import { AccessService } from "../src/Services/API/AccessService";
 import PrivateRoute from "./_privateRoute";
 
@@ -33,12 +34,7 @@ const StemServices: NextPage<
   IStemServices.IProps,
   IStemServices.InitialProps
 > = (props: any) => {
-  const {
-    userType,
-    role,
-    showOnboardStudentsCard,
-    showOnboardStaffCard,
-  } = props.user;
+  const { userType, role, escalationSetting, userPreferences } = props.user;
   const initialFocus = useRef<HTMLDivElement>(null);
   const messageFocus = useRef<HTMLDivElement>(null);
   const [focus, updateFocus] = useState(false);
@@ -58,6 +54,12 @@ const StemServices: NextPage<
   useEffect(() => {
     props.getCredits();
   }, []);
+
+  const updateCardPreferences = (updatedPreferences: CardPreferences) => {
+    props.updatePreferences({
+      user: { ...props.user, cardPreferences: updatedPreferences },
+    });
+  };
 
   const { can } = useAppAbility();
   const access: boolean = can("VIEW", "AI_SERVICES");
@@ -106,9 +108,14 @@ const StemServices: NextPage<
   const resources = ResourcesList.filter((data: any) => {
     if (
       userType === UserType.VOLUNTEER ||
-      (userType === UserType.UNIVERSITY && role == "STAFF")
+      (userType === UserType.UNIVERSITY && role === "STAFF")
     ) {
       return data.ServiceName !== "Job Opportunities";
+    } else if (userType === UserType.BUSINESS && role == "STAFF") {
+      return (
+        data.ServiceName !== "Job Opportunities" &&
+        data.ServiceName !== "Webinars"
+      );
     }
     return data.ServiceName !== "";
   }).map(service => {
@@ -123,13 +130,25 @@ const StemServices: NextPage<
       <Head>
         <title>Dashboard | I-Stem</title>
       </Head>
-      <DashboardLayout userType={userType} role={role} hideBreadcrumb>
+      <DashboardLayout
+        userType={userType}
+        role={role}
+        escalationSetting={escalationSetting}
+        hideBreadcrumb
+      >
         <div className="pl-16 pr-12 flex-1" key="2">
-          {userType === UserType.UNIVERSITY &&
-          (role === "STAFF" || role === "REMEDIATOR") ? (
+          {(userType === UserType.UNIVERSITY ||
+            userType === UserType.BUSINESS) &&
+          role === "STAFF" ? (
             <RecommendedActions
-              showOnboardStudentsCard={showOnboardStudentsCard}
-              showOnboardStaffCard={showOnboardStaffCard}
+              cardPreferences={{
+                showOnboardStudentsCard:
+                  userPreferences?.cardPreferences?.showOnboardStudentsCard,
+                showOnboardStaffCard:
+                  userPreferences?.cardPreferences?.showOnboardStaffCard,
+              }}
+              updatePreferences={updateCardPreferences}
+              userType={userType}
             />
           ) : (
             <></>
@@ -137,12 +156,24 @@ const StemServices: NextPage<
           <Grid item className="pt-4">
             <div ref={initialFocus} tabIndex={-1}>
               <h2 className="font-semibold text-xl heading-color">
-                AI SERVICES
+                PROGRAMS AND RESOURCES
               </h2>
             </div>
           </Grid>
+          <Grid container spacing={3}>
+            {resources}
+          </Grid>
+
+          <Grid item className="pt-4">
+            <h2 className="font-semibold text-xl heading-color">AI SERVICES</h2>
+          </Grid>
           <Grid container spacing={3} className="pb-3">
-            {AIservicesList.map(service => {
+            {AIservicesList.filter(data => {
+              if (userType !== UserType.BUSINESS) {
+                return data.ServiceName !== "Hiring";
+              }
+              return data.ServiceName !== "";
+            }).map(service => {
               return (
                 <Grid
                   item
@@ -162,16 +193,6 @@ const StemServices: NextPage<
               );
             })}
             {access ? <div /> : requestAccess()}
-          </Grid>
-          <Grid item className="pt-4">
-            <div tabIndex={-1}>
-              <h2 className="font-semibold text-xl heading-color">
-                PROGRAMS AND RESOURCES
-              </h2>
-            </div>
-          </Grid>
-          <Grid container spacing={3}>
-            {resources}
           </Grid>
         </div>
       </DashboardLayout>
@@ -196,6 +217,7 @@ const mapStateToProps = (store: IStore) => {
 
 const mapDispatchToProps = {
   getCredits: CreditsActions.GetCredits,
+  updatePreferences: AuthActions.updateCardPreferences,
 };
 
 export default PrivateRoute(

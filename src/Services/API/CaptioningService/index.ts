@@ -33,6 +33,12 @@ export const CaptioningService = {
     return Http.post("/vc", undefined, payload.params);
   },
 
+  updateVc: async (
+    id: string
+  ): Promise<CaptioningServicePatchModel.PatchApodResponse> => {
+    return Http.post(`/vc/failed/${id}`, undefined);
+  },
+
   review: async (
     id: string,
     payload: CaptioningServicePatchModel.PatchApodPayload

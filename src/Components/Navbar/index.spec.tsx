@@ -7,7 +7,9 @@ describe("Navbar", () => {
   it("should render without fail", () => {
     const { getByText } = render(<Navbar />);
 
-    expect(getByText("Navbar")).toBeTruthy();
+    expect(
+      getByText("Already have an account?" || "New to I-Stem?")
+    ).toBeTruthy();
   });
 
   it("should match snapshot", () => {

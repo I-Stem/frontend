@@ -21,6 +21,7 @@ import { UserType } from "@Definitions/Constants";
 import "./style.scss";
 import Head from "next/head";
 import Link from "next/link";
+import { getContextPathFromUserCreationContext } from "@Definitions/Constants/user/ContextualRedirects";
 // #endregion Interface Imports
 
 const { Content } = Layout;
@@ -33,10 +34,6 @@ export const GoogleLogin: NextPage<ILogin.IProps, ILogin.InitialProps> = (
   const [message, setMessage] = useState<string | string[]>("");
   const [description, setDescription] = useState<string>("");
   useEffect(() => {
-    Cookies.set("invitationToken", "");
-    Cookies.set("invitationEmail", "");
-    Cookies.set("userType", "");
-    Cookies.set("liprodAuthFlow", "");
     if (router.query.message) {
       setMessage(router.query.message || "");
     } else {
@@ -78,7 +75,13 @@ export const GoogleLogin: NextPage<ILogin.IProps, ILogin.InitialProps> = (
             }
           } else {
             AuthToken.storeToken(router.query.token.toString());
-            router.push("/dashboard");
+            if (result.data.data.contextPath)
+              router.push(
+                getContextPathFromUserCreationContext(
+                  result.data.data.contextPath
+                )
+              );
+            else router.push("/dashboard");
           }
         })
         .catch(error => {

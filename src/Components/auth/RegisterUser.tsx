@@ -11,12 +11,11 @@ import {
   UserType,
 } from "@Definitions/Constants";
 import "./auth.scss";
-import { IAuthPayload } from "@Interfaces";
+import { IAuthPayload, IAuthResponse } from "@Interfaces";
 import AuthDisclaimer from "./AuthDisclaimer";
 import { IAuth } from "./Auth";
 import { GreenButton } from "@Components/HOC/Dashboard";
 import GoogleButton from "react-google-button";
-import Cookies from "js-cookie";
 
 const { Title } = Typography;
 const layout = {
@@ -28,11 +27,16 @@ const RegisterUser = (props: IAuth.IRegisterUserProps) => {
   const router = useRouter();
   const { userType, email, verificationToken } = props;
   const loginWithGoogle = () => {
-    Cookies.set("liprodAuthFlow", "register");
-    Cookies.set("userType", userType);
-    Cookies.set("invitationToken", verificationToken ? verificationToken : "");
-    Cookies.set("invitationEmail", email ? email : "");
-    router.push("/api/auth/google/");
+    router.push({
+      pathname: "/api/auth/google",
+      query: {
+        authFlow: "register",
+        userType: userType,
+        invitationToken: verificationToken ? verificationToken : "",
+        invitationEmail: email ? email : "",
+        context: props.context?.toUpperCase(),
+      },
+    });
   };
 
   const onFinish = (values: any) => {
@@ -46,10 +50,15 @@ const RegisterUser = (props: IAuth.IRegisterUserProps) => {
         userType: userType,
         verificationLink: `${BASE_URL}${VERIFICATION_URL}`,
         verifyToken: verificationToken,
+        context: String(props.context).toUpperCase(),
       })
-      .then((result: IAuthPayload) => {
+      .then((result: IAuthResponse) => {
         if (result.error) {
-          router.push(`${LOGIN_PAGE_ROUTE}?email=${encodeURIComponent(email)}`);
+          router.push(
+            `${LOGIN_PAGE_ROUTE}?email=${encodeURIComponent(
+              email
+            )}&message=${encodeURIComponent(result.message)}`
+          );
         } else if (router.query.verificationToken) {
           router.push({
             pathname: "/register/success",
@@ -59,22 +68,27 @@ const RegisterUser = (props: IAuth.IRegisterUserProps) => {
           router.push("/register/success");
         }
       });
-    // }
   };
 
   const checkUserType = () => {
+    if (router.query.context === "hackathon")
+      return <span className="capitalize">Hackathon Participant</span>;
     if (router.query.userType === UserType.I_STEM)
       return <span className="capitalize">Individual</span>;
     if (router.query.userType === UserType.VOLUNTEER)
       return <span className="capitalize">Volunteer or Mentor</span>;
-    return <span className="capitalize">Organization</span>;
+    if (router.query.userType === UserType.UNIVERSITY)
+      return <span className="capitalize">University</span>;
+    if (router.query.userType === UserType.BUSINESS)
+      return <span className="capitalize">Business</span>;
   };
 
   return (
     <section id="registeruser" className="mt-16 auth-form">
       <Title className="lipHead">Welcome to I-Stem!</Title>
       <Title className="lipHead" level={4}>
-        Register your account as {checkUserType()}
+        Register your account as{" "}
+        <span className="capitalize"> {checkUserType()}</span>
       </Title>
       <GoogleButton label="Register with Google" onClick={loginWithGoogle} />
       <div className="mt-6">
@@ -126,9 +140,12 @@ const RegisterUser = (props: IAuth.IRegisterUserProps) => {
                 />
               </Form.Item>
             </Col>
-            {!router.query.verificationToken &&
-            (UserType.VOLUNTEER === userType ||
-              UserType.UNIVERSITY === userType) ? (
+          </Row>
+          {!router.query.verificationToken &&
+          (UserType.VOLUNTEER === userType ||
+            UserType.UNIVERSITY === userType ||
+            UserType.BUSINESS === userType) ? (
+            <Row gutter={24}>
               <Col xs={24} md={12}>
                 <Form.Item
                   {...layout}
@@ -150,10 +167,10 @@ const RegisterUser = (props: IAuth.IRegisterUserProps) => {
                   />
                 </Form.Item>
               </Col>
-            ) : (
-              <></>
-            )}
-          </Row>
+            </Row>
+          ) : (
+            <></>
+          )}
           <Row gutter={24} className="mt-2">
             <Col xs={24} md={12}>
               <Form.Item

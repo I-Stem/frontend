@@ -6,13 +6,13 @@ export interface EscalationsData {
   escalationForService: string;
   pageRanges: string[];
   videoPortions: string[];
-  sourceFileUrl: string;
+  status: string;
 }
 
 export interface EscalationResponse {
   flag: string;
   message: string;
-  data?: EscalationsData[];
+  data: EscalationsData[];
   code: number;
   error?: string;
 }
@@ -30,4 +30,8 @@ export interface EscalationDetails {
   sourceFileUrl: string;
   escalationForService: string;
   escalationId: string;
+  description: string;
+  docOutputFileUrl: string;
+  assignedOn: string;
+  assignedTo: string;
 }

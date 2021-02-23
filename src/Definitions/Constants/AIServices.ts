@@ -2,6 +2,7 @@ import imageConstants from "@Definitions/Constants/image";
 import {
   AFC_HOME_ROUTE,
   VIDEO_CAPTIONING_HOME_ROUTE,
+  HIRING,
 } from "@Definitions/Constants";
 import { ServiceInstance } from "@Components/StemServices/ServiceInstance";
 

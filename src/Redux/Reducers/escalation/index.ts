@@ -18,6 +18,9 @@ export const EscalationReducer = (
   action: IAction<IMapPayload>
 ) => {
   switch (action.type) {
+    case ActionConsts.Escalation.RESET_ESCALATION:
+      return INITIAL_STATE;
+
     case ActionConsts.Escalation.REMEDIATE_ESCALATION:
       return {
         ...state,

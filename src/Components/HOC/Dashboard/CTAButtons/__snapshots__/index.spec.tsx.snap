@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BlueButton should match snapshot 1`] = `
+<div>
+  <div
+    class="w-full"
+  >
+    <button
+      class="ant-btn ant-btn-block text-center blue-btn"
+      type="button"
+    >
+      <span
+        class="font-semibold text-lg text-white leading-6"
+      >
+        Test BlueButton
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`BlueButton should match snapshot 2`] = `
+<div>
+  <div
+    class="w-full"
+  >
+    <button
+      class="ant-btn ant-btn-block text-center white-btn"
+      type="button"
+    >
+      <span
+        class="font-semibold text-lg text-white leading-6"
+      >
+        Test WhiteButton
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`GreenButton should match snapshot 1`] = `
+<div>
+  <div
+    class="w-full"
+  >
+    <button
+      class="ant-btn ant-btn-block text-center green-btn"
+      type="button"
+    >
+      <span
+        class="font-semibold text-lg text-white leading-6"
+      >
+        Test GreenButton
+      </span>
+    </button>
+  </div>
+</div>
+`;

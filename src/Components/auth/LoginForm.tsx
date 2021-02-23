@@ -16,6 +16,7 @@ import { GreenButton } from "@Components/HOC/Dashboard";
 import GoogleButton from "react-google-button";
 import Cookies from "js-cookie";
 import { UniversityStatus } from "@Definitions/Constants/UniversityConstants";
+import { getContextPathFromUserCreationContext } from "@Definitions/Constants/user/ContextualRedirects";
 
 const { Title } = Typography;
 
@@ -55,8 +56,7 @@ const LoginForm = (props: IAuth.ILoginProps) => {
   };
 
   const loginWithGoogle = () => {
-    Cookies.set("liprodAuthFlow", "login");
-    router.push("/api/auth/google/");
+    router.push("/api/auth/google?authFlow=login");
   };
 
   useEffect(() => {
@@ -79,7 +79,8 @@ const LoginForm = (props: IAuth.ILoginProps) => {
         props.clearAuthMessage();
 
         if (
-          result.data.user.userType === UserType.UNIVERSITY &&
+          (result.data.user.userType === UserType.UNIVERSITY ||
+            result.data.user.userType === UserType.BUSINESS) &&
           result.data.user.role === "STAFF"
         ) {
           if (
@@ -111,7 +112,24 @@ const LoginForm = (props: IAuth.ILoginProps) => {
             setShowDialog(true);
             setRespMessage("");
           }
-        } else router.push("/dashboard");
+          // else if (
+          //   result.data.organizationStatus === "REGISTRATION_REJECTED"
+          // ) {
+          //   setOrgMessage("Your registration for the university was rejected.");
+          //   setShowDialog(true);
+          // } else {
+          //   setOrgMessage(
+          //     "Your registration for the university is pending approval from I-Stem. You will be notified through email once approved."
+          //   );
+          //   setShowDialog(true);
+          // }
+        } else {
+          if (result.data?.contextPath)
+            router.push(
+              getContextPathFromUserCreationContext(result.data?.contextPath)
+            );
+          else router.push("/dashboard");
+        }
       } else setRespMessage(result.message);
     });
   };
@@ -123,7 +141,7 @@ const LoginForm = (props: IAuth.ILoginProps) => {
         <title>Sign in | I-Stem</title>
       </Head>
       <div ref={headref} tabIndex={-1}>
-        <Title className="lipHead">{heading}</Title>
+        <Title className="lipHead">{router.query.message || heading}</Title>
       </div>
       <Title className="lipHead" level={4}>
         {subtitle}

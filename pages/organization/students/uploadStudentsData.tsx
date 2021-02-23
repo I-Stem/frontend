@@ -16,16 +16,22 @@ import { UniversityPortalActions } from "src/Actions/UniversityActions";
 import { COLUMN_MAPPING } from "@Definitions/Constants/universityRoutes";
 import fileNames from "@Definitions/Constants/image";
 import Link from "next/link";
+import { UserType } from "@Definitions/Constants";
+import { useAppAbility } from "src/Hooks/useAppAbility";
+import Error from "next/error";
 
 const Stepone: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   props: any
 ) => {
   const initialFocus = useRef<HTMLDivElement>(null);
   const [showError, setShowError] = useState(false);
+  const { userType } = props.user;
   const router = useRouter();
   useEffect(() => {
     initialFocus?.current?.focus();
   });
+  const { can } = useAppAbility();
+  const access = can("VIEW", "STUDENTS");
   const handleFileUpload = (data: any, fileInfo: any) => {
     if (data.length) {
       props.uploadCsv({
@@ -42,10 +48,13 @@ const Stepone: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
     skipEmptyLines: true,
     transformHeader: (header: any) => header.toUpperCase().replace(/\W/g, "_"),
   };
-  return (
+  return access ? (
     <Wrapper>
       <Head>
-        <title>Upload Student Data | I-Stem</title>
+        <title>
+          Upload {userType === UserType.BUSINESS ? "Employee" : "Student"} Data
+          | I-Stem
+        </title>
       </Head>
       <FormLayout form="uploadCSV" hideFooter>
         <div className="lip-margin">
@@ -54,7 +63,8 @@ const Stepone: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
           </div>
           <p className="lip-subtext">
             Upload the CSV file with name, email id and roll no(optional) fields
-            for student data. Email ID must be unique. Download a sample file
+            for {userType === UserType.BUSINESS ? "employees" : "student"} data.
+            Email ID must be unique. Download a sample file
             <Link href={fileNames.IMPORT_STUDENTS_SAMPLE}> here.</Link>
           </p>
           <div className="stud-upload">
@@ -73,13 +83,16 @@ const Stepone: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
         </div>
       </FormLayout>
     </Wrapper>
+  ) : (
+    <Error statusCode={404} title="Page Not Found" />
   );
 };
 
 const mapStateToProps = (store: IStore) => {
-  const { university } = store;
+  const { university, auth } = store;
   return {
     csvFile: university?.csvFile,
+    user: auth.user,
   };
 };
 

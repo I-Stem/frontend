@@ -5,4 +5,5 @@ export interface DashboardProps {
   hideBreadcrumb: boolean;
   userType?: UserType;
   role?: string;
+  escalationSetting?: string;
 }

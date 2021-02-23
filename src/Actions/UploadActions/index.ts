@@ -43,10 +43,6 @@ export const UploadActions = {
     dispatch: any,
     getState: () => IStore
   ) => {
-    // dispatch({
-    //   payload,
-    //   type: ActionConsts.Upload.INITIATE_UPLOADING,
-    // });
     function progressCallback(progressEvent: ProgressEvent) {
       const progress: number =
         Number((progressEvent.loaded / progressEvent.total).toFixed(2)) * 100;

@@ -79,10 +79,10 @@ const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   const onsubmit = (data: any) => {
     console.log("Form Data:", JSON.stringify(data));
     let _mentorshipStatus: MentorshipStatus[] = [];
-    if (data.signupAs === "mentor" || data.signupAs === "both") {
+    if (data.signupAs === "MENTOR" || data.signupAs === "BOTH") {
       _mentorshipStatus = [{ status: "started", actionAt: new Date() }];
     }
-    if (data.signupAs === "mentee" || data.signupAs === "both") {
+    if (data.signupAs === "MENTEE" || data.signupAs === "BOTH") {
       menteeStatus = false;
     }
     const formData = {
@@ -136,19 +136,19 @@ const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
 
   const handlePauseCancel = (name: string, type?: string) => {
     let signupAsStatus = preFill?.signupAs;
-    if (name === "mentee") {
+    if (name === "MENTEE") {
       menteeStatus = true;
-    } else if (name === "mentor") {
+    } else if (name === "MENTOR") {
       if (type === "pause") {
         mentorShipStatus = "paused";
       }
       if (type === "resume") {
         mentorShipStatus = "active";
       }
-    } else if (name === "both") {
-      if (type === "mentee") {
+    } else if (name === "BOTH") {
+      if (type === "MENTEE") {
         menteeStatus = true;
-        signupAsStatus = "mentor";
+        signupAsStatus = "MENTOR";
       }
       if (type === "pause") {
         mentorShipStatus = "paused";
@@ -197,30 +197,30 @@ const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
           preFill.mentorshipStatus[preFill.mentorshipStatus.length - 1].status;
       else status = "start";
     }
-    if (preFill?.signupAs === "mentee") {
+    if (preFill?.signupAs === "MENTEE") {
       if (preFill?.cancelMenteeship === true) {
         return <></>;
       }
-      return toggleButtons("CANCEL MENTEE REQUEST", "mentee");
+      return toggleButtons("CANCEL MENTEE REQUEST", "MENTEE");
     }
-    if (preFill?.signupAs === "mentor") {
+    if (preFill?.signupAs === "MENTOR") {
       return toggleButtons(
         status === "paused" ? "RESUME MENTORSHIP" : "PAUSE MENTORSHIP",
-        "mentor",
+        "MENTOR",
         status === "paused" ? "resume" : "pause"
       );
     }
-    if (preFill?.signupAs === "both") {
+    if (preFill?.signupAs === "BOTH") {
       return (
         <div style={{ display: "flex", gap: "12px" }}>
           {preFill.cancelMenteeship === false ? (
-            toggleButtons("CANCEL MENTEE REQUEST", "both", "mentee")
+            toggleButtons("CANCEL MENTEE REQUEST", "BOTH", "MENTEE")
           ) : (
             <div />
           )}
           {toggleButtons(
             status === "paused" ? "RESUME MENTORSHIP" : "PAUSE MENTORSHIP",
-            "both",
+            "BOTH",
             status === "paused" ? "resume" : "pause"
           )}
         </div>
@@ -334,46 +334,46 @@ const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
         <RadioCheck
           htmlType="radio"
           name="connectOften"
-          value="once_every_week"
+          value="ONCE_EVERY_WEEK"
           label="Once every week"
-          id="once_every_week"
+          id="ONCE_EVERY_WEEK"
           onChange={() =>
-            formik.setFieldValue("connectOften", "once_every_week")
+            formik.setFieldValue("connectOften", "ONCE_EVERY_WEEK")
           }
-          checked={formik.values.connectOften === "once_every_week"}
+          checked={formik.values.connectOften === "ONCE_EVERY_WEEK"}
         />
         <RadioCheck
           htmlType="radio"
           name="connectOften"
-          value="once_every_other_week"
+          value="ONCE_EVERY_OTHER_WEEK"
           label="Once every other week"
-          id="once_every_other_week"
+          id="ONCE_EVERY_OTHER_WEEK"
           onChange={() =>
-            formik.setFieldValue("connectOften", "once_every_other_week")
+            formik.setFieldValue("connectOften", "ONCE_EVERY_OTHER_WEEK")
           }
-          checked={formik.values.connectOften === "once_every_other_week"}
+          checked={formik.values.connectOften === "ONCE_EVERY_OTHER_WEEK"}
         />
         <RadioCheck
           htmlType="radio"
           name="connectOften"
-          value="once_every_month"
+          value="ONCE_EVERY_MONTH"
           label="Once every month"
-          id="once_every_month"
+          id="ONCE_EVERY_MONTH"
           onChange={() =>
-            formik.setFieldValue("connectOften", "once_every_month")
+            formik.setFieldValue("connectOften", "ONCE_EVERY_MONTH")
           }
-          checked={formik.values.connectOften === "once_every_month"}
+          checked={formik.values.connectOften === "ONCE_EVERY_MONTH"}
         />
         <RadioCheck
           htmlType="radio"
           name="connectOften"
-          value="once_every_3_months"
+          value="ONCE_EVERY_3_MONTHS"
           label="Once every 3 months"
-          id="once_every_3_months"
+          id="ONCE_EVERY_3_MONTHS"
           onChange={() =>
-            formik.setFieldValue("connectOften", "once_every_3_months")
+            formik.setFieldValue("connectOften", "ONCE_EVERY_3_MONTHS")
           }
-          checked={formik.values.connectOften === "once_every_3_months"}
+          checked={formik.values.connectOften === "ONCE_EVERY_3_MONTHS"}
         />
       </fieldset>
       {formik.errors.connectOften && formik.touched.connectOften ? (
@@ -383,13 +383,13 @@ const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   );
 
   const conditional = (formik: FormikProps<MentorshipFormFields>) => {
-    if (formik.values.signupAs === "mentee") {
+    if (formik.values.signupAs === "MENTEE") {
       return menteeSection(formik);
     }
-    if (formik.values.signupAs === "mentor") {
+    if (formik.values.signupAs === "MENTOR") {
       return mentorSection(formik);
     }
-    if (formik.values.signupAs === "both") {
+    if (formik.values.signupAs === "BOTH") {
       return (
         <div>
           {menteeSection(formik)}
@@ -473,42 +473,43 @@ const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                     "Current Position is required"
                   ),
                   isPWD: Yup.string().required("Select the option"),
-                  associatedDisabilities: Yup.array()
-                    .required()
-                    .when("isPWD", {
-                      is: "true",
-                      then: schema => schema,
-                      otherwise: Yup.array(),
-                    }),
+                  associatedDisabilities: Yup.array().when("isPWD", {
+                    is: "false",
+                    then: schema => schema,
+                    otherwise: Yup.array().min(
+                      1,
+                      "Select atleast one disability"
+                    ),
+                  }),
                   signupAs: Yup.string().required("Sign Up As required"),
                   learnSkills: Yup.string().when("signupAs", {
                     is: (value: string) =>
-                      !(value === "mentee" || value === "both"),
+                      !(value === "MENTEE" || value === "BOTH"),
                     then: schema => schema,
                     otherwise: Yup.string().required("Skills required"),
                   }),
                   contactNumber: Yup.string().when("signupAs", {
                     is: (value: string) =>
-                      !(value === "mentee" || value === "both"),
+                      !(value === "MENTEE" || value === "BOTH"),
                     then: schema => schema,
                     otherwise: Yup.string().required("Contact Number required"),
                   }),
                   questionToMentor: Yup.string(),
                   menteeAgreement: Yup.boolean().when("signupAs", {
                     is: (value: string) =>
-                      !(value === "mentee" || value === "both"),
+                      !(value === "MENTEE" || value === "BOTH"),
                     then: schema => schema,
                     otherwise: Yup.boolean().required("Agreement required"),
                   }),
                   mentorSkills: Yup.string().when("signupAs", {
                     is: (value: string) =>
-                      !(value === "mentor" || value === "both"),
+                      !(value === "MENTOR" || value === "BOTH"),
                     then: schema => schema,
                     otherwise: Yup.string().required("Mentor skills required"),
                   }),
                   connectOften: Yup.string().when("signupAs", {
                     is: (value: string) =>
-                      !(value === "mentor" || value === "both"),
+                      !(value === "MENTOR" || value === "BOTH"),
                     then: schema => schema,
                     otherwise: Yup.string().required(
                       "Choose one option for disability"
@@ -611,16 +612,7 @@ const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                                   value={data.name}
                                   key={`${i}`}
                                   name="associatedDisabilities"
-                                  onChange={() =>
-                                    formik.setFieldValue(
-                                      "associatedDisabilities",
-                                      [
-                                        ...formik.values
-                                          ?.associatedDisabilities!,
-                                        data.name,
-                                      ]
-                                    )
-                                  }
+                                  onChange={formik.handleChange}
                                 />
                               </div>
                             );
@@ -653,35 +645,35 @@ const Mentorship: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                       <RadioCheck
                         htmlType="radio"
                         name="signupAs"
-                        value="mentee"
+                        value="MENTEE"
                         label="Mentee"
-                        id="mentee"
+                        id="MENTEE"
                         onChange={() =>
-                          formik.setFieldValue("signupAs", "mentee")
+                          formik.setFieldValue("signupAs", "MENTEE")
                         }
-                        checked={formik.values.signupAs === "mentee"}
+                        checked={formik.values.signupAs === "MENTEE"}
                       />
                       <RadioCheck
                         htmlType="radio"
                         name="signupAs"
-                        value="mentor"
+                        value="MENTOR"
                         label="Mentor"
-                        id="mentor"
+                        id="MENTOR"
                         onChange={() =>
-                          formik.setFieldValue("signupAs", "mentor")
+                          formik.setFieldValue("signupAs", "MENTOR")
                         }
-                        checked={formik.values.signupAs === "mentor"}
+                        checked={formik.values.signupAs === "MENTOR"}
                       />
                       <RadioCheck
                         htmlType="radio"
                         name="signupAs"
-                        value="both"
+                        value="BOTH"
                         label="Both"
-                        id="both"
+                        id="BOTH"
                         onChange={() =>
-                          formik.setFieldValue("signupAs", "both")
+                          formik.setFieldValue("signupAs", "BOTH")
                         }
-                        checked={formik.values.signupAs === "both"}
+                        checked={formik.values.signupAs === "BOTH"}
                       />
                     </fieldset>
                     {formik.errors.signupAs && formik.touched.signupAs ? (

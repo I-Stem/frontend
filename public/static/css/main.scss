@@ -47,7 +47,7 @@ body {
 .width-20p {
   width: 20%;
 }
-.MuiTypography-h2{
+.MuiTypography-h2 {
   font-size: 30px !important;
   font-family: "Poppins", sans-serif !important;
   font-weight: 600 !important;
@@ -91,12 +91,12 @@ body {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   border: 0;
 }
-.Mui-selected{
+.Mui-selected {
   background-color: #002852 !important;
-  color: #FFFFFF !important;
+  color: #ffffff !important;
 }
 .MuiDrawer-paper {
   top: 80px !important;
@@ -104,46 +104,57 @@ body {
   padding-top: 2rem;
   padding-left: 1rem;
 }
-.MuiAutocomplete-inputRoot{
+.MuiAutocomplete-inputRoot {
   height: 52px;
 }
-.MuiInputLabel-root{
+.MuiInputLabel-root {
   font-size: 16px !important;
   font-weight: 600 !important;
   color: #bfbfc2 !important;
   font-family: "Poppins" !important;
 }
-.downshift-div{
+.downshift-div {
   border-width: 1.5px;
   border-radius: 5px;
   height: 52px;
 }
-.downshift-input{
+.downshift-input {
   height: 49px;
   width: 85%;
   padding: 1rem;
 }
-.downshift-menu{
+.downshift-menu {
   position: absolute;
   background: white;
   max-height: 180px;
   overflow-y: auto;
-  width: fit-content;
   padding-right: 6.5%;
   padding-left: 1%;
   z-index: 1000;
   border-right-width: 1px;
   border-left-width: 1px;
 }
-.downshift-item{
-  padding: .5rem;
+.downshift-item {
+  padding: 0.5rem;
 }
-.downshift-toggle-button{
+.downshift-toggle-button {
   height: 52px;
 }
-.MuiCheckbox-colorSecondary.Mui-checked{
-  color: #008A5A !important;
+.multiselect-menu {
+  position: absolute;
+  background: white;
+  max-height: 180px;
+  overflow-y: auto;
+  width: 90%;
+  padding-right: 6.5%;
+  padding-left: 1%;
+  z-index: 1000;
+  border-right-width: 1px;
+  border-left-width: 1px;
 }
-.MuiRadio-colorSecondary.Mui-checked{
-  color: #008A5A !important;
+.MuiCheckbox-colorSecondary.Mui-checked {
+  color: #008a5a !important;
+}
+.MuiRadio-colorSecondary.Mui-checked {
+  color: #008a5a !important;
 }

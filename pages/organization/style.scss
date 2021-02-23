@@ -18,6 +18,7 @@ $blue-btn-background: var(--color-btn-blue);
   width: inherit;
   border-width: 1px;
   border-radius: 4px;
+  height: 52px;
 }
 .email {
   width: 100%;
@@ -157,4 +158,24 @@ $blue-btn-background: var(--color-btn-blue);
   background-color: white;
   padding: 10px 19px;
   border-color: #e8e8e8 !important;
+}
+.font-16 {
+  font-size: 1rem;
+}
+.pointer {
+  cursor: pointer;
+}
+.search-image {
+  background: #fff;
+  border-right: none;
+}
+.stud-search-box:focus {
+  border-color: #ced4da;
+  box-shadow: none;
+}
+.no-left-border {
+  border-left: none;
+}
+.font-16 {
+  font-size: 16px;
 }

@@ -1,5 +1,5 @@
 // #region Global Imports
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
 import { Col, Layout, Row } from "antd";
 // #endregion Global Imports
@@ -16,6 +16,7 @@ import "../style.scss";
 // #region Interface Imports
 import { IRegister } from "@Interfaces";
 import { UserType } from "@Definitions/Constants";
+import { useRouter } from "next/router";
 // #endregion Interface Imports
 
 const { Content } = Layout;
@@ -25,6 +26,18 @@ export const Register: NextPage<
   IRegister.IProps,
   IRegister.InitialProps
 > = () => {
+  const router = useRouter();
+  const [currentUserType, setCurrentUserType] = useState<UserType>(
+    UserType.BUSINESS
+  );
+  useEffect(() => {
+    if (router.query.userType === UserType.BUSINESS) {
+      setCurrentUserType(UserType.BUSINESS);
+    } else if (router.query.userType === UserType.UNIVERSITY) {
+      setCurrentUserType(UserType.UNIVERSITY);
+    }
+  }, []);
+
   return (
     <section className="auth-bg" id="register">
       <Wrapper>
@@ -42,7 +55,7 @@ export const Register: NextPage<
             </Col>
             <Col xs={24} lg={11}>
               <div className="p-6 mt-8">
-                <RegisterUser userType={UserType.UNIVERSITY} />
+                <RegisterUser userType={currentUserType} />
               </div>
             </Col>
           </Row>

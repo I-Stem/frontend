@@ -1,8 +1,8 @@
 export interface DisabilitiesData {
-  _id: String;
-  name: String;
-  createdAt: String;
-  updatedAt: String;
+  _id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface DisabilitiesDataResponse {
@@ -22,6 +22,7 @@ export interface JobPreferencesData {
   highestDegree: String;
   major: String;
   workExperience: String;
+  totalExperience: String;
   associatedDisabilities: string[];
   currentPlace: String;
   canRelocate: String;
@@ -74,10 +75,10 @@ export interface JobPreferencesResponse {
 }
 
 export interface IndustryData {
-  _id: String;
-  name: String;
-  createdAt: String;
-  updatedAt: String;
+  _id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
 }
 export interface IndustryResponse {
   flag: string;
@@ -96,6 +97,23 @@ export interface SkillsResponse {
   flag: string;
   message: string;
   data?: SkillsData[];
+  code: number;
+  error?: string;
+}
+export interface HackathonData {
+  isPWD: string;
+  associatedDisabilities: string[];
+  designation: string;
+  orgName: string;
+  canCode: string;
+  preferedAreas: string;
+  expectations: string;
+  anythingElse: string;
+}
+export interface HackathonResponse {
+  flag: string;
+  message: string;
+  data?: HackathonData;
   code: number;
   error?: string;
 }

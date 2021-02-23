@@ -51,7 +51,11 @@ const EscalateRequestModal: React.FunctionComponent<ModalProps> = ({
     if (serviceType === "vc") {
       if ((videoLength / 60) * PER_MINUTE_COST < credits.totalCredits) {
         props
-          .vcEscalate(service?.id, { ...payload, requestType: option })
+          .vcEscalate(service?.id, {
+            ...payload,
+            requestType: option,
+            description: values.description,
+          })
           .then(() => {
             updateFunction("");
             secondaryAction(null);
@@ -81,7 +85,11 @@ const EscalateRequestModal: React.FunctionComponent<ModalProps> = ({
       } else {
         try {
           props
-            .afcEscalate(service?.id, { ...payload, escalatedPageRange: range })
+            .afcEscalate(service?.id, {
+              ...payload,
+              escalatedPageRange: range,
+              description: values.description,
+            })
             .then(() => {
               props.updateCredits({ cost });
               updateFunction("");
@@ -124,10 +132,11 @@ const EscalateRequestModal: React.FunctionComponent<ModalProps> = ({
           initialValues={initialValues}
           validationSchema={Yup.object().shape({
             pages: Yup.string().required("Please select an option"),
-            range: Yup.string()
-              .matches(rangeExp, "Please enter proper format like: 1-2")
-              .required("Please provide proper range"),
-            descriptions: Yup.string(),
+            range: Yup.string().matches(
+              rangeExp,
+              "Please enter proper format like: 1-2"
+            ),
+            description: Yup.string(),
           })}
           onSubmit={submitEscalateRequest}
         >

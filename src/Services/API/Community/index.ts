@@ -1,7 +1,5 @@
 // #region Local Imports
 import { Http } from "@Services";
-import axios from "axios";
-import { response } from "express";
 // #endregion Local Imports
 
 // #region Interface Imports
@@ -14,6 +12,8 @@ import {
 } from "./Community";
 import {
   DisabilitiesData,
+  HackathonData,
+  HackathonResponse,
   JobPreferencesData,
   MentorshipData,
 } from "./ICommunityResponse";
@@ -40,6 +40,10 @@ export const CommunityService = {
     payload: JobPreferencesModal.PostJobPreferences
   ): Promise<JobPreferencesModal.GetJobPreferencesResponse> => {
     return Http.post("/job", undefined, payload.params);
+  },
+
+  postHackathon: async (payload: HackathonData): Promise<HackathonResponse> => {
+    return Http.post("/hackathon", undefined, payload);
   },
 
   postJobPreference(params: JobPreferencesData) {

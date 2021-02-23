@@ -14,6 +14,7 @@ import fileNames from "@Definitions/Constants/image";
 
 // #region Interface Imports
 import { IRegister } from "@Interfaces";
+import { useRouter } from "next/router";
 // #endregion Interface Imports
 
 const { Content } = Layout;
@@ -23,6 +24,8 @@ export const Register: NextPage<
   IRegister.IProps,
   IRegister.InitialProps
 > = () => {
+  const router = useRouter();
+
   return (
     <section className="auth-bg" id="register">
       <Wrapper>
@@ -40,7 +43,7 @@ export const Register: NextPage<
             </Col>
             <Col xs={24} lg={11}>
               <div className="p-6 mt-8">
-                <RegisterMain />
+                <RegisterMain registrationContext={router.query.context} />
               </div>
             </Col>
           </Row>

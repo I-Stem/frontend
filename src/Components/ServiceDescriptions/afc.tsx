@@ -27,8 +27,7 @@ export const AfcDescription = (props: any) => {
       </p>
       <h4 className="des-heading">Output formats</h4>
       <p>
-        HTML, docx, txt and MP3 for non-math content, HTML and docx for math
-        content
+        HTML, docx and txt for non-math content, HTML and docx for math content
       </p>
       <h4 className="des-heading">Credits used</h4>
       <p>1 credit/page</p>

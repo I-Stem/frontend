@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SuccessScreen should match snapshot 1`] = `
+<div>
+  <div
+    class="lipbg"
+  >
+    <div
+      class=" text-center w-full"
+    >
+      <div
+        class="lip-header p-4  w-full flex justify-between"
+      >
+        <div
+          class="PrivateHiddenCss-mdUp-23"
+        >
+          <button
+            aria-label="open drawer"
+            class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-edgeStart"
+            style="color: rgb(255, 255, 255);"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="MuiIconButton-label"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+                />
+              </svg>
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+        </div>
+        <img
+          alt="Logo"
+          class="lip-logo"
+          src="/static/images/logo.svg"
+        />
+      </div>
+    </div>
+    <div
+      class=" w-full pt-8"
+    >
+      <img
+        alt="Status"
+        class="mx-auto"
+        src=""
+      />
+    </div>
+    <div
+      class="text-center w-full px-64 pt-10"
+      tabindex="-1"
+    >
+      <h1
+        class=" text-center font-semibold text-4xl leading-10 text-white"
+      >
+        Success
+      </h1>
+    </div>
+    <div
+      class=" text-center w-full px-64 pt-4"
+    >
+      <p
+        class=" text-center text-lg leading-7 font-medium text-white px-40"
+      >
+        Thank you
+      </p>
+    </div>
+  </div>
+</div>
+`;

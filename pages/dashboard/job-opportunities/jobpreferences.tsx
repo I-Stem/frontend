@@ -32,6 +32,8 @@ import { DASHBOARD_ROUTE, THANKYOU } from "@Definitions/Constants/pageroutes";
 import DropdownWrapper from "@Components/StemServices/DropdownComponent";
 import PrivateRoute from "../../_privateRoute";
 import { JobOpportunitiesDescription } from "@Components/ServiceDescriptions/job-opportunities";
+import { serviceTypeEnum } from "@Components/Upload/constants";
+import { UrlValidation } from "@Definitions/Constants/HiringConstants";
 
 const JobPreferences: NextPage<
   IStemServices.IProps,
@@ -73,6 +75,7 @@ const JobPreferences: NextPage<
     highestDegree: "",
     major: "",
     workExperience: "",
+    totalExperience: "",
     associatedDisabilities: [],
     currentPlace: "",
     canRelocate: "",
@@ -112,7 +115,7 @@ const JobPreferences: NextPage<
       </Head>
       <FormLayout form="jobPreferencesForm" hideFooter>
         <div className="lip-margin">
-          <div className="display-flex">
+          <Col className="display-flex padding-head">
             <div tabIndex={-1} ref={initialFocus}>
               <h2 className="lip-title">JOB PREFERENCES</h2>
             </div>
@@ -128,7 +131,7 @@ const JobPreferences: NextPage<
               aria-expanded={showDescription}
               aria-live="polite"
             />
-          </div>
+          </Col>
           {showDescription ? (
             <>
               <JobOpportunitiesDescription />
@@ -157,10 +160,22 @@ const JobPreferences: NextPage<
                   idealPosition: Yup.string().required("Required"),
                   highestEducation: Yup.string().required("Required"),
                   highestDegree: Yup.string().required("Required"),
-                  associatedDisabilities: Yup.array().required("Required"),
+                  totalExperience: Yup.string().required("Required"),
+                  associatedDisabilities: Yup.array().min(
+                    1,
+                    "Select atleast one disability"
+                  ),
                   currentPlace: Yup.string().required("Required"),
                   canRelocate: Yup.string().required("Required"),
                   needCareerHelp: Yup.string().required("Required"),
+                  linkedIn: Yup.string().matches(
+                    UrlValidation,
+                    "Enter a valid url"
+                  ),
+                  portfolioLink: Yup.string().matches(
+                    UrlValidation,
+                    "Enter a valid url"
+                  ),
                 })}
                 onSubmit={onsubmit}
               >
@@ -204,9 +219,9 @@ const JobPreferences: NextPage<
                         name="natureOfJob"
                         label="Internship"
                         id="internship"
-                        value="internhip"
+                        value="INTERNSHIP"
                         onChange={() =>
-                          formik.setFieldValue("natureOfJob", "internhip")
+                          formik.setFieldValue("natureOfJob", "INTERNSHIP")
                         }
                       />
                       <RadioCheck
@@ -214,9 +229,9 @@ const JobPreferences: NextPage<
                         name="natureOfJob"
                         label="Full-Time"
                         id="full_time"
-                        value="full_time"
+                        value="FULL_TIME"
                         onChange={() =>
-                          formik.setFieldValue("natureOfJob", "full_time")
+                          formik.setFieldValue("natureOfJob", "FULL_TIME")
                         }
                       />
                       <RadioCheck
@@ -224,9 +239,9 @@ const JobPreferences: NextPage<
                         name="natureOfJob"
                         label="Both"
                         id="both"
-                        value="both"
+                        value="BOTH"
                         onChange={() =>
-                          formik.setFieldValue("natureOfJob", "both")
+                          formik.setFieldValue("natureOfJob", "BOTH")
                         }
                       />
                     </fieldset>
@@ -261,7 +276,6 @@ const JobPreferences: NextPage<
                       <Form.Control
                         placeholder="Roles"
                         as="textarea"
-                        // name="idealPosition"
                         rows={1}
                         className="lip-textarea"
                         {...formik.getFieldProps("idealPosition")}
@@ -280,9 +294,9 @@ const JobPreferences: NextPage<
                         name="highestEducation"
                         label="10th Std"
                         id="10th_std"
-                        value="10th_std"
+                        value="10TH_STD"
                         onChange={() =>
-                          formik.setFieldValue("highestEducation", "10th_std")
+                          formik.setFieldValue("highestEducation", "10TH_STD")
                         }
                       />
                       <RadioCheck
@@ -290,9 +304,9 @@ const JobPreferences: NextPage<
                         name="highestEducation"
                         label="12th Std"
                         id="12th_std"
-                        value="12th_std"
+                        value="12TH_STD"
                         onChange={() =>
-                          formik.setFieldValue("highestEducation", "12th_std")
+                          formik.setFieldValue("highestEducation", "12TH_STD")
                         }
                       />
                       <RadioCheck
@@ -300,11 +314,11 @@ const JobPreferences: NextPage<
                         name="highestEducation"
                         label="Graduate degree"
                         id="graduate_degree"
-                        value="graduate_degree"
+                        value="GRADUATE_DEGREE"
                         onChange={() =>
                           formik.setFieldValue(
                             "highestEducation",
-                            "graduate_degree"
+                            "GRADUATE_DEGREE"
                           )
                         }
                       />
@@ -313,11 +327,11 @@ const JobPreferences: NextPage<
                         name="highestEducation"
                         label="Post-graduate degree"
                         id="post_graduate_degree"
-                        value="post_graduate_degree"
+                        value="POST_GRADUATE_DEGREE"
                         onChange={() =>
                           formik.setFieldValue(
                             "highestEducation",
-                            "post_graduate_degree"
+                            "POST_GRADUATE_DEGREE"
                           )
                         }
                       />
@@ -338,7 +352,6 @@ const JobPreferences: NextPage<
                       <Form.Control
                         placeholder="Degree"
                         as="textarea"
-                        // name="highestDegree"
                         rows={1}
                         className="lip-textarea"
                         {...formik.getFieldProps("highestDegree")}
@@ -358,22 +371,61 @@ const JobPreferences: NextPage<
                       <Form.Control
                         placeholder="Major"
                         as="textarea"
-                        // name="major"
                         rows={1}
                         className="lip-textarea"
                         {...formik.getFieldProps("major")}
                       />
                     </Form.Group>
-                    <Form.Group controlId="workExperience">
+                    <Form.Group controlId="totalExperience">
                       <Form.Label>
                         <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
-                          Relevant work experience
+                          Total work experience. *
                         </h3>
                       </Form.Label>
                       <Form.Control
-                        placeholder="Work experience"
+                        className="lip-button lip-industry"
+                        as="select"
+                        value="none"
+                        {...formik.getFieldProps("totalExperience")}
+                      >
+                        <option value="none" hidden>
+                          Select
+                        </option>
+                        <option value="0_YEARS" className="csv-dropdown-item">
+                          0 years
+                        </option>
+                        <option value="0-2_YEARS" className="csv-dropdown-item">
+                          0-2 years
+                        </option>
+                        <option value="2-5_YEARS" className="csv-dropdown-item">
+                          2-5 years
+                        </option>
+                        <option
+                          value="5-10_YEARS"
+                          className="csv-dropdown-item"
+                        >
+                          5-10 years
+                        </option>
+                        <option value="10+_YEARS" className="csv-dropdown-item">
+                          10+ years
+                        </option>
+                      </Form.Control>
+                    </Form.Group>
+                    {formik.errors.totalExperience &&
+                    formik.touched.totalExperience ? (
+                      <div className="error">
+                        {formik.errors.totalExperience}
+                      </div>
+                    ) : null}
+                    <Form.Group controlId="workExperience">
+                      <Form.Label>
+                        <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
+                          Relevant work experience.
+                        </h3>
+                      </Form.Label>
+                      <Form.Control
+                        placeholder="Previous experience"
                         as="textarea"
-                        // name="workExperience"
                         rows={1}
                         className="lip-textarea"
                         {...formik.getFieldProps("workExperience")}
@@ -472,6 +524,9 @@ const JobPreferences: NextPage<
                         {...formik.getFieldProps("linkedIn")}
                       />
                     </Form.Group>
+                    {formik.errors.linkedIn && formik.touched.linkedIn ? (
+                      <div className="error">{formik.errors.linkedIn}</div>
+                    ) : null}
                     <Form.Group controlId="portfolioLink">
                       <Form.Label>
                         <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
@@ -487,6 +542,10 @@ const JobPreferences: NextPage<
                         {...formik.getFieldProps("portfolioLink")}
                       />
                     </Form.Group>
+                    {formik.errors.portfolioLink &&
+                    formik.touched.portfolioLink ? (
+                      <div className="error">{formik.errors.portfolioLink}</div>
+                    ) : null}
                     <div tabIndex={-1} ref={fileFocus}>
                       <label htmlFor="resumeElement">
                         <h3 className="lip-subtext lip-label font-semibold text-xl leading-9">
@@ -503,6 +562,7 @@ const JobPreferences: NextPage<
                         size={10}
                         accept=".pdf,.doc"
                         required
+                        serviceType={serviceTypeEnum.job}
                       />
                     </div>
                     <fieldset>

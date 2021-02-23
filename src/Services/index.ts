@@ -9,4 +9,5 @@ export { Tags } from "@Services/API/TagsService";
 export { CreditsService } from "@Services/API/Credits";
 export { CommunityService } from "@Services/API/Community";
 export { UniversityPortal } from "@Services/API/University";
+export { AdminPanelServices } from "@Services/API/Admin";
 // #endregion Local Imports

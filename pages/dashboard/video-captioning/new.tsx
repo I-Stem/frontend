@@ -15,7 +15,7 @@ import { Wrapper } from "@Components";
 import DropdownWrapper from "@Components/StemServices/DropdownComponent";
 import { BlueButton } from "@Components/HOC/Dashboard/CTAButtons";
 import { FormLayout } from "@Components/HOC/Dashboard";
-import { UploadActions, VcServiceActions } from "@Actions";
+import { TagsActions, UploadActions, VcServiceActions } from "@Actions";
 import {
   modelsList,
   outputFormatsListVC,
@@ -26,6 +26,7 @@ import { VALID_FILE_NAME } from "@Definitions/Constants";
 import PrivateRoute from "../../_privateRoute";
 import { useAppAbility } from "src/Hooks/useAppAbility";
 import Error from "next/error";
+import { serviceTypeEnum } from "@Components/Upload/constants";
 
 const NewVideo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   props: any
@@ -118,6 +119,11 @@ const NewVideo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                         : "audio/*,video/*"
                     }
                     onUpload={setFilenameValue}
+                    serviceType={
+                      router.query.requestType === "OCR"
+                        ? serviceTypeEnum.ocr
+                        : serviceTypeEnum.caption
+                    }
                   />
                 </div>
               </Form.Item>
@@ -213,6 +219,7 @@ NewVideo.getInitialProps = async (
 const mapDispatchToProps = {
   addVc: VcServiceActions.Add,
   resetList: UploadActions.resetUploadList,
+  searchTag: TagsActions.Search,
 };
 const Extended = connect(null, mapDispatchToProps)(NewVideo);
 export default PrivateRoute(Extended);

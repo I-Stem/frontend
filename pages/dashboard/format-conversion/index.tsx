@@ -1,16 +1,8 @@
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useState,
-  useRef,
-} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 import { NextPage } from "next";
 import Head from "next/head";
 import { Col, Row, Typography } from "antd";
-import { FileAddOutlined } from "@ant-design/icons";
-import debounce from "lodash.debounce";
 // #endregion Global Imports
 
 // #region Local Imports
@@ -34,8 +26,9 @@ import { useAppAbility } from "src/Hooks/useAppAbility";
 import PrivateRoute from "../../_privateRoute";
 import Error from "next/error";
 import { AfcDescription } from "@Components/ServiceDescriptions/afc";
-import { Pagination } from "react-bootstrap";
+// import { Pagination } from "react-bootstrap";
 import { AfcService } from "@Services";
+import Pagination from "@Components/HOC/Pagination";
 
 const {
   ALTERNATE_FORMAT_CONVERSION_SPLASH,
@@ -54,17 +47,12 @@ const FormatConversion: NextPage<
     [IAfcServiceDocument] | []
   >([]);
   const initialFocus = useRef<HTMLDivElement>(null);
-  const [reachedEnd, setEnd] = useState(false);
   const [searchResults, setSearchResults] = useState(false);
-  const [pageNumber, setPageNumber] = useState(1);
-  const { userType, role } = props.user;
+  const { userType, role, escalationSetting } = props.user;
   const { totalCredits } = props;
   const isCreditEnough = totalCredits > 0;
   const [currentPage, setCurrentPage] = useState(1);
-  const indexLastRequest = currentPage * 10;
-  const indexFirstRequest = indexLastRequest - 10;
   const [requestCount, setRequestCount] = useState(0);
-  const pageNumbers = [];
   const [showDescription, setShowDescription] = useState(false);
   const [searchText, setSearchText] = useState("");
   const getAfcCount = (text: string) => {
@@ -100,26 +88,20 @@ const FormatConversion: NextPage<
     fetchRequests(currentPage, searchQuery);
     if (searchQuery !== "") setSearchResults(true);
   };
-  const handlePageNumber = (event: any) => {
-    fetchRequests(event.target.innerText, searchText);
-    setCurrentPage(Number(event.target.innerText));
+  const handlePageNumber = (val: any) => {
+    fetchRequests(val, searchText);
+    setCurrentPage(Number(val));
   };
-  for (let i = 1; i <= Math.ceil(requestCount / 10); i++) {
-    pageNumbers.push(i);
-  }
 
-  const renderPageNumbers = pageNumbers.map(number => {
-    return (
-      <Pagination.Item
-        key={number}
-        value={number}
-        onClick={handlePageNumber}
-        active={currentPage === number}
-      >
-        {number}
-      </Pagination.Item>
-    );
-  });
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+    fetchRequests(currentPage + 1, searchText);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+    fetchRequests(currentPage - 1, searchText);
+  };
 
   const sideCTA = (
     <Col span={8}>
@@ -179,31 +161,13 @@ const FormatConversion: NextPage<
         tableData={requestTableData}
       />
       <br />
-      {requestCount > 0 && (
-        <div className="lip-pagination">
-          <Pagination>
-            <Pagination.Prev
-              onClick={() => {
-                setCurrentPage(currentPage - 1);
-                fetchRequests(currentPage - 1, searchText);
-              }}
-              disabled={currentPage - 1 === 0}
-            >
-              Previous
-            </Pagination.Prev>
-            {renderPageNumbers}
-            <Pagination.Next
-              onClick={() => {
-                setCurrentPage(currentPage + 1);
-                fetchRequests(currentPage + 1, searchText);
-              }}
-              disabled={currentPage + 1 > pageNumbers[pageNumbers.length - 1]}
-            >
-              Next
-            </Pagination.Next>
-          </Pagination>
-        </div>
-      )}
+      <Pagination
+        totalItems={requestCount}
+        currentPage={currentPage}
+        handleNextPage={handleNextPage}
+        handlePageNumber={handlePageNumber}
+        handlePreviousPage={handlePreviousPage}
+      />
     </div>
   );
   return (
@@ -212,7 +176,12 @@ const FormatConversion: NextPage<
         <title>Document Accessibility Service | I-Stem</title>
       </Head>
       {access ? (
-        <DashboardLayout userType={userType} role={role} hideBreadcrumb>
+        <DashboardLayout
+          userType={userType}
+          role={role}
+          escalationSetting={escalationSetting}
+          hideBreadcrumb
+        >
           <Row>
             <Col span={16}>
               <div ref={initialFocus} tabIndex={-1}>

@@ -37,10 +37,15 @@ export const Register: NextPage<
     } else if (router.query.userType === UserType.VOLUNTEER) {
       setCurrentUserType(UserType.VOLUNTEER);
     } else if (
-      router.query.userType === undefined &&
+      router.query.userType === UserType.UNIVERSITY &&
       router.query.verificationToken
     ) {
       setCurrentUserType(UserType.UNIVERSITY);
+    } else if (
+      router.query.userType === UserType.BUSINESS &&
+      router.query.verificationToken
+    ) {
+      setCurrentUserType(UserType.BUSINESS);
     }
   }, []);
 
@@ -48,7 +53,7 @@ export const Register: NextPage<
     <section className="auth-bg" id="register-student">
       <Wrapper>
         <Head>
-          <title>Register</title>
+          <title>Register | I-Stem</title>
         </Head>
         <Navbar />
         <Content>
@@ -68,6 +73,7 @@ export const Register: NextPage<
                   userType={currentUserType}
                   email={router.query.email}
                   verificationToken={router.query.verificationToken}
+                  context={String(router.query.context || "")}
                 />
               </div>
             </Col>
