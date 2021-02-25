@@ -1,3 +1,8 @@
+# Devops Metrics
+
+- [![Maintainability](https://api.codeclimate.com/v1/badges/3865951ea0349d17fc2e/maintainability)](https://codeclimate.com/github/I-Stem/frontend/maintainability)
+- [![Test Coverage](https://api.codeclimate.com/v1/badges/3865951ea0349d17fc2e/test_coverage)](https://codeclimate.com/github/I-Stem/frontend/test_coverage)
+
 # Introduction
 ## Accommodation automation services frontend
 
