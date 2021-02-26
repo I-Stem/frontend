@@ -1,5 +1,5 @@
 // #region Global Imports
-import React from "react";
+import React, { useState } from "react";
 import App, { AppContext, AppInitialProps } from "next/app";
 import router from "next/router";
 import { Provider } from "react-redux";
@@ -9,6 +9,8 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { ToastProvider } from "react-toast-notifications";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { GlobalStyles } from "@Components/Theme/GlobalStyles";
+import { darkTheme, lightTheme } from "@Components/Theme/Theme";
 // #endregion Global Imports
 
 // #region Local Imports
@@ -48,11 +50,16 @@ class WebApp extends App<AppWithStore> {
     this.userId = store.getState().auth.user.id;
 
     const persistor = persistStore(store);
+    // const [theme, setTheme] = useState("light");
+    // const themeToggler = () => {
+    //   theme === "light" ? setTheme("dark") : setTheme("light");
+    // };
 
     return (
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={null}>
-          <ThemeProvider theme={theme}>
+          <ThemeProvider theme={darkTheme}>
+            <GlobalStyles />
             <ToastProvider>
               <Component {...pageProps} />
             </ToastProvider>

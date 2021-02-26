@@ -23,6 +23,7 @@ import { getInvitationResponseMessage } from "@Services/helper/utils";
 import { UserType } from "@Definitions/Constants";
 import { useAppAbility } from "src/Hooks/useAppAbility";
 import Error from "next/error";
+import { DASHBOARD_ROUTE } from "@Definitions/Constants/pageroutes";
 
 const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   props: any
@@ -116,7 +117,7 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       escalationHandledBy: data.escalationHandledBy,
     }).then((results: any) => {
       if (results.code === 200) {
-        router.push("/dashboard");
+        router.push(DASHBOARD_ROUTE);
       } else {
         console.log("Error", results.message);
       }

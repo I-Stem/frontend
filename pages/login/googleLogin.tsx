@@ -22,6 +22,7 @@ import "./style.scss";
 import Head from "next/head";
 import Link from "next/link";
 import { getContextPathFromUserCreationContext } from "@Definitions/Constants/user/ContextualRedirects";
+import { DASHBOARD_ROUTE } from "@Definitions/Constants/pageroutes";
 // #endregion Interface Imports
 
 const { Content } = Layout;
@@ -55,7 +56,7 @@ export const GoogleLogin: NextPage<ILogin.IProps, ILogin.InitialProps> = (
               result.data.data.organizationStatus === "REGISTRATION_COMPLETE"
             ) {
               AuthToken.storeToken(router.query.token.toString());
-              router.push("/dashboard");
+              router.push(DASHBOARD_ROUTE);
             } else if (
               result.data.data.organizationStatus === "REGISTRATION_PENDING"
             ) {
@@ -81,7 +82,7 @@ export const GoogleLogin: NextPage<ILogin.IProps, ILogin.InitialProps> = (
                   result.data.data.contextPath
                 )
               );
-            else router.push("/dashboard");
+            else router.push(DASHBOARD_ROUTE);
           }
         })
         .catch(error => {

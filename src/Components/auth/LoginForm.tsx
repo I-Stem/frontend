@@ -6,7 +6,10 @@ import Link from "next/link";
 import { Button, Form, Input, Typography } from "antd";
 import { AuthActions } from "@Actions";
 import "./auth.scss";
-import { FORGOT_PASSWORD_ROUTE } from "@Definitions/Constants/pageroutes";
+import {
+  FORGOT_PASSWORD_ROUTE,
+  DASHBOARD_ROUTE,
+} from "@Definitions/Constants/pageroutes";
 import { IAuthResponse, IStore } from "@Interfaces";
 import AuthDisclaimer from "./AuthDisclaimer";
 import { IAuth } from "./Auth";
@@ -87,7 +90,7 @@ const LoginForm = (props: IAuth.ILoginProps) => {
             result.data.organizationStatus ===
             UniversityStatus.REGISTRATION_COMPLETE
           ) {
-            router.push("/dashboard");
+            router.push(DASHBOARD_ROUTE);
           } else if (
             result.data.organizationStatus ===
             UniversityStatus.REGISTRATION_PENDING
@@ -128,7 +131,7 @@ const LoginForm = (props: IAuth.ILoginProps) => {
             router.push(
               getContextPathFromUserCreationContext(result.data?.contextPath)
             );
-          else router.push("/dashboard");
+          else router.push(DASHBOARD_ROUTE);
         }
       } else setRespMessage(result.message);
     });

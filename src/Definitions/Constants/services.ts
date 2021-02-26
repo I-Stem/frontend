@@ -22,7 +22,7 @@ const servicesList: ServiceInstance[] = [
     "Resources",
     "Explore resources and opportunities to learn, network and get hired.",
     imageConstants.WEBINARS,
-    "/dashboard"
+    "/"
   ),
   // new ServiceInstance(
   //   "Volunteer connect",
