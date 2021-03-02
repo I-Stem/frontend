@@ -15,5 +15,6 @@ declare module "styled-components" {
     header?: string;
     semibold?: string;
     borderColor?: string;
+    heading?: string;
   }
 }

@@ -3,3 +3,25 @@ $background-color1: #002852;
   background-color: rgba($color: $background-color1, $alpha: 1);
   display: flex;
 }
+.theme-button,
+.theme-button:focus,
+.theme-button:hover,
+.theme-button:active {
+  margin-left: auto;
+  margin-right: 1rem;
+  background: inherit;
+  width: 25%;
+}
+.hide-border {
+  border-width: 0px !important;
+}
+.theme-overlay {
+  inset: 0px auto auto -4rem !important;
+  width: 25%;
+  border-width: 2px;
+  border-radius: 4px;
+  background-color: inherit;
+}
+.theme-card {
+  border-width: 0px;
+}

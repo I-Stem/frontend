@@ -26,7 +26,7 @@ export const GlobalStyles = createGlobalStyle`
   .leading-7{
     color: ${({ theme }) => theme.semibold} !important;
   }
-  .heading-color, .lip-title, .font-semibold, .des-heading{
+  .heading-color, .lip-title, .des-heading{
     color: ${({ theme }) => theme.semibold} !important;
   }
   .border-2, .navbar-divider{
@@ -38,5 +38,10 @@ export const GlobalStyles = createGlobalStyle`
   .Mui-selected{
     background-color: ${({ theme }) => theme.semibold} !important;
     color: ${({ theme }) => theme.body} !important;
+  }
+  `;
+export const GlobalFonts = createGlobalStyle`
+  h1, h2, h3,.lip-title, .des-heading{
+    font-size: ${({ theme }) => theme.heading} !important;
   }
   `;

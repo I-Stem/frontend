@@ -17,11 +17,15 @@ export interface IAuthUser {
 
 export interface UserPreferences {
   cardPreferences: CardPreferences;
-  darkMode?: boolean;
+  themes?: Themes;
 }
 export interface CardPreferences {
   showOnboardStaffCard?: boolean;
   showOnboardStudentsCard?: boolean;
+}
+export interface Themes {
+  colorTheme?: string;
+  fontTheme?: string;
 }
 export interface IAuthSuccess {
   user?: IAuthUser;

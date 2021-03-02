@@ -9,8 +9,16 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { ToastProvider } from "react-toast-notifications";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { GlobalStyles } from "@Components/Theme/GlobalStyles";
-import { darkTheme, lightTheme } from "@Components/Theme/Theme";
+import { GlobalStyles, GlobalFonts } from "@Components/Theme/GlobalStyles";
+import {
+  blackWhite,
+  whiteBlack,
+  yellowBlue,
+  yellowBlack,
+  greenWhite,
+  redWhite,
+  fontA,
+} from "@Components/Theme/Theme";
 // #endregion Global Imports
 
 // #region Local Imports
@@ -19,6 +27,7 @@ import { AppWithStore, IStore } from "@Interfaces";
 import { makeStore } from "@Redux";
 import { logPageview } from "@Services/monitoring/GoogleAnalytics";
 import "@Static/css/main.scss";
+import { threadId } from "worker_threads";
 // #endregion Local Imports
 
 class WebApp extends App<AppWithStore> {
@@ -48,26 +57,24 @@ class WebApp extends App<AppWithStore> {
   render() {
     const { Component, pageProps, store } = this.props;
     this.userId = store.getState().auth.user.id;
-
     const persistor = persistStore(store);
-    // const [theme, setTheme] = useState("light");
-    // const themeToggler = () => {
-    //   theme === "light" ? setTheme("dark") : setTheme("light");
-    // };
+    console.log("HErere", store.getState().auth.user);
 
     return (
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={null}>
-          <ThemeProvider theme={darkTheme}>
+          {/* <ThemeProvider theme={fontA}> */}
+          <ThemeProvider theme={{ ...yellowBlack, ...fontA }}>
+            <GlobalFonts />
             <GlobalStyles />
             <ToastProvider>
               <Component {...pageProps} />
             </ToastProvider>
           </ThemeProvider>
+          {/* </ThemeProvider> */}
         </PersistGate>
       </Provider>
     );
   }
 }
-
 export default withRedux(makeStore)(WebApp);
