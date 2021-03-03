@@ -9,9 +9,11 @@ $background-color1: #002852;
 .theme-button:active {
   margin-left: auto;
   margin-right: 1rem;
-  background: inherit;
+  background-color: inherit;
+  color: #ffff;
   width: 25%;
 }
+
 .hide-border {
   border-width: 0px !important;
 }
@@ -24,4 +26,7 @@ $background-color1: #002852;
 }
 .theme-card {
   border-width: 0px;
+}
+.reset-all {
+  background-color: inherit;
 }

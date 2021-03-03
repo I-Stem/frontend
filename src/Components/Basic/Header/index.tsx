@@ -10,7 +10,6 @@ import { ThemeButton } from "@Components/Theme/ThemeButton";
 import { IStore, Themes } from "@Interfaces";
 import { connect } from "react-redux";
 import { AuthActions } from "@Actions";
-import { blackWhite } from "@Components/Theme/Theme";
 
 const staticPath = "/static/images";
 const Header: React.FunctionComponent<IHeader.IProps> = props => {
@@ -18,10 +17,10 @@ const Header: React.FunctionComponent<IHeader.IProps> = props => {
   const [show, setShow] = useState(false);
   const target = useRef(null);
   const [themes, setThemes] = useState<Themes>();
-  // useEffect(() => {
-  //   updateTheme();
-  // }, [themes]);
-  const updateTheme = (fontTheme?: string, colorTheme?: string) => {
+  useEffect(() => {
+    updateTheme();
+  }, [themes]);
+  const updateTheme = () => {
     props.updatePreferences({
       user: {
         ...user,
@@ -36,11 +35,9 @@ const Header: React.FunctionComponent<IHeader.IProps> = props => {
   };
   const handleFontChange = (font: string) => {
     setThemes({ ...themes, fontTheme: font });
-    updateTheme();
   };
   const handleThemeChange = (theme: string) => {
     setThemes({ ...themes, colorTheme: theme });
-    updateTheme();
   };
   return (
     <div className="lip-header p-4  w-full flex justify-between">
@@ -72,7 +69,6 @@ const Header: React.FunctionComponent<IHeader.IProps> = props => {
               {...props}
               className="theme-overlay"
               style={{
-                padding: "5px 10px",
                 color: "white",
                 borderRadius: 4,
                 ...props.style,
@@ -83,19 +79,19 @@ const Header: React.FunctionComponent<IHeader.IProps> = props => {
                   <h2>Font size</h2>
                   <Row>
                     <Button
-                      onClick={() => handleFontChange("A")}
+                      onClick={() => handleFontChange("fontM")}
                       className="theme-button"
                     >
                       A
                     </Button>
                     <Button
-                      onClick={() => handleFontChange("A+")}
+                      onClick={() => handleFontChange("fontL")}
                       className="theme-button"
                     >
                       A+
                     </Button>
                     <Button
-                      onClick={() => handleFontChange("A++")}
+                      onClick={() => handleFontChange("fontXL")}
                       className="theme-button"
                     >
                       A++
@@ -147,7 +143,7 @@ const Header: React.FunctionComponent<IHeader.IProps> = props => {
                     />
                   </div>
                 </Card.Body>
-                <Button>Reset All</Button>
+                <Button className="reset-all">Reset All</Button>
               </Card>
             </div>
           )}

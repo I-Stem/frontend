@@ -17,7 +17,9 @@ import {
   yellowBlack,
   greenWhite,
   redWhite,
-  fontA,
+  fontL,
+  fontM,
+  fontXL,
 } from "@Components/Theme/Theme";
 // #endregion Global Imports
 
@@ -28,6 +30,7 @@ import { makeStore } from "@Redux";
 import { logPageview } from "@Services/monitoring/GoogleAnalytics";
 import "@Static/css/main.scss";
 import { threadId } from "worker_threads";
+import IThemeProvider from "@Components/Theme/IThemeProvider";
 // #endregion Local Imports
 
 class WebApp extends App<AppWithStore> {
@@ -58,20 +61,19 @@ class WebApp extends App<AppWithStore> {
     const { Component, pageProps, store } = this.props;
     this.userId = store.getState().auth.user.id;
     const persistor = persistStore(store);
-    console.log("HErere", store.getState().auth.user);
 
     return (
       <Provider store={store}>
         <PersistGate persistor={persistor} loading={null}>
-          {/* <ThemeProvider theme={fontA}> */}
-          <ThemeProvider theme={{ ...yellowBlack, ...fontA }}>
-            <GlobalFonts />
-            <GlobalStyles />
-            <ToastProvider>
-              <Component {...pageProps} />
-            </ToastProvider>
-          </ThemeProvider>
-          {/* </ThemeProvider> */}
+          <IThemeProvider>
+            <>
+              <GlobalFonts />
+              <GlobalStyles />
+              <ToastProvider>
+                <Component {...pageProps} />
+              </ToastProvider>
+            </>
+          </IThemeProvider>
         </PersistGate>
       </Provider>
     );
