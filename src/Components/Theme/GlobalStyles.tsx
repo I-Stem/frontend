@@ -9,7 +9,7 @@ export const GlobalStyles = createGlobalStyle`
     border-color:  ${({ theme }) => theme.borderColor} !important;
     transition: all 0.50s linear;
   }
-  .menu-font,.reset-all, .lip-text, table, .heading-color .lip-subtext, h2, h3, .MuiTypography-subtitle1, .MuiTypography-h3, .MuiTypography-h6{
+  .leading-7,.lip-title,.menu-font,.reset-all, .lip-text, table, .heading-color .lip-subtext, h2, h3, .MuiTypography-subtitle1, .MuiTypography-h3, .MuiTypography-h6{
     color: ${({ theme }) => theme.text} !important;
     transition: all 0.50s linear;
   }
@@ -35,12 +35,10 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.semibold} !important;
     border-color: ${({ theme }) => theme.text} !important;
     transition: all 0.50s linear;
-  }
-  .leading-7 {
-    color: ${({ theme }) => theme.text} !important;
+  } 
     transition: all 0.50s linear;
   }
-  .lip-title, .des-heading, .navbar__Logout {
+  .des-heading, .navbar__Logout {
     color: ${({ theme }) => theme.semibold} !important;
     transition: all 0.50s linear;
   }

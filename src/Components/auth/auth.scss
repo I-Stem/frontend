@@ -7,13 +7,13 @@ $form-link-color: #ffa594;
 }
 
 .register-buttons {
-  height: 52px;
+  height: 3.25rem;
   font-size: 16px;
   font-weight: 600;
   background-color: var(--color-btn-indigo);
   color: var(--color-btn-text);
   border: none;
-  width: 90.5%;
+  // width: 90.5%;
 }
 .auth-form {
   .ant-page-header-heading-title {
@@ -39,7 +39,7 @@ $form-link-color: #ffa594;
   color: $form-link-color;
 }
 .login-button {
-  height: 52px;
+  height: 3.25rem;
   font-size: 16px;
   font-weight: 600;
 }
@@ -63,7 +63,7 @@ $form-link-color: #ffa594;
 .auth-input {
   font-size: 16px !important;
   font-weight: 600;
-  height: 52px !important;
+  height: 3.25rem !important;
 }
 .float-right {
   float: right;
@@ -76,4 +76,8 @@ $form-link-color: #ffa594;
   width: 100%;
   background: #fff;
   margin-top: -1px;
+}
+.google-login {
+  height: 3.25rem !important;
+  width: 15rem !important;
 }

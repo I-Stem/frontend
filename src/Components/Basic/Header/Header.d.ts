@@ -5,8 +5,6 @@ declare namespace IHeader {
   export interface IProps {
     children?: JSX.Element;
     toggleDrawer?: Func0;
-    user: IAuthUser;
-    updatePreferences: Func0;
   }
   export interface ICreditStateProps {
     totalCredits: number;

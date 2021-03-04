@@ -1,27 +1,147 @@
-import React from "react";
+import { IAuthUser, IStore, Themes } from "@Interfaces";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Card, Overlay, Row } from "react-bootstrap";
 import "./styles.scss";
+// import { ColorThemes, FontThemes } from "@Definitions/Constants/ThemeConstants";
+import { connect } from "react-redux";
+import { AuthActions } from "@Actions";
+import { ColorThemeButton } from "./ColorThemeButton";
+import { ColorThemes, FontThemes } from "@Definitions/Constants/ThemeConstants";
 
-export const ThemeButton: React.FC<Props> = props => {
+const ThemeButton: React.FC<Props> = props => {
+  const target = useRef(null);
+  const [show, setShow] = useState(false);
+  const [themes, setThemes] = useState<Themes>();
+  const { children, user } = props;
+  useEffect(() => {
+    updateTheme();
+  }, [themes]);
+  const updateTheme = () => {
+    props.updatePreferences({
+      user: {
+        ...user,
+        userPreferences: {
+          ...user.userPreferences,
+          themes: {
+            ...themes,
+          },
+        },
+      },
+    });
+  };
+  const handleFontChange = (font: FontThemes) => {
+    setThemes({ ...themes, fontTheme: font });
+  };
+  const handleThemeChange = (theme: ColorThemes) => {
+    setThemes({ ...themes, colorTheme: theme });
+  };
+
   return (
-    <button
-      className="theme-buttons"
-      onClick={() => props.onThemeChange(props.theme)}
-    >
-      <div
-        className="theme-colors"
-        style={{ background: props.topBackground }}
-      ></div>
-      <div
-        className="theme-colors"
-        style={{ background: props.bottomBackground }}
-      ></div>
-    </button>
+    <>
+      <Button
+        className="theme-button hide-border"
+        ref={target}
+        onClick={() => setShow(!show)}
+      >
+        Accessibility Settings
+      </Button>
+      <Overlay target={target.current} show={show} placement="bottom">
+        {({ placement, arrowProps, show: _show, popper, ...props }) => (
+          <div
+            {...props}
+            className="theme-overlay"
+            style={{
+              color: "white",
+              borderRadius: 4,
+              ...props.style,
+            }}
+          >
+            <Card className="theme-card">
+              <Card.Body>
+                <h2>Font size</h2>
+                <Row>
+                  <Button
+                    onClick={() => handleFontChange(FontThemes.FONTM)}
+                    className="theme-button"
+                  >
+                    A
+                  </Button>
+                  <Button
+                    onClick={() => handleFontChange(FontThemes.FONTL)}
+                    className="theme-button"
+                  >
+                    A+
+                  </Button>
+                  <Button
+                    onClick={() => handleFontChange(FontThemes.FONTXL)}
+                    className="theme-button"
+                  >
+                    A++
+                  </Button>
+                </Row>
+              </Card.Body>
+
+              <Card.Body>
+                <h2>Themes</h2>
+                <div role="group">
+                  <ColorThemeButton
+                    topBackground="#178B8B"
+                    bottomBackground="white"
+                    onThemeChange={handleThemeChange}
+                    theme={ColorThemes.GREENWHITE}
+                  />
+                  <ColorThemeButton
+                    topBackground="#8E0300"
+                    bottomBackground="white"
+                    onThemeChange={handleThemeChange}
+                    theme={ColorThemes.REDWHITE}
+                  />
+                  <ColorThemeButton
+                    topBackground="black"
+                    bottomBackground="white"
+                    onThemeChange={handleThemeChange}
+                    theme={ColorThemes.BLACKWHITE}
+                  />
+                  <ColorThemeButton
+                    topBackground="#FFFF01"
+                    bottomBackground="black"
+                    onThemeChange={handleThemeChange}
+                    theme={ColorThemes.YELLOWBLACK}
+                  />
+                  <ColorThemeButton
+                    topBackground="#FFFF01"
+                    bottomBackground="#0707EE"
+                    onThemeChange={handleThemeChange}
+                    theme={ColorThemes.YELLOWBLUE}
+                  />
+                  <ColorThemeButton
+                    topBackground="white"
+                    bottomBackground="black"
+                    onThemeChange={handleThemeChange}
+                    theme={ColorThemes.WHITEBLACK}
+                  />
+                </div>
+              </Card.Body>
+              <Button className="reset-all">Reset All</Button>
+            </Card>
+          </div>
+        )}
+      </Overlay>
+    </>
   );
 };
+const mapStateToProps = (store: IStore) => {
+  const { auth } = store;
+  return {
+    user: auth.user,
+  };
+};
+const mapDispatchToProps = {
+  updatePreferences: AuthActions.updateCardPreferences,
+};
 
+export default connect(mapStateToProps, mapDispatchToProps)(ThemeButton);
 interface Props {
-  topBackground: string;
-  bottomBackground: string;
-  onThemeChange: Function;
-  theme: string;
+  user: IAuthUser;
+  updatePreferences: Function;
 }

@@ -90,7 +90,11 @@ const RegisterUser = (props: IAuth.IRegisterUserProps) => {
         Register your account as{" "}
         <span className="capitalize"> {checkUserType()}</span>
       </Title>
-      <GoogleButton label="Register with Google" onClick={loginWithGoogle} />
+      <GoogleButton
+        label="Register with Google"
+        className="google-login"
+        onClick={loginWithGoogle}
+      />
       <div className="mt-6">
         <Form
           aria-live="polite"
