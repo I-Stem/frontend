@@ -57,13 +57,6 @@ const IThemeProvider: React.FunctionComponent<IThemeProps> = props => {
         setFontTheme(fontM);
     }
   }, [user?.userPreferences?.themes]);
-  console.log(
-    "Themeses",
-    fontTheme,
-    colorTheme,
-    user?.userPreferences?.themes?.colorTheme,
-    user?.userPreferences?.themes?.fontTheme
-  );
   return (
     <ThemeProvider theme={{ ...(colorTheme || {}), ...(fontTheme || {}) }}>
       {children}

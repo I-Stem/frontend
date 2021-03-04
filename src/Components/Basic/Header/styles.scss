@@ -17,6 +17,15 @@ $background-color1: #002852;
 .hide-border {
   border-width: 0px !important;
 }
+
+.hide-border:focus  {
+  box-shadow: none !important;
+}
+
+.hide-border:active  {
+  box-shadow: none !important;
+}
+
 .theme-overlay {
   inset: 0px auto auto -4rem !important;
   width: 25%;
@@ -28,5 +37,5 @@ $background-color1: #002852;
   border-width: 0px;
 }
 .reset-all {
-  background-color: inherit;
+  background-color: inherit !important;
 }
