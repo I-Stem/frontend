@@ -34,10 +34,10 @@ const Header: React.FunctionComponent<IHeader.IProps> = props => {
       },
     });
   };
-  const handleFontChange = (font: string) => {
+  const handleFontChange = (font: FontThemes) => {
     setThemes({ ...themes, fontTheme: font });
   };
-  const handleThemeChange = (theme: string) => {
+  const handleThemeChange = (theme: ColorThemes) => {
     setThemes({ ...themes, colorTheme: theme });
   };
   return (
@@ -104,7 +104,7 @@ const Header: React.FunctionComponent<IHeader.IProps> = props => {
                   <h2>Themes</h2>
                   <div
                     role="group"
-                    onChange={() => handleThemeChange("blackWhite")}
+                    onChange={() => handleThemeChange(ColorThemes.BLACKWHITE)}
                   >
                     <ThemeButton
                       topBackground="#178B8B"
