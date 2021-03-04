@@ -13,6 +13,7 @@ import {
   fontM,
   fontXL,
 } from "@Components/Theme/Theme";
+import { ColorThemes, FontThemes } from "@Definitions/Constants/ThemeConstants";
 
 const IThemeProvider: React.FunctionComponent<IThemeProps> = props => {
   const { children, user } = props;
@@ -21,35 +22,35 @@ const IThemeProvider: React.FunctionComponent<IThemeProps> = props => {
 
   useEffect(() => {
     switch (user?.userPreferences?.themes?.colorTheme) {
-      case "blackWhite":
+      case ColorThemes.BLACKWHITE:
         setColorTheme(blackWhite);
         break;
-      case "whiteBlack":
+      case ColorThemes.WHITEBLACK:
         setColorTheme(whiteBlack);
         break;
-      case "greenWhite":
+      case ColorThemes.GREENWHITE:
         setColorTheme(greenWhite);
         break;
-      case "redWhite":
+      case ColorThemes.REDWHITE:
         setColorTheme(redWhite);
         break;
-      case "yellowBlack":
+      case ColorThemes.YELLOWBLACK:
         setColorTheme(yellowBlack);
         break;
-      case "yellowBlue":
+      case ColorThemes.YELLOWBLUE:
         setColorTheme(yellowBlue);
         break;
       default:
         setColorTheme(blackWhite);
     }
     switch (user?.userPreferences?.themes?.fontTheme) {
-      case "fontM":
+      case FontThemes.FONTM:
         setFontTheme(fontM);
         break;
-      case "fontL":
+      case FontThemes.FONTL:
         setFontTheme(fontL);
         break;
-      case "fontXL":
+      case FontThemes.FONTXL:
         setFontTheme(fontXL);
         break;
       default:

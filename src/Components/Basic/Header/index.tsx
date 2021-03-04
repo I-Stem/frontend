@@ -10,6 +10,7 @@ import { ThemeButton } from "@Components/Theme/ThemeButton";
 import { IStore, Themes } from "@Interfaces";
 import { connect } from "react-redux";
 import { AuthActions } from "@Actions";
+import { ColorThemes, FontThemes } from "@Definitions/Constants/ThemeConstants";
 
 const staticPath = "/static/images";
 const Header: React.FunctionComponent<IHeader.IProps> = props => {
@@ -79,19 +80,19 @@ const Header: React.FunctionComponent<IHeader.IProps> = props => {
                   <h2>Font size</h2>
                   <Row>
                     <Button
-                      onClick={() => handleFontChange("fontM")}
+                      onClick={() => handleFontChange(FontThemes.FONTM)}
                       className="theme-button"
                     >
                       A
                     </Button>
                     <Button
-                      onClick={() => handleFontChange("fontL")}
+                      onClick={() => handleFontChange(FontThemes.FONTL)}
                       className="theme-button"
                     >
                       A+
                     </Button>
                     <Button
-                      onClick={() => handleFontChange("fontXL")}
+                      onClick={() => handleFontChange(FontThemes.FONTXL)}
                       className="theme-button"
                     >
                       A++
@@ -109,37 +110,37 @@ const Header: React.FunctionComponent<IHeader.IProps> = props => {
                       topBackground="#178B8B"
                       bottomBackground="white"
                       onThemeChange={handleThemeChange}
-                      theme="greenWhite"
+                      theme={ColorThemes.GREENWHITE}
                     />
                     <ThemeButton
                       topBackground="#8E0300"
                       bottomBackground="white"
                       onThemeChange={handleThemeChange}
-                      theme="redWhite"
+                      theme={ColorThemes.REDWHITE}
                     />
                     <ThemeButton
                       topBackground="black"
                       bottomBackground="white"
                       onThemeChange={handleThemeChange}
-                      theme="blakWhite"
+                      theme={ColorThemes.BLACKWHITE}
                     />
                     <ThemeButton
                       topBackground="#FFFF01"
                       bottomBackground="black"
                       onThemeChange={handleThemeChange}
-                      theme="yellowBlack"
+                      theme={ColorThemes.YELLOWBLACK}
                     />
                     <ThemeButton
                       topBackground="#FFFF01"
                       bottomBackground="#0707EE"
                       onThemeChange={handleThemeChange}
-                      theme="yellowBlue"
+                      theme={ColorThemes.YELLOWBLUE}
                     />
                     <ThemeButton
                       topBackground="white"
                       bottomBackground="black"
                       onThemeChange={handleThemeChange}
-                      theme="whiteBlack"
+                      theme={ColorThemes.WHITEBLACK}
                     />
                   </div>
                 </Card.Body>

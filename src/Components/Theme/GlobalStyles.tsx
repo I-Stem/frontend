@@ -3,7 +3,6 @@ export const GlobalStyles = createGlobalStyle`
   html, body {
     background-color: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.text};
-    transition: all 0.50s linear;
   }
   nav{
     background-color: ${({ theme }) => theme.body} !important;
@@ -75,5 +74,4 @@ legend,.text-base,.lip-subtext,.lip-button,.lip-radio,.afc-fieldset,.lip-text,.l
   font-size: ${({ theme }) => theme.font3} !important;
   transition: all 0.50s linear;
  }
-
   `;
