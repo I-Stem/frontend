@@ -15,22 +15,7 @@ const ThemeButton: React.FC<Props> = props => {
   const [show, setShow] = useState(false);
   const [themes, setThemes] = useState<Themes>();
   const { children, user } = props;
-  useEffect(() => {
-    // updateTheme();
-  }, [themes]);
-  const updateTheme = () => {
-    props.updatePreferences({
-      user: {
-        ...user,
-        userPreferences: {
-          ...user.userPreferences,
-          themes: {
-            ...themes,
-          },
-        },
-      },
-    });
-  };
+
   const handleFontChange = (font: FontThemes) => {
     setThemes({ ...themes, fontTheme: font });
     props.updatePreferences({
@@ -46,6 +31,7 @@ const ThemeButton: React.FC<Props> = props => {
       },
     });
     UniversityPortal.updateUserCardPreferences({
+      ...user.userPreferences,
       themes: {
         ...themes,
         fontTheme: font,
@@ -67,6 +53,7 @@ const ThemeButton: React.FC<Props> = props => {
       },
     });
     UniversityPortal.updateUserCardPreferences({
+      ...user.userPreferences,
       themes: {
         ...themes,
         colorTheme: theme,
@@ -85,6 +72,7 @@ const ThemeButton: React.FC<Props> = props => {
       },
     });
     UniversityPortal.updateUserCardPreferences({
+      ...user.userPreferences,
       themes: {},
     });
   };
