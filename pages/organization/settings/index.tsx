@@ -176,7 +176,7 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
               {formik => (
                 <Form onSubmit={formik.handleSubmit}>
                   <fieldset className="mt-4">
-                    <h3 className="lip-subtext lip-label font-semibold text-xl leading-9 settings-font">
+                    <h3 className="lip-subtext lip-label font-semibold text-xl leading-9 ">
                       Choose between automatically allowing{" "}
                       {userType === UserType.BUSINESS
                         ? "employees"
@@ -212,7 +212,7 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                   {showDomain ? (
                     <Form.Group controlId="domain">
                       <Form.Label>
-                        <h3 className="lip-subtext lip-label font-semibold text-xl leading-9 settings-font">
+                        <h3 className="lip-subtext lip-label font-semibold text-xl leading-9 ">
                           Domain name
                         </h3>
                       </Form.Label>
@@ -230,7 +230,7 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                     <></>
                   )}
                   <fieldset className="mt-4">
-                    <h3 className="lip-subtext lip-label font-semibold text-xl leading-9 settings-font">
+                    <h3 className="lip-subtext lip-label font-semibold text-xl leading-9 ">
                       Escalation of document accessibility and video/audio
                       accessibility
                     </h3>

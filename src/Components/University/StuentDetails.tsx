@@ -294,89 +294,97 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
 
           <div className="activity-content">
             {activityData.map((activity: any, ind: number) => (
-              <Card key={activity._id} style={{ marginBottom: "20px" }}>
-                <Card.Body>
-                  <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <div>
-                      <Card.Title className="activity-text">
-                        Document Name - {activity.documentName}
-                      </Card.Title>
-                      <Card.Text className="mb-0 activity-text">
-                        Last updated -{" "}
-                        {Moment(activity.updatedAt).format("D MMM YYYY")}
-                        {", "}
-                        {Moment(activity.updatedAt).format("h:mm A")}
-                      </Card.Text>
-                      <Card.Text className="mb-0 activity-text">
-                        Current status - {currentStatusMapper(activity.status)}
-                      </Card.Text>
+              <article>
+                <Card key={activity._id} style={{ marginBottom: "20px" }}>
+                  <Card.Body>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <div>
+                        <Card.Title className="activity-text">
+                          <h4>Document Name - {activity.documentName}</h4>
+                        </Card.Title>
+                        <Card.Text className="mb-0 activity-text">
+                          Last updated -{" "}
+                          {Moment(activity.updatedAt).format("D MMM YYYY")}
+                          {", "}
+                          {Moment(activity.updatedAt).format("h:mm A")}
+                        </Card.Text>
+                        <Card.Text className="mb-0 activity-text">
+                          Current status -{" "}
+                          {currentStatusMapper(activity.status)}
+                        </Card.Text>
+                      </div>
+                      <div>
+                        <Button
+                          variant="primary"
+                          className="detail-button"
+                          onClick={() => handleCollapse(ind)}
+                        >
+                          {collapse[ind] ? "HIDE DETAILS" : "VIEW DETAILS"}
+                        </Button>
+                      </div>
                     </div>
+                  </Card.Body>
+                  {collapse[ind] ? (
                     <div>
-                      <Button
-                        variant="primary"
-                        className="detail-button"
-                        onClick={() => handleCollapse(ind)}
-                      >
-                        {collapse[ind] ? "HIDE DETAILS" : "VIEW DETAILS"}
-                      </Button>
+                      <hr className="show-detail-hr" />
+                      {details[ind].map((elem: any) => {
+                        return (
+                          <>
+                            {statusMapper(elem.status)?.length && (
+                              <Card.Body>
+                                <Row>
+                                  <Col sm={2}>
+                                    <Card.Text className="mb-0 activity-text">
+                                      {Moment(elem.actionAt).format("h:mm A")}
+                                    </Card.Text>
+                                    <Card.Text className="mb-0 activity-text">
+                                      {Moment(elem.actionAt).format(
+                                        "D MMM YYYY"
+                                      )}
+                                    </Card.Text>
+                                  </Col>
+                                  <Col sm={10}>
+                                    <Card.Text className="activity-detail mb-0">
+                                      {statusMapper(elem.status)}
+                                    </Card.Text>
+                                    {elem.status === "FORMATTING_COMPLETED" &&
+                                      button(
+                                        "DOWNLOAD RESULT FILE",
+                                        activity.outputURL
+                                      )}
+                                    {elem.status === "REQUEST_INITIATED" &&
+                                      button(
+                                        "DOWNLOAD ORIGINAL FILE",
+                                        activity.inputFileLink
+                                      )}
+                                    {elem.status === "COMPLETED" &&
+                                      button(
+                                        "DOWNLOAD RESULT FILE",
+                                        activity.outputURL
+                                      )}
+                                    {elem.status === "INITIATED" &&
+                                      button(
+                                        "DOWNLOAD ORIGINAL FILE",
+                                        activity.inputFileLink
+                                      )}
+                                  </Col>
+                                </Row>
+                              </Card.Body>
+                            )}
+                          </>
+                        );
+                      })}
                     </div>
-                  </div>
-                </Card.Body>
-                {collapse[ind] ? (
-                  <div>
-                    <hr className="show-detail-hr" />
-                    {details[ind].map((elem: any) => {
-                      return (
-                        <>
-                          {statusMapper(elem.status)?.length && (
-                            <Card.Body>
-                              <Row>
-                                <Col sm={2}>
-                                  <Card.Text className="mb-0 activity-text">
-                                    {Moment(elem.actionAt).format("h:mm A")}
-                                  </Card.Text>
-                                  <Card.Text className="mb-0 activity-text">
-                                    {Moment(elem.actionAt).format("D MMM YYYY")}
-                                  </Card.Text>
-                                </Col>
-                                <Col sm={10}>
-                                  <Card.Text className="activity-detail mb-0">
-                                    {statusMapper(elem.status)}
-                                  </Card.Text>
-                                  {elem.status === "FORMATTING_COMPLETED" &&
-                                    button(
-                                      "DOWNLOAD RESULT FILE",
-                                      activity.outputURL
-                                    )}
-                                  {elem.status === "REQUEST_INITIATED" &&
-                                    button(
-                                      "DOWNLOAD ORIGINAL FILE",
-                                      activity.inputFileLink
-                                    )}
-                                  {elem.status === "COMPLETED" &&
-                                    button(
-                                      "DOWNLOAD RESULT FILE",
-                                      activity.outputURL
-                                    )}
-                                  {elem.status === "INITIATED" &&
-                                    button(
-                                      "DOWNLOAD ORIGINAL FILE",
-                                      activity.inputFileLink
-                                    )}
-                                </Col>
-                              </Row>
-                            </Card.Body>
-                          )}
-                        </>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </Card>
+                  ) : (
+                    <></>
+                  )}
+                </Card>
+              </article>
             ))}
           </div>
         </Tab>
