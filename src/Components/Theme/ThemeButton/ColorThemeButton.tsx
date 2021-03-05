@@ -8,14 +8,16 @@ export const ColorThemeButton: React.FC<Props> = props => {
       className="theme-buttons"
       onClick={() => props.onThemeChange(props.theme)}
     >
-      <div
-        className="theme-colors"
-        style={{ background: props.topBackground }}
-      ></div>
-      <div
-        className="theme-colors"
-        style={{ background: props.bottomBackground }}
-      ></div>
+      <div className="theme-button-border">
+        <div
+          className="theme-colors"
+          style={{ background: props.topBackground }}
+        ></div>
+        <div
+          className="theme-colors"
+          style={{ background: props.bottomBackground }}
+        ></div>
+      </div>
     </button>
   );
 };

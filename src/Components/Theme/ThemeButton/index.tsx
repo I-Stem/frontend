@@ -7,6 +7,8 @@ import { connect } from "react-redux";
 import { AuthActions } from "@Actions";
 import { ColorThemeButton } from "./ColorThemeButton";
 import { ColorThemes, FontThemes } from "@Definitions/Constants/ThemeConstants";
+import { UniversityPortal } from "@Services";
+import { DownOutlined } from "@ant-design/icons";
 
 const ThemeButton: React.FC<Props> = props => {
   const target = useRef(null);
@@ -14,7 +16,7 @@ const ThemeButton: React.FC<Props> = props => {
   const [themes, setThemes] = useState<Themes>();
   const { children, user } = props;
   useEffect(() => {
-    updateTheme();
+    // updateTheme();
   }, [themes]);
   const updateTheme = () => {
     props.updatePreferences({
@@ -31,9 +33,60 @@ const ThemeButton: React.FC<Props> = props => {
   };
   const handleFontChange = (font: FontThemes) => {
     setThemes({ ...themes, fontTheme: font });
+    props.updatePreferences({
+      user: {
+        ...user,
+        userPreferences: {
+          ...user.userPreferences,
+          themes: {
+            ...themes,
+            fontTheme: font,
+          },
+        },
+      },
+    });
+    UniversityPortal.updateUserCardPreferences({
+      themes: {
+        ...themes,
+        fontTheme: font,
+      },
+    });
   };
   const handleThemeChange = (theme: ColorThemes) => {
     setThemes({ ...themes, colorTheme: theme });
+    props.updatePreferences({
+      user: {
+        ...user,
+        userPreferences: {
+          ...user.userPreferences,
+          themes: {
+            ...themes,
+            colorTheme: theme,
+          },
+        },
+      },
+    });
+    UniversityPortal.updateUserCardPreferences({
+      themes: {
+        ...themes,
+        colorTheme: theme,
+      },
+    });
+  };
+  const handleReset = () => {
+    setThemes({});
+    props.updatePreferences({
+      user: {
+        ...user,
+        userPreferences: {
+          ...user.userPreferences,
+          themes: {},
+        },
+      },
+    });
+    UniversityPortal.updateUserCardPreferences({
+      themes: {},
+    });
   };
 
   return (
@@ -43,7 +96,7 @@ const ThemeButton: React.FC<Props> = props => {
         ref={target}
         onClick={() => setShow(!show)}
       >
-        Accessibility Settings
+        Accessibility Settings <DownOutlined style={{ verticalAlign: "0em" }} />
       </Button>
       <Overlay target={target.current} show={show} placement="bottom">
         {({ placement, arrowProps, show: _show, popper, ...props }) => (
@@ -122,7 +175,9 @@ const ThemeButton: React.FC<Props> = props => {
                   />
                 </div>
               </Card.Body>
-              <Button className="reset-all">Reset All</Button>
+              <Button className="reset-all hide-border" onClick={handleReset}>
+                Reset All
+              </Button>
             </Card>
           </div>
         )}

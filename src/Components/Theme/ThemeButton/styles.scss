@@ -5,3 +5,45 @@
   border-radius: 4px;
   margin-right: 8px;
 }
+.theme-button,
+.theme-button:focus,
+.theme-button:hover,
+.theme-button:active {
+  margin-left: auto;
+  margin-right: 1rem;
+  background-color: inherit;
+  color: #ffff;
+  width: 25%;
+}
+.theme-button-border {
+  border-color: currentColor;
+  border-radius: 2px;
+  border-width: 2px;
+}
+
+.hide-border {
+  border-width: 0px !important;
+}
+
+.hide-border:focus {
+  box-shadow: none !important;
+}
+
+.hide-border:active {
+  box-shadow: none !important;
+}
+
+.theme-overlay {
+  inset: 0px auto auto -4rem !important;
+  width: 25%;
+  border-width: 2px;
+  border-radius: 4px;
+  background-color: inherit;
+}
+.theme-card {
+  border-width: 0px;
+}
+.reset-all {
+  background-color: inherit !important;
+  width: 35%;
+}

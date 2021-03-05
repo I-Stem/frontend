@@ -28,8 +28,8 @@ export const greenWhite = {
   cards: "rgba(250, 250, 250, 1)",
   toggleBorder: "#6B8096",
   background: "#999",
-  header: "rgba(0, 40, 82, 1)",
-  semibold: "#178B8B",
+  header: "#178B8B",
+  semibold: "#FFFFFF",
   borderColor: "#e2e8f0",
 };
 
@@ -39,8 +39,8 @@ export const redWhite = {
   cards: "rgba(250, 250, 250, 1)",
   toggleBorder: "#6B8096",
   background: "#999",
-  header: "rgba(0, 40, 82, 1)",
-  semibold: "#8E0300",
+  header: "#8E0300",
+  semibold: "#FFFFFF",
   borderColor: "#e2e8f0",
 };
 export const yellowBlack = {

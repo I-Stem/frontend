@@ -149,7 +149,7 @@ const LoginForm = (props: IAuth.ILoginProps) => {
       <Title className="lipHead" level={4}>
         {subtitle}
       </Title>
-      <GoogleButton onClick={loginWithGoogle} />
+      <GoogleButton className="google-login" onClick={loginWithGoogle} />
       <div className="h-4" />
       <Form
         aria-live="polite"

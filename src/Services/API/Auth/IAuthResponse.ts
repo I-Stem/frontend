@@ -17,7 +17,7 @@ export interface IAuthUser {
 }
 
 export interface UserPreferences {
-  cardPreferences: CardPreferences;
+  cardPreferences?: CardPreferences;
   themes?: Themes;
 }
 export interface CardPreferences {
