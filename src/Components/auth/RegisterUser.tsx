@@ -86,7 +86,7 @@ const RegisterUser = (props: IAuth.IRegisterUserProps) => {
   return (
     <section id="registeruser" className="mt-16 auth-form">
       <Title className="lipHead">Welcome to I-Stem!</Title>
-      <Title className="lipHead" level={4}>
+      <Title className="lipHead" level={2}>
         Register your account as{" "}
         <span className="capitalize"> {checkUserType()}</span>
       </Title>

@@ -146,7 +146,7 @@ const LoginForm = (props: IAuth.ILoginProps) => {
       <div ref={headref} tabIndex={-1}>
         <Title className="lipHead">{router.query.message || heading}</Title>
       </div>
-      <Title className="lipHead" level={4}>
+      <Title className="lipHead" level={2}>
         {subtitle}
       </Title>
       <GoogleButton className="google-login" onClick={loginWithGoogle} />

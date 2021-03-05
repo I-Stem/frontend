@@ -64,7 +64,7 @@ legend,.text-base,.lip-subtext,.lip-button,.lip-radio,.afc-fieldset,.lip-text,.l
   font-size: ${({ theme }) => theme.font1} !important;
   transition: all 0.50s linear;
  }
- .text-xl,.MuiTypography-h6,.MuiTypography-subtitle1,.MuiTypography-h6,.label.button-upload{
+ h2.ant-typography,.text-xl,.MuiTypography-h6,.MuiTypography-subtitle1,.MuiTypography-h6,.label.button-upload{
   font-size: ${({ theme }) => theme.font3} !important;
   transition: all 0.50s linear;
  }

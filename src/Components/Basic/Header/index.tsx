@@ -25,7 +25,11 @@ const Header: React.FunctionComponent<IHeader.IProps> = props => {
         </IconButton>
       </Hidden>
       <Link href={DASHBOARD_ROUTE}>
-        <img className="lip-logo" src={`${staticPath}/logo.svg`} alt="Logo" />
+        <img
+          className="lip-logo"
+          src={`${staticPath}/logo.svg`}
+          alt="I-Stem logo"
+        />
       </Link>
       <ThemeButton />
       {children}
