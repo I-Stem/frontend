@@ -554,9 +554,6 @@ const Hiring: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                       className="bg-toasts"
                       style={{ borderRadius: "5px" }}
                     >
-                      {/* <p className="sr-only">
-                        Showing {requestCount} candidates
-                      </p> */}
                       {formatFilterName(String(data))}
                       {": "}
                       {(data === "canRelocate" &&

@@ -15,6 +15,7 @@ import "./style.scss";
 import { UniversityPortal } from "@Services";
 import * as Yup from "yup";
 import Moment from "moment";
+import Pagination from "@Components/HOC/Pagination";
 
 export const StudentDetails: React.FC<Props> = (props: Props) => {
   const { studentId, studentDetails } = props;
@@ -27,9 +28,10 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
   const [details, setDetails] = useState<any[]>([]);
   const [collapse, setCollapse] = useState<boolean[]>([]);
   const [activity, setActivity] = useState("");
-  // useEffect(() => {
-  //   setStudentModal(showModal);
-  // }, [showModal]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const last = currentPage * 10;
+  const first = last - 10;
+  const currentActivity = activityData?.slice(first, last);
 
   useEffect(() => {
     if (studentId)
@@ -73,6 +75,18 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
     ESCALATION_REQUESTED = "Student escalated the request.",
     ESCALATION_RESOLVED = "Escalation completed successfully.",
   }
+
+  const handlePageNumber = (val: any) => {
+    setCurrentPage(Number(val));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
 
   const currentStatusMapper = (status: string) => {
     if (status === "FORMATTING_COMPLETED" || status === "COMPLETED") {
@@ -282,7 +296,7 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
         </Form.Group>
         <h2 className="lip-title">{activity}</h2>
         <div className="activity-content">
-          {activityData.map((activity: any, ind: number) => (
+          {currentActivity.map((activity: any, ind: number) => (
             <article>
               <Card key={activity._id} style={{ marginBottom: "20px" }}>
                 <Card.Body>
@@ -379,6 +393,15 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
               </Card>
             </article>
           ))}
+          {activityData.length > 0 && (
+            <Pagination
+              totalItems={activityData.length}
+              currentPage={currentPage}
+              handleNextPage={handleNextPage}
+              handlePageNumber={handlePageNumber}
+              handlePreviousPage={handlePreviousPage}
+            />
+          )}
         </div>
       </Tab>
       <Tab eventKey="info" title="Info" className="tab-text">
