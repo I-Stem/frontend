@@ -262,7 +262,7 @@ legend {
 }
 .filter-col {
   margin-bottom: -5rem;
-  border-left-width: 2px;
+  border-right-width: 2px;
   transition: all 2s linear;
 }
 .font-14 {
@@ -334,7 +334,6 @@ legend {
   float: right;
 }
 .show-filters {
-  float: right;
   font-size: 18px;
 }
 .email-subject {

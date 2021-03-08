@@ -17,8 +17,8 @@ import * as Yup from "yup";
 import Moment from "moment";
 
 export const StudentDetails: React.FC<Props> = (props: Props) => {
-  const { showModal, toggleModal, studentId, studentDetails } = props;
-  const [studentModal, setStudentModal] = useState(showModal);
+  const { studentId, studentDetails } = props;
+  // const [studentModal, setStudentModal] = useState(showModal);
   const [requestAcivityData, setRequestActivityData] = useState<
     RequestActivity
   >();
@@ -26,9 +26,10 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
   const [activityOption, setActivityOption] = useState<number>(0);
   const [details, setDetails] = useState<any[]>([]);
   const [collapse, setCollapse] = useState<boolean[]>([]);
-  useEffect(() => {
-    setStudentModal(showModal);
-  }, [showModal]);
+  const [activity, setActivity] = useState("");
+  // useEffect(() => {
+  //   setStudentModal(showModal);
+  // }, [showModal]);
 
   useEffect(() => {
     if (studentId)
@@ -147,7 +148,6 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
     })
       .then((e: any) => {
         console.log("Success");
-        toggleModal();
       })
       .catch((e: any) => console.log("Error occured "));
   };
@@ -165,6 +165,7 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
       const collapseDetail: any[] = new Array(status.length);
       collapseDetail.fill(false);
       setCollapse(collapseDetail);
+      setActivity("All activity");
     } else if (set === 2) {
       const array = requestAcivityData?.afcEscalatedActivity.concat(
         requestAcivityData?.vcEscalatedActivity
@@ -178,6 +179,7 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
       const collapseDetail: any[] = new Array(status.length);
       collapseDetail.fill(false);
       setCollapse(collapseDetail);
+      setActivity("Escalated Requests");
     } else if (set === 3) {
       const array = requestAcivityData?.afcActiveActivity.concat(
         requestAcivityData?.vcActiveActivity
@@ -191,6 +193,7 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
       const collapseDetail: any[] = new Array(status.length);
       collapseDetail.fill(false);
       setCollapse(collapseDetail);
+      setActivity("Active Requests");
     } else if (set === 4) {
       const array = requestAcivityData?.afcCompletedActivity.concat(
         requestAcivityData?.vcCompletedActivity
@@ -204,6 +207,7 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
       const collapseDetail: any[] = new Array(status.length);
       collapseDetail.fill(false);
       setCollapse(collapseDetail);
+      setActivity("Completed Requests");
     } else if (set === 5) {
       const array = requestAcivityData?.afcActivity!;
       const status: any[] = [];
@@ -215,6 +219,7 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
       const collapseDetail: any[] = new Array(status.length);
       collapseDetail.fill(false);
       setCollapse(collapseDetail);
+      setActivity("Document accessibility requests");
     } else {
       const array = requestAcivityData?.vcActivity!;
       const status: any[] = [];
@@ -226,6 +231,7 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
       const collapseDetail: any[] = new Array(status.length);
       collapseDetail.fill(false);
       setCollapse(collapseDetail);
+      setActivity("Video and audio accessibility requests");
     }
   };
 
@@ -235,217 +241,204 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
     setCollapse(_collapse);
   };
   return (
-    <Modal
-      show={studentModal}
-      onHide={() => {
-        toggleModal();
-        setActivityData([]);
-        setActivityOption(0);
-      }}
-      animation
-      size="lg"
+    <Tabs
+      id="controlled-tab-example"
+      activeKey={key}
+      onSelect={(k: any) => setKey(k)}
     >
-      <Modal.Header closeButton>
-        <Modal.Title>
-          <h3 className="lip-title text-uppercase mr-0">
-            {studentDetails.name}
-          </h3>
-        </Modal.Title>
-      </Modal.Header>
-      <Tabs
-        id="controlled-tab-example"
-        activeKey={key}
-        onSelect={(k: any) => setKey(k)}
+      <Tab
+        eventKey="activity"
+        title="Activity"
+        css={{
+          fontWeight: 600,
+          fontSize: "16px",
+          lineHeight: "24px",
+          color: "#595959",
+        }}
       >
-        <Tab
-          eventKey="activity"
-          title="Activity"
-          css={{
-            fontWeight: 600,
-            fontSize: "16px",
-            lineHeight: "24px",
-            color: "#595959",
-          }}
-        >
-          <Form.Group className="activity-dropdown" controlId="activity">
-            <Form.Control
-              className="stud-select"
-              placeholder="Select csv column"
-              as="select"
-              onChange={e => {
-                activityList.forEach(val => {
-                  if (Object.keys(val)[0] === e.target.value) {
-                    setActivityOption(Object.values(val)[0]);
-                    mapOptions(Object.values(val)[0]);
-                  }
-                });
-              }}
+        <Form.Group className="activity-dropdown" controlId="activity">
+          <Form.Control
+            className="stud-select"
+            placeholder="Select csv column"
+            as="select"
+            onChange={e => {
+              activityList.forEach(val => {
+                if (Object.keys(val)[0] === e.target.value) {
+                  setActivityOption(Object.values(val)[0]);
+                  mapOptions(Object.values(val)[0]);
+                }
+              });
+            }}
+          >
+            <option
+              className="csv-dropdown-item"
+              disabled
+              selected={activityOption === 0}
             >
-              <option
-                className="csv-dropdown-item"
-                disabled
-                selected={activityOption === 0}
-              >
-                Select Activity
-              </option>
-              {activityDropdown()}
-            </Form.Control>
-          </Form.Group>
-
-          <div className="activity-content">
-            {activityData.map((activity: any, ind: number) => (
-              <article>
-                <Card key={activity._id} style={{ marginBottom: "20px" }}>
-                  <Card.Body>
+              Select Activity
+            </option>
+            {activityDropdown()}
+          </Form.Control>
+        </Form.Group>
+        <h2 className="lip-title">{activity}</h2>
+        <div className="activity-content">
+          {activityData.map((activity: any, ind: number) => (
+            <article>
+              <Card key={activity._id} style={{ marginBottom: "20px" }}>
+                <Card.Body>
+                  <Card.Title>
+                    <h4 className="activity-text">
+                      Document Name - {activity.documentName}
+                    </h4>
+                  </Card.Title>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div role="list">
+                      <Card.Text role="listitem" className="mb-0 activity-text">
+                        Last updated -{" "}
+                        {Moment(activity.updatedAt).format("D MMM YYYY")}
+                        {", "}
+                        {Moment(activity.updatedAt).format("h:mm A")}
+                      </Card.Text>
+                      <Card.Text role="listitem" className="mb-0 activity-text">
+                        Current status - {currentStatusMapper(activity.status)}
+                      </Card.Text>
+                    </div>
                     <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
                       }}
                     >
-                      <div>
-                        <Card.Title className="activity-text">
-                          <h4>Document Name - {activity.documentName}</h4>
-                        </Card.Title>
-                        <Card.Text className="mb-0 activity-text">
-                          Last updated -{" "}
-                          {Moment(activity.updatedAt).format("D MMM YYYY")}
-                          {", "}
-                          {Moment(activity.updatedAt).format("h:mm A")}
-                        </Card.Text>
-                        <Card.Text className="mb-0 activity-text">
-                          Current status -{" "}
-                          {currentStatusMapper(activity.status)}
-                        </Card.Text>
-                      </div>
-                      <div>
-                        <Button
-                          variant="primary"
-                          className="detail-button"
-                          onClick={() => handleCollapse(ind)}
-                        >
-                          {collapse[ind] ? "HIDE DETAILS" : "VIEW DETAILS"}
-                        </Button>
-                      </div>
+                      <Button
+                        variant="primary"
+                        className="detail-button"
+                        onClick={() => handleCollapse(ind)}
+                      >
+                        {collapse[ind] ? "HIDE DETAILS" : "VIEW DETAILS"}
+                      </Button>
                     </div>
-                  </Card.Body>
-                  {collapse[ind] ? (
-                    <div>
-                      <hr className="show-detail-hr" />
-                      {details[ind].map((elem: any) => {
-                        return (
-                          <>
-                            {statusMapper(elem.status)?.length && (
-                              <Card.Body>
-                                <Row>
-                                  <Col sm={2}>
-                                    <Card.Text className="mb-0 activity-text">
-                                      {Moment(elem.actionAt).format("h:mm A")}
-                                    </Card.Text>
-                                    <Card.Text className="mb-0 activity-text">
-                                      {Moment(elem.actionAt).format(
-                                        "D MMM YYYY"
-                                      )}
-                                    </Card.Text>
-                                  </Col>
-                                  <Col sm={10}>
-                                    <Card.Text className="activity-detail mb-0">
-                                      {statusMapper(elem.status)}
-                                    </Card.Text>
-                                    {elem.status === "FORMATTING_COMPLETED" &&
-                                      button(
-                                        "DOWNLOAD RESULT FILE",
-                                        activity.outputURL
-                                      )}
-                                    {elem.status === "REQUEST_INITIATED" &&
-                                      button(
-                                        "DOWNLOAD ORIGINAL FILE",
-                                        activity.inputFileLink
-                                      )}
-                                    {elem.status === "COMPLETED" &&
-                                      button(
-                                        "DOWNLOAD RESULT FILE",
-                                        activity.outputURL
-                                      )}
-                                    {elem.status === "INITIATED" &&
-                                      button(
-                                        "DOWNLOAD ORIGINAL FILE",
-                                        activity.inputFileLink
-                                      )}
-                                  </Col>
-                                </Row>
-                              </Card.Body>
-                            )}
-                          </>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-                </Card>
-              </article>
-            ))}
-          </div>
-        </Tab>
-        <Tab eventKey="info" title="Info" className="tab-text">
-          <Formik
-            initialValues={initialValues}
-            onSubmit={handleSubmit}
-            validationSchema={Yup.object().shape({
-              fullname: Yup.string().required("Name is required"),
-              email: Yup.string().required("Email is required"),
-              rollNumber: Yup.string(),
-            })}
-          >
-            {formik => (
-              <Form onSubmit={formik.handleSubmit}>
-                <Form.Group controlId="nameElement">
-                  <Form.Label className="student-detail-text">
-                    Student name
-                  </Form.Label>
-                  <Form.Control
-                    placeholder="Enter Email"
-                    {...formik.getFieldProps("fullname")}
-                  />
-                </Form.Group>
-                <Form.Group controlId="emailElement">
-                  <Form.Label className="student-detail-text">
-                    Student email
-                  </Form.Label>
-                  <Form.Control
-                    placeholder="Enter Name"
-                    {...formik.getFieldProps("email")}
-                  />
-                </Form.Group>
-                <Form.Group controlId="rollNoElement">
-                  <Form.Label className="student-detail-text">
-                    Student roll no
-                  </Form.Label>
-                  <Form.Control
-                    placeholder="Enter Roll no"
-                    {...formik.getFieldProps("rollNumber")}
-                  />
-                </Form.Group>
-                <div style={{ width: "40%" }}>
-                  <GreenButton htmlType="submit">
-                    <span className="flex items-center">
-                      <span className="ml-2">SAVE CHANGES</span>
-                    </span>
-                  </GreenButton>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        </Tab>
-      </Tabs>
-    </Modal>
+                  </div>
+                </Card.Body>
+                {collapse[ind] ? (
+                  <div>
+                    <hr className="show-detail-hr" />
+                    {details[ind].map((elem: any) => {
+                      return (
+                        <>
+                          {statusMapper(elem.status)?.length && (
+                            <Card.Body>
+                              <Row>
+                                <Col sm={2}>
+                                  <Card.Text className="mb-0 activity-text">
+                                    {Moment(elem.actionAt).format("h:mm A")}
+                                  </Card.Text>
+                                  <Card.Text className="mb-0 activity-text">
+                                    {Moment(elem.actionAt).format("D MMM YYYY")}
+                                  </Card.Text>
+                                </Col>
+                                <Col sm={10}>
+                                  <Card.Text className="activity-detail mb-0">
+                                    {statusMapper(elem.status)}
+                                  </Card.Text>
+                                  {elem.status === "FORMATTING_COMPLETED" &&
+                                    button(
+                                      "DOWNLOAD RESULT FILE",
+                                      activity.outputURL
+                                    )}
+                                  {elem.status === "REQUEST_INITIATED" &&
+                                    button(
+                                      "DOWNLOAD ORIGINAL FILE",
+                                      activity.inputFileLink
+                                    )}
+                                  {elem.status === "COMPLETED" &&
+                                    button(
+                                      "DOWNLOAD RESULT FILE",
+                                      activity.outputURL
+                                    )}
+                                  {elem.status === "INITIATED" &&
+                                    button(
+                                      "DOWNLOAD ORIGINAL FILE",
+                                      activity.inputFileLink
+                                    )}
+                                </Col>
+                              </Row>
+                            </Card.Body>
+                          )}
+                        </>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </Card>
+            </article>
+          ))}
+        </div>
+      </Tab>
+      <Tab eventKey="info" title="Info" className="tab-text">
+        <Formik
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          validationSchema={Yup.object().shape({
+            fullname: Yup.string().required("Name is required"),
+            email: Yup.string().required("Email is required"),
+            rollNumber: Yup.string(),
+          })}
+        >
+          {formik => (
+            <Form onSubmit={formik.handleSubmit}>
+              <Form.Group controlId="nameElement">
+                <Form.Label className="student-detail-text lip-text">
+                  Student name
+                </Form.Label>
+                <Form.Control
+                  placeholder="Enter Email"
+                  className="lip-button"
+                  {...formik.getFieldProps("fullname")}
+                />
+              </Form.Group>
+              <Form.Group controlId="emailElement">
+                <Form.Label className="student-detail-text lip-text">
+                  Student email
+                </Form.Label>
+                <Form.Control
+                  placeholder="Enter Name"
+                  className="lip-button"
+                  {...formik.getFieldProps("email")}
+                />
+              </Form.Group>
+              <Form.Group controlId="rollNoElement">
+                <Form.Label className="student-detail-text lip-text">
+                  Student roll no
+                </Form.Label>
+                <Form.Control
+                  placeholder="Enter Roll no"
+                  className="lip-button"
+                  {...formik.getFieldProps("rollNumber")}
+                />
+              </Form.Group>
+              <div style={{ width: "30%" }}>
+                <GreenButton htmlType="submit">
+                  <span className="flex items-center">
+                    <span className="ml-2">SAVE CHANGES</span>
+                  </span>
+                </GreenButton>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </Tab>
+    </Tabs>
   );
 };
 
 interface Props {
-  showModal: boolean;
-  toggleModal: () => void;
   studentId: string;
   studentDetails: {
     name: string;

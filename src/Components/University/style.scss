@@ -21,7 +21,7 @@
 }
 
 .activity-dropdown {
-  width: 50% !important;
+  width: 30% !important;
 }
 
 .tab-content {
@@ -79,7 +79,7 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
-  color: #262626;
+  // color: #262626;
 }
 
 .tab-text {
@@ -123,4 +123,9 @@
 
 .mr-0 {
   margin-right: 0;
+}
+.lip-button {
+  height: 3.25rem !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
 }

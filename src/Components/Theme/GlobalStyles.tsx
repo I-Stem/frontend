@@ -4,12 +4,12 @@ export const GlobalStyles = createGlobalStyle`
     background-color: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.text};
   }
-  nav{
+  nav, .filter-col{
     background-color: ${({ theme }) => theme.body} !important;
     border-color:  ${({ theme }) => theme.borderColor} !important;
     transition: all 0.50s linear;
   }
-  .leading-7,.lip-title,.menu-font,.reset-all, .lip-text, table, .heading-color .lip-subtext, h2, h3, .MuiTypography-subtitle1, .MuiTypography-h3, .MuiTypography-h6{
+  .leading-7,.activity-text,.lip-title,.menu-font,.reset-all, .lip-text, table, .heading-color .lip-subtext, h2, h3, .MuiTypography-subtitle1, .MuiTypography-h3, .MuiTypography-h6{
     color: ${({ theme }) => theme.text} !important;
     transition: all 0.50s linear;
   }
@@ -60,11 +60,11 @@ export const GlobalFonts = createGlobalStyle`
   font-size: ${({ theme }) => theme.font0} !important;
   transition: all 0.50s linear;
 }
-legend,.text-base,.lip-subtext,.lip-button,.lip-radio,.afc-fieldset,.lip-text,.lip-earned,.modal-title,.stud-select,.stud-upload,.font-16,.MuiInputLabel-root,.register-buttons,.login-button,.auth-input,.lip-label-r,.lip-nav-button,.text-lg,.des-heading,.navbar__Logout,.tag-bg,.downshift-input::placeholder,.student-detail-text,.tab-text{
+nav,legend,.text-base,.lip-subtext,.lip-button,.lip-radio,.afc-fieldset,.lip-text,.lip-earned,.modal-title,.stud-select,.stud-upload,.font-16,.MuiInputLabel-root,.register-buttons,.login-button,.auth-input,.lip-label-r,.lip-nav-button,.text-lg,.des-heading,.navbar__Logout,.tag-bg,.downshift-input::placeholder,.student-detail-text,.tab-text{
   font-size: ${({ theme }) => theme.font1} !important;
   transition: all 0.50s linear;
  }
- h2.ant-typography,.text-xl,.MuiTypography-h6,.MuiTypography-subtitle1,.MuiTypography-h6,.label.button-upload{
+ h2.ant-typography,.text-xl,.MuiTypography-h6,.MuiTypography-subtitle1,.MuiTypography-h6,label,.button-upload{
   font-size: ${({ theme }) => theme.font3} !important;
   transition: all 0.50s linear;
  }

@@ -220,18 +220,301 @@ const Hiring: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       </Head>
       <FormLayout form="hiring" hideFooter>
         <Row className="w-full">
+          <Col
+            sm={3}
+            id="filters"
+            className="filter-col"
+            style={{ display: showFilters ? "block" : "none" }}
+          >
+            <div tabIndex={-1} ref={initialFocus}>
+              <h2 className="mt-4 lip-subtext font-semibold">Filters</h2>
+            </div>
+            <div>
+              <Form.Group controlId="reset-button">
+                <Form.Control
+                  className="reset-button lip-subtext"
+                  as="button"
+                  type="reset"
+                  onClick={resetFilters}
+                >
+                  Reset all filters
+                </Form.Control>
+              </Form.Group>
+              <Form.Group controlId="status">
+                <Form.Label>
+                  <h3 className="lip-subtext font-14">Status</h3>
+                </Form.Label>
+                <Form.Control
+                  className="lip-button"
+                  as="select"
+                  onChange={handleOnChange}
+                  name="status"
+                >
+                  <option
+                    disabled
+                    className="csv-dropdown-item"
+                    selected={filters.status === undefined}
+                  >
+                    Select
+                  </option>
+                  <option
+                    value={CandidateStatus.NEW}
+                    className="csv-dropdown-item"
+                    selected={filters.status === CandidateStatus.NEW}
+                  >
+                    New
+                  </option>
+                  <option
+                    value={CandidateStatus.SHORTLISTED}
+                    className="csv-dropdown-item"
+                    selected={filters.status === CandidateStatus.SHORTLISTED}
+                  >
+                    Shortlisted
+                  </option>
+                  <option
+                    value={CandidateStatus.COMMENTED}
+                    className="csv-dropdown-item"
+                    selected={filters.status === CandidateStatus.COMMENTED}
+                  >
+                    Commented
+                  </option>
+                  <option
+                    value={CandidateStatus.CONTACTED}
+                    className="csv-dropdown-item"
+                    selected={filters.status === CandidateStatus.CONTACTED}
+                  >
+                    Contacted
+                  </option>
+                  <option
+                    value={CandidateStatus.IGNORED}
+                    className="csv-dropdown-item"
+                    selected={filters.status === CandidateStatus.IGNORED}
+                  >
+                    Ignored
+                  </option>
+                </Form.Control>
+              </Form.Group>
+              <Form.Group controlId="natureOfJob">
+                <Form.Label>
+                  <h3 className="lip-subtext font-14">Job Type</h3>
+                </Form.Label>
+                <Form.Control
+                  className="lip-button"
+                  as="select"
+                  name="jobType"
+                  onChange={handleOnChange}
+                >
+                  <option
+                    className="csv-dropdown-item"
+                    disabled
+                    selected={filters.jobType === undefined}
+                  >
+                    Select
+                  </option>
+                  <option
+                    value="FULL_TIME"
+                    className="csv-dropdown-item"
+                    selected={filters.jobType === "FULL_TIME"}
+                  >
+                    Full-time
+                  </option>
+                  <option
+                    value="INTERNSHIP"
+                    className="csv-dropdown-item"
+                    selected={filters.jobType === "INTERNSHIP"}
+                  >
+                    Internship
+                  </option>
+                  <option
+                    value="BOTH"
+                    className="csv-dropdown-item"
+                    selected={filters.jobType === "BOTH"}
+                  >
+                    Both
+                  </option>
+                </Form.Control>
+              </Form.Group>
+              <Form.Group controlId="industryElement">
+                <Form.Label className="csv-select-label m-botttom">
+                  <h3 className="lip-subtext font-14 ">Industry</h3>
+                </Form.Label>
+                <div className="">
+                  <MultiSelectDropdownWrapper
+                    setSelectedOrTypedInputValue={setIndustry}
+                    label="Industry"
+                    name="industry"
+                    id="industryElement"
+                    getDropdownListItems={props.GetIndustry}
+                    onChange={handleIndustrySelect}
+                  />
+                </div>
+              </Form.Group>
+              <Form.Group controlId="rolesElement">
+                <Form.Label>
+                  <h3 className="lip-subtext font-14">Roles</h3>
+                </Form.Label>
+                <Form.Control
+                  className="lip-button"
+                  placeholder="Roles"
+                  as="textarea"
+                  name="roles"
+                  onBlur={handleOnChange}
+                  value={filters.roles}
+                />
+              </Form.Group>
+              <Form.Group controlId="highestEducationElement">
+                <Form.Label>
+                  <h3 className="lip-subtext font-14">
+                    Minimum educational qualification
+                  </h3>
+                </Form.Label>
+                <Form.Control
+                  className="lip-button"
+                  as="select"
+                  name="highestEducation"
+                  onChange={handleOnChange}
+                >
+                  <option className="csv-dropdown-item" disabled selected>
+                    Select
+                  </option>
+                  <option value="10TH_STD" className="csv-dropdown-item">
+                    10th Std
+                  </option>
+                  <option value="12TH_STD" className="csv-dropdown-item">
+                    12th Std
+                  </option>
+                  <option value="GRADUATE_DEGREE" className="csv-dropdown-item">
+                    Graduate degree
+                  </option>
+                  <option
+                    value="POST_GRADUATE_DEGREE"
+                    className="csv-dropdown-item"
+                  >
+                    Post-graduate degree
+                  </option>
+                </Form.Control>
+              </Form.Group>
+              <Form.Group controlId="highestDegree">
+                <Form.Label>
+                  <h3 className="lip-subtext font-14">Highest degree</h3>
+                </Form.Label>
+                <Form.Control
+                  className="lip-button"
+                  placeholder="Degree"
+                  as="textarea"
+                  name="highestDegree"
+                  onBlur={handleOnChange}
+                />
+              </Form.Group>
+              <Form.Group controlId="major">
+                <Form.Label>
+                  <h3 className="lip-subtext font-14">
+                    Academic concentration
+                  </h3>
+                </Form.Label>
+                <Form.Control
+                  className="lip-button"
+                  placeholder="Major"
+                  as="textarea"
+                  name="major"
+                  onBlur={handleOnChange}
+                />
+              </Form.Group>
+              <Form.Group controlId="totalExperience">
+                <Form.Label>
+                  <h3 className="lip-subtext font-14">Total experience</h3>
+                </Form.Label>
+                <Form.Control
+                  className="lip-button"
+                  as="select"
+                  name="totalExperience"
+                  onChange={handleOnChange}
+                >
+                  <option className="csv-dropdown-item" disabled selected>
+                    Select
+                  </option>
+                  <option value="0_YEARS" className="csv-dropdown-item">
+                    0 years
+                  </option>
+                  <option value="0-2_YEARS" className="csv-dropdown-item">
+                    0-2 years
+                  </option>
+                  <option value="2-5_YEARS" className="csv-dropdown-item">
+                    2-5 years
+                  </option>
+                  <option value="5-10_YEARS" className="csv-dropdown-item">
+                    5-10 years
+                  </option>
+                  <option value="10+_YEARS" className="csv-dropdown-item">
+                    10+ years
+                  </option>
+                </Form.Control>
+              </Form.Group>
+              <Form.Group controlId="disabilitiesElement">
+                <Form.Label className="csv-select-label m-botttom">
+                  <h3 className="lip-subtext font-14">Disabilities</h3>
+                </Form.Label>
+                <div className="">
+                  <MultiSelectDropdownWrapper
+                    setSelectedOrTypedInputValue={setDisabilities}
+                    label="Disabilities"
+                    name="disabilities"
+                    id="disabilitiesElement"
+                    getDropdownListItems={props.GetDisabilities}
+                    onChange={handleDisabilitiesSelect}
+                  />
+                </div>
+              </Form.Group>
+              <Form.Group controlId="currentPlaceElement">
+                <Form.Label>
+                  <h3 className="lip-subtext font-14">Location</h3>
+                </Form.Label>
+                <Form.Control
+                  className="lip-button"
+                  placeholder="Location"
+                  as="textarea"
+                  name="location"
+                  onBlur={handleOnChange}
+                />
+              </Form.Group>
+              <Form.Group controlId="canRelocate">
+                <Form.Label>
+                  <h3 className="lip-subtext font-14">
+                    Include candidates willing to relocate
+                  </h3>
+                </Form.Label>
+                <Form.Control
+                  className="lip-button"
+                  as="select"
+                  name="canRelocate"
+                  onChange={handleOnChange}
+                >
+                  <option className="csv-dropdown-item" disabled selected>
+                    Select
+                  </option>
+                  <option value="true" className="csv-dropdown-item">
+                    Yes
+                  </option>
+                  <option value="false" className="csv-dropdown-item">
+                    No
+                  </option>
+                </Form.Control>
+              </Form.Group>
+            </div>
+          </Col>
           <Col>
             <span
               role="button"
               className="show-filters"
               aria-expanded={showFilters}
               aria-controls="filters"
+              aria-label="Filters"
               onClick={() => {
                 setShowFilters(!showFilters);
                 initialFocus?.current?.focus();
               }}
             >
-              {showFilters ? <CaretRightOutlined /> : <CaretLeftOutlined />}
+              {showFilters ? <CaretLeftOutlined /> : <CaretRightOutlined />}
             </span>
             <br />
             <Toast
@@ -525,297 +808,6 @@ const Hiring: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                 handlePreviousPage={handlePreviousPage}
               />
             )}
-          </Col>
-          <Col
-            sm={3}
-            id="filters"
-            className="filter-col"
-            style={{ display: showFilters ? "block" : "none" }}
-          >
-            <div tabIndex={-1} ref={initialFocus}>
-              <h2 className="mt-4 lip-subtext font-semibold">Filters</h2>
-            </div>
-            <div>
-              <Form.Group controlId="reset-button">
-                <Form.Control
-                  className="reset-button lip-subtext"
-                  as="button"
-                  type="reset"
-                  onClick={resetFilters}
-                >
-                  Reset all filters
-                </Form.Control>
-              </Form.Group>
-              <Form.Group className="csv-formgroup" controlId="status">
-                <Form.Label className="csv-select-label">
-                  <h3 className="lip-subtext font-14">Status</h3>
-                </Form.Label>
-                <Form.Control
-                  className="lip-button"
-                  as="select"
-                  onChange={handleOnChange}
-                  name="status"
-                >
-                  <option
-                    disabled
-                    className="csv-dropdown-item"
-                    selected={filters.status === undefined}
-                  >
-                    Select
-                  </option>
-                  <option
-                    value={CandidateStatus.NEW}
-                    className="csv-dropdown-item"
-                    selected={filters.status === CandidateStatus.NEW}
-                  >
-                    New
-                  </option>
-                  <option
-                    value={CandidateStatus.SHORTLISTED}
-                    className="csv-dropdown-item"
-                    selected={filters.status === CandidateStatus.SHORTLISTED}
-                  >
-                    Shortlisted
-                  </option>
-                  <option
-                    value={CandidateStatus.COMMENTED}
-                    className="csv-dropdown-item"
-                    selected={filters.status === CandidateStatus.COMMENTED}
-                  >
-                    Commented
-                  </option>
-                  <option
-                    value={CandidateStatus.CONTACTED}
-                    className="csv-dropdown-item"
-                    selected={filters.status === CandidateStatus.CONTACTED}
-                  >
-                    Contacted
-                  </option>
-                  <option
-                    value={CandidateStatus.IGNORED}
-                    className="csv-dropdown-item"
-                    selected={filters.status === CandidateStatus.IGNORED}
-                  >
-                    Ignored
-                  </option>
-                </Form.Control>
-              </Form.Group>
-              <Form.Group className="csv-formgroup" controlId="natureOfJob">
-                <Form.Label className="csv-select-label">
-                  <h3 className="lip-subtext font-14">Job Type</h3>
-                </Form.Label>
-                <Form.Control
-                  className="lip-button"
-                  as="select"
-                  name="jobType"
-                  onChange={handleOnChange}
-                >
-                  <option
-                    className="csv-dropdown-item"
-                    disabled
-                    selected={filters.jobType === undefined}
-                  >
-                    Select
-                  </option>
-                  <option
-                    value="FULL_TIME"
-                    className="csv-dropdown-item"
-                    selected={filters.jobType === "FULL_TIME"}
-                  >
-                    Full-time
-                  </option>
-                  <option
-                    value="INTERNSHIP"
-                    className="csv-dropdown-item"
-                    selected={filters.jobType === "INTERNSHIP"}
-                  >
-                    Internship
-                  </option>
-                  <option
-                    value="BOTH"
-                    className="csv-dropdown-item"
-                    selected={filters.jobType === "BOTH"}
-                  >
-                    Both
-                  </option>
-                </Form.Control>
-              </Form.Group>
-              <Form.Group className="csv-formgroup" controlId="industryElement">
-                <Form.Label className="csv-select-label m-botttom">
-                  <h3 className="lip-subtext font-14 ">Industry</h3>
-                </Form.Label>
-                <div className="">
-                  <MultiSelectDropdownWrapper
-                    setSelectedOrTypedInputValue={setIndustry}
-                    label="Industry"
-                    name="industry"
-                    id="industryElement"
-                    getDropdownListItems={props.GetIndustry}
-                    onChange={handleIndustrySelect}
-                  />
-                </div>
-              </Form.Group>
-              <Form.Group className="csv-formgroup" controlId="rolesElement">
-                <Form.Label className="csv-select-label">
-                  <h3 className="lip-subtext font-14">Roles</h3>
-                </Form.Label>
-                <Form.Control
-                  className="lip-button"
-                  placeholder="Roles"
-                  as="textarea"
-                  name="roles"
-                  onBlur={handleOnChange}
-                  value={filters.roles}
-                />
-              </Form.Group>
-              <Form.Group
-                className="csv-formgroup"
-                controlId="highestEducationElement"
-              >
-                <Form.Label className="csv-select-label">
-                  <h3 className="lip-subtext font-14">
-                    Minimum educational qualification
-                  </h3>
-                </Form.Label>
-                <Form.Control
-                  className="lip-button"
-                  as="select"
-                  name="highestEducation"
-                  onChange={handleOnChange}
-                >
-                  <option className="csv-dropdown-item" disabled selected>
-                    Select
-                  </option>
-                  <option value="10TH_STD" className="csv-dropdown-item">
-                    10th Std
-                  </option>
-                  <option value="12TH_STD" className="csv-dropdown-item">
-                    12th Std
-                  </option>
-                  <option value="GRADUATE_DEGREE" className="csv-dropdown-item">
-                    Graduate degree
-                  </option>
-                  <option
-                    value="POST_GRADUATE_DEGREE"
-                    className="csv-dropdown-item"
-                  >
-                    Post-graduate degree
-                  </option>
-                </Form.Control>
-              </Form.Group>
-              <Form.Group className="csv-formgroup" controlId="highestDegree">
-                <Form.Label className="csv-select-label">
-                  <h3 className="lip-subtext font-14">Highest degree</h3>
-                </Form.Label>
-                <Form.Control
-                  className="lip-button"
-                  placeholder="Degree"
-                  as="textarea"
-                  name="highestDegree"
-                  onBlur={handleOnChange}
-                />
-              </Form.Group>
-              <Form.Group className="csv-formgroup" controlId="major">
-                <Form.Label className="csv-select-label">
-                  <h3 className="lip-subtext font-14">
-                    Academic concentration
-                  </h3>
-                </Form.Label>
-                <Form.Control
-                  className="lip-button"
-                  placeholder="Major"
-                  as="textarea"
-                  name="major"
-                  onBlur={handleOnChange}
-                />
-              </Form.Group>
-              <Form.Group className="csv-formgroup" controlId="totalExperience">
-                <Form.Label className="csv-select-label">
-                  <h3 className="lip-subtext font-14">Total experience</h3>
-                </Form.Label>
-                <Form.Control
-                  className="lip-button"
-                  as="select"
-                  name="totalExperience"
-                  onChange={handleOnChange}
-                >
-                  <option className="csv-dropdown-item" disabled selected>
-                    Select
-                  </option>
-                  <option value="0_YEARS" className="csv-dropdown-item">
-                    0 years
-                  </option>
-                  <option value="0-2_YEARS" className="csv-dropdown-item">
-                    0-2 years
-                  </option>
-                  <option value="2-5_YEARS" className="csv-dropdown-item">
-                    2-5 years
-                  </option>
-                  <option value="5-10_YEARS" className="csv-dropdown-item">
-                    5-10 years
-                  </option>
-                  <option value="10+_YEARS" className="csv-dropdown-item">
-                    10+ years
-                  </option>
-                </Form.Control>
-              </Form.Group>
-              <Form.Group
-                className="csv-formgroup"
-                controlId="disabilitiesElement"
-              >
-                <Form.Label className="csv-select-label m-botttom">
-                  <h3 className="lip-subtext font-14">Disabilities</h3>
-                </Form.Label>
-                <div className="">
-                  <MultiSelectDropdownWrapper
-                    setSelectedOrTypedInputValue={setDisabilities}
-                    label="Disabilities"
-                    name="disabilities"
-                    id="disabilitiesElement"
-                    getDropdownListItems={props.GetDisabilities}
-                    onChange={handleDisabilitiesSelect}
-                  />
-                </div>
-              </Form.Group>
-              <Form.Group
-                className="csv-formgroup"
-                controlId="currentPlaceElement"
-              >
-                <Form.Label className="csv-select-label">
-                  <h3 className="lip-subtext font-14">Location</h3>
-                </Form.Label>
-                <Form.Control
-                  className="lip-button"
-                  placeholder="Location"
-                  as="textarea"
-                  name="location"
-                  onBlur={handleOnChange}
-                />
-              </Form.Group>
-              <Form.Group className="csv-formgroup" controlId="canRelocate">
-                <Form.Label className="csv-select-label">
-                  <h3 className="lip-subtext font-14">
-                    Include candidates willing to relocate
-                  </h3>
-                </Form.Label>
-                <Form.Control
-                  className="lip-button"
-                  as="select"
-                  name="canRelocate"
-                  onChange={handleOnChange}
-                >
-                  <option className="csv-dropdown-item" disabled selected>
-                    Select
-                  </option>
-                  <option value="true" className="csv-dropdown-item">
-                    Yes
-                  </option>
-                  <option value="false" className="csv-dropdown-item">
-                    No
-                  </option>
-                </Form.Control>
-              </Form.Group>
-            </div>
           </Col>
         </Row>
         <Modal
