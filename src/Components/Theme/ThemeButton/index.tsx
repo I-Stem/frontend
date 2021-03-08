@@ -103,19 +103,19 @@ const ThemeButton: React.FC<Props> = props => {
                 <Row>
                   <Button
                     onClick={() => handleFontChange(FontThemes.FONTM)}
-                    className="theme-button"
+                    className="font-button"
                   >
                     A
                   </Button>
                   <Button
                     onClick={() => handleFontChange(FontThemes.FONTL)}
-                    className="theme-button"
+                    className="font-button"
                   >
                     A+
                   </Button>
                   <Button
                     onClick={() => handleFontChange(FontThemes.FONTXL)}
-                    className="theme-button"
+                    className="font-button"
                   >
                     A++
                   </Button>

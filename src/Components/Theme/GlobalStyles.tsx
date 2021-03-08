@@ -27,17 +27,21 @@ export const GlobalStyles = createGlobalStyle`
     border-color: ${({ theme }) => theme.text} !important;
     transition: all 0.50s linear;
   }
-  .theme-button,
-  .theme-button:focus,
-  .theme-button:hover,
-  .theme-button:active{
+  .theme-button, 
+  .font-button:focus,
+  .font-button:hover,
+  .font-button:active{
     background: ${({ theme }) => theme.header} !important;
     color: ${({ theme }) => theme.semibold} !important;
     border-color: ${({ theme }) => theme.text} !important;
     transition: all 0.50s linear;
   } 
+  .font-button{
+    background: ${({ theme }) => theme.semibold} !important;
+    color: ${({ theme }) => theme.header} !important;
+    border-color: ${({ theme }) => theme.text} !important;
     transition: all 0.50s linear;
-  }
+  } 
   .des-heading, .navbar__Logout {
     color: ${({ theme }) => theme.semibold} !important;
     transition: all 0.50s linear;
@@ -60,7 +64,7 @@ export const GlobalFonts = createGlobalStyle`
   font-size: ${({ theme }) => theme.font0} !important;
   transition: all 0.50s linear;
 }
-nav,legend,.text-base,.lip-subtext,.lip-button,.lip-radio,.afc-fieldset,.lip-text,.lip-earned,.modal-title,.stud-select,.stud-upload,.font-16,.MuiInputLabel-root,.register-buttons,.login-button,.auth-input,.lip-label-r,.lip-nav-button,.text-lg,.des-heading,.navbar__Logout,.tag-bg,.downshift-input::placeholder,.student-detail-text,.tab-text{
+nav,.show-filters,legend,.text-base,.lip-subtext,.lip-button,.lip-radio,.afc-fieldset,.lip-text,.lip-earned,.modal-title,.stud-select,.stud-upload,.font-16,.MuiInputLabel-root,.register-buttons,.login-button,.auth-input,.lip-label-r,.lip-nav-button,.text-lg,.des-heading,.navbar__Logout,.tag-bg,.downshift-input::placeholder,.student-detail-text,.tab-text{
   font-size: ${({ theme }) => theme.font1} !important;
   transition: all 0.50s linear;
  }
