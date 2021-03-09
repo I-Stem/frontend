@@ -9,7 +9,7 @@ export const GlobalStyles = createGlobalStyle`
     border-color:  ${({ theme }) => theme.borderColor} !important;
     transition: all 0.50s linear;
   }
-  .leading-7,.activity-text,.lip-title,.menu-font,.reset-all, .lip-text, table, .heading-color .lip-subtext, h2, h3, .MuiTypography-subtitle1, .MuiTypography-h3, .MuiTypography-h6{
+  .leading-7, .text-white,.activity-text,.lip-title,.menu-font,.reset-all, .lip-text, table, .heading-color .lip-subtext, h2, h3, .MuiTypography-subtitle1, .MuiTypography-h3, .MuiTypography-h6{
     color: ${({ theme }) => theme.text} !important;
     transition: all 0.50s linear;
   }
@@ -36,9 +36,10 @@ export const GlobalStyles = createGlobalStyle`
     border-color: ${({ theme }) => theme.text} !important;
     transition: all 0.50s linear;
   } 
+  
   .font-button{
     background: ${({ theme }) => theme.semibold} !important;
-    color: ${({ theme }) => theme.header} !important;
+    color: ${({ theme }) => theme.toggleBorder} !important;
     border-color: ${({ theme }) => theme.text} !important;
     transition: all 0.50s linear;
   } 
