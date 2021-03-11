@@ -393,15 +393,13 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
               </Card>
             </article>
           ))}
-          {activityData.length > 0 && (
-            <Pagination
-              totalItems={activityData.length}
-              currentPage={currentPage}
-              handleNextPage={handleNextPage}
-              handlePageNumber={handlePageNumber}
-              handlePreviousPage={handlePreviousPage}
-            />
-          )}
+          <Pagination
+            totalItems={activityData.length}
+            currentPage={currentPage}
+            handleNextPage={handleNextPage}
+            handlePageNumber={handlePageNumber}
+            handlePreviousPage={handlePreviousPage}
+          />
         </div>
       </Tab>
       <Tab eventKey="info" title="Info" className="tab-text">
