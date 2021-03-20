@@ -1,13 +1,17 @@
 // #region Local Imports
 import { IAction, IUpload } from "@Interfaces";
 import { ActionConsts } from "@Definitions";
-import { UploadReducer } from ".";
+import { AfcReducer } from "./index";
 // #endregion Local Imports
 
-describe("Upload reducer", () => {
+describe("AFC reducer", () => {
   it("should return the initial state", () => {
-    expect(
-      UploadReducer(undefined, {} as IAction<IUpload.IStateProps>)
-    ).toEqual({});
+    expect(AfcReducer(undefined, {} as IAction<IUpload.IStateProps>)).toEqual({
+      inputFileId: "",
+      documentName: "",
+      outputFormat: 0,
+      tagId: "",
+      inputFileLink: "",
+    });
   });
 });

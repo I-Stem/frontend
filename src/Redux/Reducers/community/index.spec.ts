@@ -1,13 +1,16 @@
 // #region Local Imports
 import { IAction, IUpload } from "@Interfaces";
 import { ActionConsts } from "@Definitions";
-import { UploadReducer } from ".";
+import { CommunityReducer } from "./index";
 // #endregion Local Imports
 
-describe("Upload reducer", () => {
+describe("Community Reducer", () => {
   it("should return the initial state", () => {
+    const INITIAL_STATE = {
+      inputFileId: "",
+    };
     expect(
-      UploadReducer(undefined, {} as IAction<IUpload.IStateProps>)
-    ).toEqual({});
+      CommunityReducer(undefined, {} as IAction<IUpload.IStateProps>)
+    ).toEqual(INITIAL_STATE);
   });
 });

@@ -246,7 +246,6 @@ exports[`ResetPassword should match snapshot 1`] = `
                   >
                     <svg
                       aria-hidden="true"
-                      class=""
                       data-icon="eye-invisible"
                       fill="currentColor"
                       focusable="false"
@@ -315,7 +314,6 @@ exports[`ResetPassword should match snapshot 1`] = `
                   >
                     <svg
                       aria-hidden="true"
-                      class=""
                       data-icon="eye-invisible"
                       fill="currentColor"
                       focusable="false"

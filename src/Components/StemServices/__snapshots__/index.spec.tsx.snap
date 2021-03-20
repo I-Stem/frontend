@@ -42,7 +42,6 @@ exports[`SearchDocument should match snapshot 1`] = `
                       >
                         <svg
                           aria-hidden="true"
-                          class=""
                           data-icon="search"
                           fill="currentColor"
                           focusable="false"

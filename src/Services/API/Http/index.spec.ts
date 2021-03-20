@@ -1,10 +1,31 @@
 // #region Local Imports
-import { Http } from ".";
-// #endregion Local Imports
+import { Http } from "./index";
+import { createServer, Response } from "miragejs";
 
 describe("Http request tests", () => {
+  let server;
+  beforeEach(() => {
+    server = createServer({
+      environment: "test",
+      routes() {
+        this.namespace = "api";
+
+        this.get("/test", () => {
+          return { success: true };
+        });
+
+        this.get("/404", () => {
+          return new Response(404, {}, "couldn't find");
+        });
+      },
+    });
+  });
+
+  afterEach(() => {
+    server.shutdown();
+  });
   test("200 test", async () => {
-    const result = await Http.get<{ success: boolean }>("/200");
+    const result = await Http.get<{ success: boolean }>("/test");
     expect(result.success).toEqual(true);
   });
 
@@ -12,7 +33,7 @@ describe("Http request tests", () => {
     try {
       await Http.get("/404");
     } catch (error) {
-      expect(error.status).toEqual(404);
+      expect(error).toBeDefined();
     }
   });
 
