@@ -7,7 +7,7 @@
     "start:dev": "next dev",
     "build": "next build",
     "start": "cross-env NODE_ENV=production next start",
-    "test": "jest --coverage",
+    "test": "jest --runInBand --detectOpenHandles",
     "lint": "eslint './{src,pages,server}/**/*' --ext .tsx,.ts",
     "lint-fix": "eslint './{src,pages,server}/**/*' --ext .tsx,.ts --fix",
     "pretty": "prettier --write --config .prettierrc.json {src,pages,server}/**/*.{ts,tsx}",

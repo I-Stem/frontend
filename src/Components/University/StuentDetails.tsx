@@ -281,11 +281,7 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
                 });
               }}
             >
-              <option
-                className="csv-dropdown-item"
-                disabled
-                selected={activityOption === 0}
-              >
+              <option className="csv-dropdown-item" disabled>
                 Select Activity
               </option>
               {activityDropdown()}

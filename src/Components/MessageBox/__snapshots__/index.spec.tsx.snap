@@ -15,7 +15,7 @@ exports[`MessageBox should match snapshot 1`] = `
         <p
           class="notes-p"
         >
-          Invalid date
+          2021-03-21T20:30:00+05:30
         </p>
       </div>
       <p

@@ -1,7 +1,7 @@
-import React, { useState }  from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Button, Form, Input, Modal, Typography } from "antd";
-import {Rating} from "@material-ui/lab";
+import { Rating } from "@material-ui/lab";
 
 import { AfcServiceActions, VcServiceActions } from "@Actions";
 
@@ -65,7 +65,12 @@ const FeedbackModal: React.FunctionComponent<FeedbackModalProps> = props => {
       >
         <Title level={4}>{message}</Title>
         <Form.Item name="rating">
-        <Rating name="simple-controlled" size="large" defaultValue={1} value={rating} onChange={(event, newRating) => setRating(newRating)} />
+          <Rating
+            name="simple-controlled"
+            size="large"
+            value={rating}
+            onChange={(event, newRating) => setRating(newRating)}
+          />
         </Form.Item>
 
         <div className="mt-2">

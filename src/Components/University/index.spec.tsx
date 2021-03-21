@@ -6,6 +6,7 @@ import { RecommendedActions } from "./RecommendedActions";
 import { InviteModal } from "./InviteModal";
 import { MetricsReportDialog } from "./MetricsReport";
 import { StudentDetails } from "./StuentDetails";
+import { UserType } from "@Definitions/Constants";
 const baseProps = {
   mockFunc: jest.fn(),
 };
@@ -18,6 +19,7 @@ describe("Recomended Actions", () => {
           showOnboardStaffCard: true,
         }}
         updatePreferences={baseProps.mockFunc}
+        userType={UserType.I_STEM}
       />
     );
 
@@ -32,6 +34,7 @@ describe("Recomended Actions", () => {
           showOnboardStaffCard: true,
         }}
         updatePreferences={baseProps.mockFunc}
+        userType={UserType.I_STEM}
       />
     );
 
@@ -96,7 +99,6 @@ describe("StudentDetails", () => {
       <StudentDetails
         showModal={true}
         toggleModal={baseProps.mockFunc}
-        studentId="12345"
         studentDetails={{
           name: "ABCD",
           email: "abc@example.com",
@@ -113,7 +115,6 @@ describe("StudentDetails", () => {
       <StudentDetails
         showModal={true}
         toggleModal={baseProps.mockFunc}
-        studentId="12345"
         studentDetails={{
           name: "ABCD",
           email: "abc@example.com",

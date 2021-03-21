@@ -8,7 +8,7 @@ import { JobOpportunitiesDescription } from "./job-opportunities";
 import { MentorshipDescription } from "./mentorship";
 
 describe("Afc Description", () => {
-  it.only("should render without fail", () => {
+  it("should render without fail", () => {
     const renderedElement = renderer.create(<AfcDescription />).toJSON();
 
     expect(renderedElement).toMatchSnapshot;

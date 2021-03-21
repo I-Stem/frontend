@@ -3,7 +3,7 @@ import { AuthService } from "@Services";
 import { createServer, Response } from "miragejs";
 
 describe("Auth Service tests", () => {
-  let server;
+  let server: any;
   beforeEach(() => {
     server = createServer({
       environment: "test",
@@ -27,14 +27,13 @@ describe("Auth Service tests", () => {
     });
   });
 
-  afterEach(() => {
-    server.shutdown();
+  afterEach(async () => {
+    await server.shutdown();
   });
   test("200 test", async () => {
     const result = await AuthService.register({
       params: { email: "john@test.com", password: "12345678" },
     });
-    console.log(JSON.stringify(result));
     expect(result.data.token).toEqual("Winterfell");
   });
 });

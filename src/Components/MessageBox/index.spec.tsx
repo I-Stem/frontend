@@ -20,7 +20,11 @@ describe("MessageBox", () => {
     const { container } = render(
       <MessageBox
         messageData={[
-          { actionBy: "ABCD", actionAt: "15:56", comment: "Test MessageBox" },
+          {
+            actionBy: "ABCD",
+            actionAt: "2021-03-21 20:30+05:30",
+            comment: "Test MessageBox",
+          },
         ]}
       />
     );

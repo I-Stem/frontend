@@ -3,7 +3,7 @@ import { Http } from "./index";
 import { createServer, Response } from "miragejs";
 
 describe("Http request tests", () => {
-  let server;
+  let server: any;
   beforeEach(() => {
     server = createServer({
       environment: "test",
@@ -21,8 +21,8 @@ describe("Http request tests", () => {
     });
   });
 
-  afterEach(() => {
-    server.shutdown();
+  afterEach(async () => {
+    await server.shutdown();
   });
   test("200 test", async () => {
     const result = await Http.get<{ success: boolean }>("/test");
