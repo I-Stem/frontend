@@ -17,6 +17,10 @@
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
     "export": "cross-env NODE_ENV=production next export"
   },
+"jest": {
+  "collectCoverage": true,
+  "coverageReporters": ["lcov"]
+},
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
     "@casl/ability": "^4.1.6",
