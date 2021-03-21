@@ -13,6 +13,7 @@ module.exports = {
   },
   coveragePathIgnorePatterns: ["/node_modules/", "/server/"],
   setupFilesAfterEnv: ["<rootDir>/test/jest.setup.ts"],
+collectCoverage: true,
   coverageReporters: ["json", "lcov", "text", "text-summary"],
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
   moduleNameMapper: {
