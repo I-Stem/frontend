@@ -39,13 +39,16 @@ const ResetPasswordFormStore = () => (
   </Provider>
 );
 
-/*
 describe("AuthDisclaimer", () => {
+  it.only("should render without fail", () => {
+    try {
+      const { getByText } = render(<AuthDisclaimer message="Sign in" />);
 
-  it("should render without fail", () => {
-    const { getByText } = render(<AuthDisclaimer message="Sign in" />);
-
-    expect(getByText("Terms of Service and Privacy Policy.")).toBeTruthy();
+      expect(getByText("Terms of Service and Privacy Policy.")).toBeTruthy();
+    } catch (error) {
+      console.log(JSON.stringify(error));
+      expect(true).toBeFalsy();
+    }
   });
 
   it("should match snapshot", () => {
@@ -54,7 +57,6 @@ describe("AuthDisclaimer", () => {
     expect(container).toMatchSnapshot();
   });
 });
-*/
 
 describe("ForgotPasswordForm", () => {
   it("should render without fail", () => {
