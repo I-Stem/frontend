@@ -4,6 +4,9 @@
 - [![Test Coverage](https://api.codeclimate.com/v1/badges/3865951ea0349d17fc2e/test_coverage)](https://codeclimate.com/github/I-Stem/frontend/test_coverage)
 
 # Introduction
+
+   For an intro about who we are and what we aim to develop, go [here](https://i-stem.github.io).
+
 ## Accommodation automation services frontend
 
    This is frontend repo for the AI-powered I-Stem assistive technology solutions. Currently the functionalities for registered users include:
@@ -21,7 +24,7 @@
 * [Global Packages](#global-packages)
 * [Project Setup](#project-setup)
 * [Getting Started](#getting-started)
-
+* [API documentation](#api-documentation)
 
 # Tech stack
 
@@ -106,3 +109,6 @@ yarn start:dev
 * [Backend repo](https://github.com/I-Stem/backend)
 * [Repo containing all AI models and services](https://github.com/I-Stem/science)
 
+# API documentation
+
+   Please have a look [here](https://i-stem.github.io/frontend).
