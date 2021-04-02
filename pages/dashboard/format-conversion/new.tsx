@@ -197,7 +197,7 @@ const NewFile: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
               <Form.Item
                 className="width-41p"
                 name="docType"
-                // rules={[{ required: true, message: "Category is required" }]}
+                rules={[{ required: true, message: "Category is required" }]}
               >
                 <fieldset className="afc-fieldset">
                   <legend
@@ -350,7 +350,7 @@ const NewFile: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                 className="width-41p"
                 name="outputFormat"
                 id="selectOutputFormatElement"
-                rules={[{ required: true, message: "Select an option" }]}
+                rules={[{ required: true, message: "Select output format" }]}
               >
                 <Select
                   native

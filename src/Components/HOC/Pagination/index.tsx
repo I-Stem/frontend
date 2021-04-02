@@ -9,6 +9,8 @@ const Pagination: React.FC<PaginationProps> = props => {
     handleNextPage,
     handlePreviousPage,
     totalItems,
+    firstPage,
+    lastPage,
   } = props;
   const pageNumbers: number[] = [];
   for (let i = 1; i <= Math.ceil(totalItems / 10); i += 1) {
@@ -31,8 +33,9 @@ const Pagination: React.FC<PaginationProps> = props => {
     );
   });
   return totalItems > 0 ? (
-    <div className="lip-pagination">
+    <div className="lip-pagination auto-x-overflow">
       <BsPagination>
+        {firstPage && <BsPagination.First onClick={firstPage} />}
         <BsPagination.Prev
           onClick={handlePreviousPage}
           disabled={currentPage - 1 === 0}
@@ -46,6 +49,9 @@ const Pagination: React.FC<PaginationProps> = props => {
         >
           Next
         </BsPagination.Next>
+        {lastPage && (
+          <BsPagination.Last onClick={() => lastPage(pageNumbers.length)} />
+        )}
       </BsPagination>
     </div>
   ) : (

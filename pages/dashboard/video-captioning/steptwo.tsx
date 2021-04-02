@@ -50,6 +50,7 @@ const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   const access: boolean = can("VIEW", "AI_SERVICES");
   const { register, handleSubmit } = useForm();
   const [modelType, setModelType] = useState();
+  const [nextButton, toggleNextButton] = useState(false);
   const setFilenameValue = (value: string): void => {
     const filename = value.replace(new RegExp(/[.].{3,4}/, "i"), "");
     console.log("Filename value set...");
@@ -65,12 +66,25 @@ const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   const handleClose = () => {
     setDialog(false);
   };
-  const handleServiceChange = (event: any, modelType: any) => {
-    setModelType(modelType);
-    if (modelType === "custom") {
+  const handleModelSubmit = () => {
+    router.push({
+      pathname: VIDEO_CAPTIONING_NEW_REQUEST,
+      query: {
+        requestType: router.query.requestType,
+        modelId: selectedCustom ? modelId : "standard",
+      },
+    });
+  };
+
+  const handleServiceChange = (event: any, _modelType: any) => {
+    setModelType(_modelType);
+    if (_modelType === "custom") {
+      toggleNextButton(true);
       setSelectedCustom(true);
-    } else {
+    } else if (_modelType === "standard") {
       setSelectedCustom(false);
+      toggleNextButton(false);
+      handleModelSubmit();
     }
   };
   const newTrainingModel = (data: any) => {
@@ -86,15 +100,6 @@ const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
 
     router.push(TRAINING);
   };
-  const handleModelSubmit = () => {
-    router.push({
-      pathname: VIDEO_CAPTIONING_NEW_REQUEST,
-      query: {
-        requestType: router.query.requestType,
-        modelId: selectedCustom ? modelId : "standard",
-      },
-    });
-  };
 
   return (
     <Wrapper>
@@ -103,7 +108,7 @@ const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       </Head>
       {access ? (
         <Fragment>
-          <FormLayout form="vcModelSelectForm" hideFooter={false}>
+          <FormLayout form="vcModelSelectForm" hideFooter>
             <form
               className="lip-margin"
               id="vcModelSelectForm"
@@ -154,6 +159,7 @@ const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                     onChange={(event: any, child: any) =>
                       setModelId(event.target.value)
                     }
+                    required
                     variant="outlined"
                     defaultValue="none"
                   >
@@ -175,6 +181,15 @@ const Steptwo: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
               )}
             </form>
           </FormLayout>
+          {nextButton && (
+            <div className="bg-white position-fixed bottom-0 left-0 right-0 p-3 border-t border-gray-200">
+              <div className="float-right">
+                <GreenButton form="vcModelSelectForm" htmlType="submit">
+                  <span className="px-8">Next</span>
+                </GreenButton>
+              </div>
+            </div>
+          )}
 
           <Dialog
             open={opneDialog}

@@ -4,4 +4,6 @@ export interface PaginationProps {
   handlePreviousPage: () => void;
   handleNextPage: () => void;
   totalItems: number;
+  firstPage?: () => void;
+  lastPage?: (val: number) => void;
 }
