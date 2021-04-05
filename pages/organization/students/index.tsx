@@ -15,7 +15,6 @@ import { Col, Row, Table } from "react-bootstrap";
 import { UniversityPortal } from "@Services";
 import PrivateRoute from "@Pages/_privateRoute";
 import { UPLOAD_STUDENTS } from "@Definitions/Constants/universityRoutes";
-import { StudentDetails } from "@Components/University/StuentDetails";
 import { DialogMessageBox } from "@Components/Basic/Dialog";
 import { MetricsReportDialog } from "@Components/University/MetricsReport";
 import { InviteModal } from "@Components/University/InviteModal";
@@ -24,6 +23,7 @@ import { UserType } from "@Definitions/Constants";
 import Pagination from "@Components/HOC/Pagination";
 import Error from "next/error";
 import { useAppAbility } from "src/Hooks/useAppAbility";
+import { useRouter } from "next/router";
 
 const { STUDENTS } = fileNames;
 const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
@@ -48,6 +48,7 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   const [searchResult, setSearchResult] = useState(false);
   const [searchString, setSearchString] = useState("");
   const [metricsModal, setMetricsModal] = useState(false);
+  const router = useRouter();
   const studentCount = (searchText: string) => {
     UniversityPortal.studentsCount({
       params: { searchString: searchText },
@@ -114,6 +115,15 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   };
   const toggleModal = () => {
     setStudentModal(!studentModal);
+    router.push({
+      pathname: "/organization/students/studentDetails",
+      query: {
+        id: (studentData && studentData[index]?.id) || "",
+        name: (studentData && studentData[index]?.name) || "",
+        email: (studentData && studentData[index]?.email) || "",
+        roll: (studentData && studentData[index]?.roll) || "",
+      },
+    });
   };
   const handlePageNumber = (val: any) => {
     getStudentsData(Number(val), searchString);
@@ -121,7 +131,7 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   };
   const inviteStudents = (
     <Row className="justify-center">
-      <Col sm={4}>
+      <Col>
         <div className="mt-4">
           <WhiteButton href={UPLOAD_STUDENTS}>
             <span className="flex items-center">
@@ -133,7 +143,7 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
           </WhiteButton>
         </div>
       </Col>
-      <Col sm={4}>
+      <Col>
         <div className="mt-4">
           <GreenButton onClick={() => setShowInvite(true)}>
             <span className="flex items-center">
@@ -315,16 +325,6 @@ const Students: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
             Enter student email address or multiple addresses separated by
             commas to invite. A link will be mailed to them to sign up.
           </InviteModal>
-          <StudentDetails
-            showModal={studentModal}
-            toggleModal={toggleModal}
-            studentId={(studentData && studentData[index]?.id) || ""}
-            studentDetails={{
-              name: (studentData && studentData[index]?.name) || "",
-              email: (studentData && studentData[index]?.email) || "",
-              roll: (studentData && studentData[index]?.roll) || "",
-            }}
-          />
           <DialogMessageBox
             showModal={messageBox}
             message={dialogMessage}

@@ -1,3 +1,4 @@
+import { IAuthUser } from "@Interfaces";
 import { Func0 } from "redux";
 
 declare namespace IHeader {

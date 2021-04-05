@@ -17,6 +17,7 @@ import { IAuthPayload } from "@Interfaces";
 import { IAuth } from "./Auth";
 import { UniversityPortal } from "@Services";
 import { BlueButton, WhiteButton } from "@Components/HOC/Dashboard";
+import { DASHBOARD_ROUTE } from "@Definitions/Constants/pageroutes";
 
 const { Text } = Typography;
 const layout = {
@@ -47,7 +48,7 @@ const BusinessSetup = (props: IAuth.IRegisterUserProps) => {
       code: organizationCode,
     }).then((results: any) => {
       if (results.code === 200) {
-        router.push("/dashboard");
+        router.push(DASHBOARD_ROUTE);
       } else {
         console.log("Error", results.message);
       }
@@ -162,7 +163,7 @@ const BusinessSetup = (props: IAuth.IRegisterUserProps) => {
       <div className="fixed bg-white  bottom-0 left-0 right-0 p-3 border-t border-gray-200">
         <div className="flex justify-between float-right">
           <div style={{ width: "100%", marginRight: "20px" }}>
-            <BlueButton onClick={() => router.push("/dashboard")}>
+            <BlueButton onClick={() => router.push(DASHBOARD_ROUTE)}>
               Skip
             </BlueButton>
           </div>

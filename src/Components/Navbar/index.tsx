@@ -5,6 +5,7 @@ import fileNames from "@Definitions/Constants/image";
 
 import { INavbar } from "./Navbar";
 import "./Navbar.scss";
+import ThemeButton from "@Components/Theme/ThemeButton";
 
 const { LIP_LOGO } = fileNames;
 const Navbar: React.FunctionComponent<INavbar.IProps> = ({
@@ -26,14 +27,12 @@ const Navbar: React.FunctionComponent<INavbar.IProps> = ({
           <img className="lip-logo inline-block" src={LIP_LOGO} alt="Logo" />
         </Link>
       </div>
-
+      <ThemeButton />
       <div className=" flex items-center">
         <span className="text-white text-lg">{headermessage}</span>
         <Link href={buttonlink}>
           <Button className="lip-nav-button ml-4">
-            <span className="tracking-wider px-8">
-              {buttonmessage}
-            </span>
+            <span className="tracking-wider px-8">{buttonmessage}</span>
           </Button>
         </Link>
       </div>

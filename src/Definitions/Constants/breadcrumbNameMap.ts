@@ -6,7 +6,7 @@ interface IBreadcrumbItem {
 export const BREADCRUMB_MAP: { [index: string]: IBreadcrumbItem } = {
   dashboard: {
     title: "I-Stem Programs & Resources",
-    url: "/dashboard",
+    url: "/",
   },
   "format-conversion": {
     title: "Training",
@@ -21,7 +21,7 @@ export const BREADCRUMB_MAP: { [index: string]: IBreadcrumbItem } = {
 export const MENU_ITEMS = [
   {
     name: "Dashboard",
-    link: "/dashboard",
+    link: "/",
   },
   {
     name: "Credit Balance",

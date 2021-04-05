@@ -86,11 +86,15 @@ const RegisterUser = (props: IAuth.IRegisterUserProps) => {
   return (
     <section id="registeruser" className="mt-16 auth-form">
       <Title className="lipHead">Welcome to I-Stem!</Title>
-      <Title className="lipHead" level={4}>
+      <Title className="lipHead" level={2}>
         Register your account as{" "}
         <span className="capitalize"> {checkUserType()}</span>
       </Title>
-      <GoogleButton label="Register with Google" onClick={loginWithGoogle} />
+      <GoogleButton
+        label="Register with Google"
+        className="google-login"
+        onClick={loginWithGoogle}
+      />
       <div className="mt-6">
         <Form
           aria-live="polite"

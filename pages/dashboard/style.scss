@@ -11,13 +11,12 @@ $blue-btn-background: var(--color-btn-blue);
   background-color: $background-color-service;
 }
 .lip-button {
-  height: 52px !important;
+  height: 3.25rem !important;
   font-size: 16px !important;
   font-weight: 600 !important;
 }
 .lip-subtext {
-  font-size: 16px !important;
-  color: #595959 !important;
+  font-size: 16px;
   font-family: Poppins !important;
   margin-bottom: 0.35rem !important;
   line-height: 30px !important;
@@ -65,7 +64,7 @@ $blue-btn-background: var(--color-btn-blue);
   margin-top: 2rem;
 }
 .train-model {
-  color: #262626 !important;
+  color: #008a5a !important;
   text-decoration: underline;
 }
 .lip-dialog-button {
@@ -263,7 +262,7 @@ legend {
 }
 .filter-col {
   margin-bottom: -5rem;
-  border-left-width: 2px;
+  border-right-width: 2px;
   transition: all 2s linear;
 }
 .font-14 {
@@ -335,8 +334,7 @@ legend {
   float: right;
 }
 .show-filters {
-  float: right;
-  font-size: 18px;
+  margin: 5rem;
 }
 .email-subject {
   height: 52px !important;

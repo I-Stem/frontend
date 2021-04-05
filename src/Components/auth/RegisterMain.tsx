@@ -25,7 +25,7 @@ const RegisterMain = (props: RegisterMainProps) => {
         <title>Register | I-Stem</title>
       </Head>
       <Title className="lipHead">Welcome to I-Stem!</Title>
-      <Title className="lipHead" level={4}>
+      <Title className="lipHead" level={2}>
         Register your account as
       </Title>
       <div className="mt-6">

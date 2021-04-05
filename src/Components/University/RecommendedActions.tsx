@@ -22,8 +22,10 @@ export const RecommendedActions = (props: Props) => {
     if (cardType === "students") {
       toggleStudentCard(!studentCard);
       UniversityPortal.updateUserCardPreferences({
-        showOnboardStudentsCard: false,
-        showOnboardStaffCard: staffCard,
+        cardPreferences: {
+          showOnboardStudentsCard: false,
+          showOnboardStaffCard: staffCard,
+        },
       });
       updatePreferences({
         showOnboardStaffCard: staffCard,
@@ -33,8 +35,10 @@ export const RecommendedActions = (props: Props) => {
     if (cardType === "staffs") {
       toggleStaffCard(!staffCard);
       UniversityPortal.updateUserCardPreferences({
-        showOnboardStaffCard: false,
-        showOnboardStudentsCard: studentCard,
+        cardPreferences: {
+          showOnboardStaffCard: false,
+          showOnboardStudentsCard: studentCard,
+        },
       });
       updatePreferences({
         showOnboardStaffCard: false,

@@ -1,4 +1,4 @@
-import { CardPreferences } from "@Interfaces";
+import { CardPreferences, Themes, UserPreferences } from "@Interfaces";
 import { Http } from "@Services";
 import { MetricsData, MetricsResponse } from "./IUniversityResponse";
 
@@ -81,7 +81,7 @@ export const UniversityPortal = {
   }): Promise<any> => {
     return Http.get("/university/studentsCount", payload.params);
   },
-  updateUserCardPreferences: async (payload: CardPreferences): Promise<any> => {
+  updateUserCardPreferences: async (payload: UserPreferences): Promise<any> => {
     return Http.post("/university/onboardCards", undefined, payload);
   },
   emailStudentsReport: async (): Promise<any> => {

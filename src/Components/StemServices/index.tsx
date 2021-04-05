@@ -8,7 +8,7 @@ export const StemService: React.FunctionComponent<IStemServices.IProps> = props 
   const { serviceInstance, disabled } = props;
   return (
     <div className="service-component rounded-lg h-full pt-8 pl-6 pr-12 pb-2">
-      <Link href={disabled ? "/dashboard" : serviceInstance.route}>
+      <Link href={disabled ? "/" : serviceInstance.route}>
         <a className="cursor-pointer">
           <div className="pb-2">
             <img

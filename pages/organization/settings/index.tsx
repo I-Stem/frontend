@@ -23,6 +23,7 @@ import { getInvitationResponseMessage } from "@Services/helper/utils";
 import { UserType } from "@Definitions/Constants";
 import { useAppAbility } from "src/Hooks/useAppAbility";
 import Error from "next/error";
+import { DASHBOARD_ROUTE } from "@Definitions/Constants/pageroutes";
 
 const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   props: any
@@ -116,7 +117,7 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       escalationHandledBy: data.escalationHandledBy,
     }).then((results: any) => {
       if (results.code === 200) {
-        router.push("/dashboard");
+        router.push(DASHBOARD_ROUTE);
       } else {
         console.log("Error", results.message);
       }
@@ -175,7 +176,7 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
               {formik => (
                 <Form onSubmit={formik.handleSubmit}>
                   <fieldset className="mt-4">
-                    <h3 className="lip-subtext lip-label font-semibold text-xl leading-9 settings-font">
+                    <h3 className="lip-subtext lip-label font-semibold text-xl leading-9 ">
                       Choose between automatically allowing{" "}
                       {userType === UserType.BUSINESS
                         ? "employees"
@@ -211,7 +212,7 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                   {showDomain ? (
                     <Form.Group controlId="domain">
                       <Form.Label>
-                        <h3 className="lip-subtext lip-label font-semibold text-xl leading-9 settings-font">
+                        <h3 className="lip-subtext lip-label font-semibold text-xl leading-9 ">
                           Domain name
                         </h3>
                       </Form.Label>
@@ -229,7 +230,7 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                     <></>
                   )}
                   <fieldset className="mt-4">
-                    <h3 className="lip-subtext lip-label font-semibold text-xl leading-9 settings-font">
+                    <h3 className="lip-subtext lip-label font-semibold text-xl leading-9 ">
                       Escalation of document accessibility and video/audio
                       accessibility
                     </h3>

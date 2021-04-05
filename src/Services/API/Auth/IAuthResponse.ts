@@ -1,4 +1,5 @@
 import { UserType } from "@Definitions/Constants";
+import { ColorThemes, FontThemes } from "@Definitions/Constants/ThemeConstants";
 
 export interface IAuthUser {
   role?: string;
@@ -16,12 +17,16 @@ export interface IAuthUser {
 }
 
 export interface UserPreferences {
-  cardPreferences: CardPreferences;
-  darkMode?: boolean;
+  cardPreferences?: CardPreferences;
+  themes?: Themes;
 }
 export interface CardPreferences {
   showOnboardStaffCard?: boolean;
   showOnboardStudentsCard?: boolean;
+}
+export interface Themes {
+  colorTheme?: ColorThemes;
+  fontTheme?: FontThemes;
 }
 export interface IAuthSuccess {
   user?: IAuthUser;

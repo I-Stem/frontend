@@ -10,7 +10,6 @@ const DropDown = (props: any) => {
       ?.removeAttribute("role");
   }, []);
 
-
   const {
     isOpen,
     getToggleButtonProps,
@@ -33,14 +32,16 @@ const DropDown = (props: any) => {
       props.updateValue(inputValue);
     },
   });
-/*
+  /*
   useEffect(() => {
     setValue(props.value);
   }, []);
 */
   return (
     <div>
-      <label {...getLabelProps()}>{props.label}</label> 
+      <label className="font-14" {...getLabelProps()}>
+        {props.label}
+      </label>
       <div className="downshift-div" {...getComboboxProps()}>
         <input
           className="downshift-input"
@@ -58,7 +59,12 @@ const DropDown = (props: any) => {
           <ArrowDropDown />
         </button>
       </div>
-      <ul className="downshift-menu" role="none" aria-live="off" {...getMenuProps()}>
+      <ul
+        className="downshift-menu"
+        role="none"
+        aria-live="off"
+        {...getMenuProps()}
+      >
         {isOpen &&
           inputItems.map((item: any, index: number) => (
             <li

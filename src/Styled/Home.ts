@@ -3,7 +3,7 @@ import styled from "styled-components";
 // #endregion Global Imports
 
 export const Container = styled.div`
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors?.primary};
   display: flex;
   flex-direction: column;
   flex: 1 1 100%;
@@ -76,7 +76,7 @@ export const ApodButton = styled.div`
   font-family: Arial;
   font-weight: 700;
   font-size: 25px;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors?.primary};
   letter-spacing: 0;
 `;
 
