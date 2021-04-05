@@ -236,7 +236,7 @@ const RequestTable: React.FunctionComponent<TableProps> = props => {
       },
     },
   ];
-
+  console.log("Here", selectedService);
   return (
     <div>
       <Table

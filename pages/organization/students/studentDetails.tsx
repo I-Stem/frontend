@@ -14,7 +14,7 @@ import { useAppAbility } from "src/Hooks/useAppAbility";
 import Pagination from "@Components/HOC/Pagination";
 import Error from "next/error";
 import { FormLayout } from "@Components/HOC/Dashboard";
-import { StudentDetails } from "@Components/University/StuentDetails";
+import { StudentDetails } from "@Components/University/StudentDetails";
 
 const StudentInfo: NextPage<
   IStemServices.IProps,

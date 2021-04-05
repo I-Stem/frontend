@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import renderer from "react-test-renderer";
 import { render } from "@Test/utils";
 // import { Rec } from "@Components";
 import { AfcDescription } from "./afc";
@@ -9,9 +9,9 @@ import { MentorshipDescription } from "./mentorship";
 
 describe("Afc Description", () => {
   it("should render without fail", () => {
-    const { getByText } = render(<AfcDescription />);
+    const renderedElement = renderer.create(<AfcDescription />).toJSON();
 
-    expect(getByText("Input file formats supported")).toBeTruthy();
+    expect(renderedElement).toMatchSnapshot;
   });
 
   it("should match snapshot", () => {

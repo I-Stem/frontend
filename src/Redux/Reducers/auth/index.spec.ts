@@ -1,31 +1,38 @@
 // #region Local Imports
 import { IAction, IAuthSuccess } from "@Interfaces";
 import { ActionConsts } from "@Definitions";
-import { AuthReducer } from ".";
+import { AuthReducer } from "./index";
+import { UserType } from "@Definitions/Constants";
 // #endregion Local Imports
+const INITIAL_STATE = {
+  user: {
+    fullname: "",
+    email: "",
+    password: "",
+    userType: UserType.I_STEM,
+  },
+  token: "",
+  organizationStatus: "",
+};
 
-describe("home reducer", () => {
+describe("Auth reducer", () => {
   it("should return the initial state", () => {
-    expect(AuthReducer(undefined, {} as IAction<IAuthSuccess>)).toEqual({
-      home: {
-        version: 1,
-      },
-      image: {
-        url: "",
-      },
-    });
+    expect(AuthReducer(undefined, {} as IAction<IAuthSuccess>)).toEqual(
+      INITIAL_STATE
+    );
   });
 
   it("should handle SetReducer", () => {
     expect(
-      AuthReducer([], {
-        type: ActionConsts.Home.SetReducer,
+      AuthReducer(INITIAL_STATE, {
+        type: ActionConsts.Auth.SetReducer,
         payload: {
-          name: "",
+          name: "John Snow",
         },
       })
     ).toEqual({
-      name: "",
+      ...INITIAL_STATE,
+      name: "John Snow",
     });
   });
 });

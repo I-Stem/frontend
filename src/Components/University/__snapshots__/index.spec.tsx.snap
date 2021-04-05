@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`InviteModal should match snapshot 1`] = `
+<div
+  aria-hidden="true"
+/>
+`;
+
+exports[`MetricsReportDialog should match snapshot 1`] = `
+<div
+  aria-hidden="true"
+/>
+`;
+
 exports[`Recomended Actions should match snapshot 1`] = `
 <div>
   <div>
@@ -18,10 +30,18 @@ exports[`Recomended Actions should match snapshot 1`] = `
         <h3
           class="font-semibold text-l heading-color"
         >
-          Get started by inviting your students to the I-Stem platform.
+          Get started by inviting your
+           
+           to the I-Stem platform.
         </h3>
         <p>
-          Or you can always go to Students &gt; INVITE STUDENTS / IMPORT STUDENTS to invite students.
+          Or you can always go to
+           
+           
+          &gt; INVITE 
+           / IMPORT 
+           to invite 
+          .
         </p>
         <div
           class="onboard-button"
@@ -36,7 +56,7 @@ exports[`Recomended Actions should match snapshot 1`] = `
               <span
                 class="font-semibold text-lg text-white leading-6"
               >
-                ONBOARD STUDENTS
+                ONBOARD 
               </span>
             </button>
           </div>
@@ -118,4 +138,10 @@ exports[`Recomended Actions should match snapshot 1`] = `
     </div>
   </div>
 </div>
+`;
+
+exports[`StudentDetails should match snapshot 1`] = `
+<div
+  aria-hidden="true"
+/>
 `;

@@ -1,6 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BlueButton should match snapshot 1`] = `
+exports[`FeedbackModal should match snapshot 1`] = `<div />`;
+
+exports[`SearchDocument should match snapshot 1`] = `
 <div>
   <div>
     <form
@@ -40,7 +42,6 @@ exports[`BlueButton should match snapshot 1`] = `
                       >
                         <svg
                           aria-hidden="true"
-                          class=""
                           data-icon="search"
                           fill="currentColor"
                           focusable="false"

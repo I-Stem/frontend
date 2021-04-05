@@ -15,7 +15,6 @@ import { Col, Row, Table } from "react-bootstrap";
 import { UniversityPortal } from "@Services";
 import PrivateRoute from "@Pages/_privateRoute";
 import { UPLOAD_STUDENTS } from "@Definitions/Constants/universityRoutes";
-import { StudentDetails } from "@Components/University/StuentDetails";
 import { DialogMessageBox } from "@Components/Basic/Dialog";
 import { MetricsReportDialog } from "@Components/University/MetricsReport";
 import { InviteModal } from "@Components/University/InviteModal";

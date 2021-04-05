@@ -53,7 +53,7 @@ exports[`SuccessScreen should match snapshot 1`] = `
       <img
         alt="Status"
         class="mx-auto"
-        src=""
+        src="/static/images/alternate-format-conversion.svg"
       />
     </div>
     <div

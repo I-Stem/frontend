@@ -29,7 +29,6 @@ import { AppWithStore, IStore } from "@Interfaces";
 import { makeStore } from "@Redux";
 import { logPageview } from "@Services/monitoring/GoogleAnalytics";
 import "@Static/css/main.scss";
-import { threadId } from "worker_threads";
 import IThemeProvider from "@Components/Theme/IThemeProvider";
 // #endregion Local Imports
 
