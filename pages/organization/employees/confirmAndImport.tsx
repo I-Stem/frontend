@@ -4,11 +4,11 @@ import PrivateRoute from "@Pages/_privateRoute";
 import { NextPage } from "next";
 import React from "react";
 
-const ConfirmImportStudent: NextPage<
+const ConfirmImportEmployee: NextPage<
   IStemServices.IProps,
   IStemServices.InitialProps
 > = (props: any) => {
   return <ConfirmImport />;
 };
 
-export default PrivateRoute(ConfirmImportStudent);
+export default PrivateRoute(ConfirmImportEmployee);

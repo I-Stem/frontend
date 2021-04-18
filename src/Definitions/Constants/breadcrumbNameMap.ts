@@ -38,8 +38,18 @@ export const UNIVERSITY_MENU_ITEMS = [
     link: "/organization/students",
   },
   {
+    name: "Settings",
+    link: "/organization/settings",
+  },
+  {
+    name: "Escalations",
+    link: "/organization/escalation",
+  },
+];
+export const BUSINESS_STAFF_MENU_ITEMS = [
+  {
     name: "Employees",
-    link: "/organization/students",
+    link: "/organization/employees",
   },
   {
     name: "Settings",

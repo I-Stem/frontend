@@ -6,23 +6,23 @@ import { useRouter } from "next/router";
 // #endregion Global Imports
 
 // #region Local Imports
-import "../style.scss";
+import "./style.scss";
 import { IStemServices, IStore } from "@Interfaces";
 import { Wrapper } from "@Components";
 import { FormLayout } from "@Components/HOC/Dashboard/FormHOC";
-import PrivateRoute from "../../_privateRoute";
 import CSVReader from "react-csv-reader";
 import { UniversityPortalActions } from "src/Actions/UniversityActions";
-import { COLUMN_MAPPING } from "@Definitions/Constants/universityRoutes";
+import {
+  COLUMN_MAPPING_EMPLOYEES,
+  COLUMN_MAPPING_STUDENTS,
+} from "@Definitions/Constants/universityRoutes";
 import fileNames from "@Definitions/Constants/image";
 import Link from "next/link";
 import { UserType } from "@Definitions/Constants";
 import { useAppAbility } from "src/Hooks/useAppAbility";
 import Error from "next/error";
 
-const Stepone: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
-  props: any
-) => {
+const UploadDataComponent: React.FC = (props: any) => {
   const initialFocus = useRef<HTMLDivElement>(null);
   const [showError, setShowError] = useState(false);
   const { userType } = props.user;
@@ -37,7 +37,8 @@ const Stepone: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       props.uploadCsv({
         csvFile: data,
       });
-      router.push(COLUMN_MAPPING);
+      if (userType === UserType.BUSINESS) router.push(COLUMN_MAPPING_EMPLOYEES);
+      else router.push(COLUMN_MAPPING_STUDENTS);
     } else {
       setShowError(true);
     }
@@ -59,7 +60,10 @@ const Stepone: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       <FormLayout form="uploadCSV" hideFooter>
         <div className="lip-margin">
           <div tabIndex={-1} ref={initialFocus}>
-            <h2 className="mt-8 lip-title">STEP 1: UPLOAD STUDENT DATA</h2>
+            <h2 className="mt-8 lip-title">
+              STEP 1: UPLOAD{" "}
+              {userType === UserType.BUSINESS ? "EMPLOYEE" : "STUDENT"} DATA
+            </h2>
           </div>
           <p className="lip-subtext">
             Upload the CSV file with name, email id and roll no(optional) fields
@@ -100,6 +104,9 @@ const mapDispatchToProps = {
   uploadCsv: UniversityPortalActions.UploadCsvFile,
 };
 
-export default PrivateRoute(
-  connect(mapStateToProps, mapDispatchToProps)(Stepone)
-);
+const UploadData = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UploadDataComponent);
+
+export { UploadData };
