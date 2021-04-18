@@ -6,6 +6,13 @@ export enum UserType {
   ADMIN = "ADMIN",
 }
 
+export enum UserRole {
+  ADMIN = "ADMIN",
+  REMEDIATOR = "REMEDIATOR",
+  STAFF = "STAFF",
+  STUDENT = "STUDENT",
+}
+
 // export enum userType {
 //   volunteer = 2,
 //   student =  3,

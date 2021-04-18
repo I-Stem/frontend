@@ -19,6 +19,7 @@ import "../style.scss";
 import { useAppAbility } from "src/Hooks/useAppAbility";
 import Error from "next/error";
 import { serviceTypeEnum } from "@Components/Upload/constants";
+import { FileProcessAssociations } from "@Definitions/Constants/FileConstants";
 
 const EscalationDetail: NextPage<
   IStemServices.IProps,
@@ -69,7 +70,7 @@ const EscalationDetail: NextPage<
   const resolveEscalation = (escalationId: string | undefined) => {
     EscalationService.resolveEscalation({
       id: escalationId,
-      inputFileLink: props.escalation.inputFileLink,
+      inputFileId: props.escalation.inputFileId,
     }).then(response => {
       router.back();
     });
@@ -82,13 +83,12 @@ const EscalationDetail: NextPage<
           <Col md={4}>
             <Upload
               serviceType={serviceTypeEnum.escalation}
-              type="escalation"
+              type={escalationDetails?.escalationForService === "AFC" ? FileProcessAssociations.AFC_REMEDIATION : FileProcessAssociations.VC_REMEDIATION}
               size={20}
-              accept=".docx"
               label="Remediate escalation"
             />
           </Col>
-          {escalation.inputFileLink !== "" && (
+          {escalation.inputFileId !== "" && (
             <Col md={4}>
               <GreenButton
                 onClick={() =>
@@ -132,7 +132,7 @@ const EscalationDetail: NextPage<
         </div>
         <>
           {escalationDetails?.escalationId && (
-            <>
+            <table>
               <tr className="font-16">
                 <th className="height-3rem">File Name: </th>
                 <td>{escalationDetails?.documentName}</td>
@@ -151,15 +151,6 @@ const EscalationDetail: NextPage<
               <tr className="font-16">
                 <th className="height-3rem">Source File: </th>
                 <td>{button("Download", escalationDetails?.sourceFileUrl)}</td>
-              </tr>
-              <tr className="font-16">
-                <th className="height-3rem">Converted File: </th>
-                <td>
-                  {button(
-                    "Download",
-                    escalationDetails?.aiServiceConvertedFileURL
-                  )}
-                </td>
               </tr>
               {escalationDetails.escalationForService === "AFC" && (
                 <tr className="font-16">
@@ -200,7 +191,7 @@ const EscalationDetail: NextPage<
                 <></>
               )}
               {checkResolver(escalationDetails?.resolverId || "")}
-            </>
+            </table>
           )}
         </>
       </FormLayout>

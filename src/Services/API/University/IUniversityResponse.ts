@@ -9,9 +9,11 @@ export interface UniversityData {
   address?: string;
   noStudentsWithDisability?: string;
   escalationHandledBy?: string;
+  handleAccessibilityRequests?: string;
   domainAccess?: string;
   domain?: string;
   autoAccess: string;
+  showRemediationSetting: boolean;
 }
 export interface MetricsData {
   averageRatingAfc: number;

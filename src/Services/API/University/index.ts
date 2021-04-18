@@ -1,4 +1,5 @@
-import { CardPreferences, Themes, UserPreferences } from "@Interfaces";
+import { RemediationSetting } from "@Definitions/Constants";
+import { CardPreferences, UserPreferences } from "@Interfaces";
 import { Http } from "@Services";
 import { MetricsData, MetricsResponse } from "./IUniversityResponse";
 
@@ -15,6 +16,7 @@ interface universityData {
   address?: string;
   noStudentsWithDisability?: string;
   escalationHandledBy?: string;
+  handleAccessibilityRequests?: string;
   domainAccess?: string;
   domain?: string;
 }
@@ -90,7 +92,11 @@ export const UniversityPortal = {
   handleUniversity: async (
     organizationCode: string,
     action: string,
-    payload: { id: string }
+    payload: {
+      id: string;
+      handleAccessibilityRequests?: RemediationSetting;
+      showRemediationSetting?: boolean;
+    }
   ): Promise<any> => {
     return Http.post(
       `/university/organ/req/${organizationCode}/${action}`,

@@ -1,3 +1,4 @@
+import { RemediationSetting } from "@Definitions/Constants";
 import { AFCRequestOutputFormat } from "@Definitions/Constants/dashboard-form-constants";
 
 export interface IAfcServicePayload {
@@ -12,7 +13,8 @@ export interface IAfcServicePayloadPost {
   inputFileId: string;
   status?: number;
   docType: string;
-  inputFileLink: string;
+  resultType: RemediationSetting;
+  otherRequests: string;
 }
 
 export interface IAfcServiceReview {

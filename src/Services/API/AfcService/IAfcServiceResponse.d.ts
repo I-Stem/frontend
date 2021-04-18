@@ -1,4 +1,5 @@
 import { AFCRequestOutputFormat } from "@Definitions/Constants/dashboard-form-constants";
+import { RemediationSetting } from "@Definitions/Constants";
 
 export interface IAfcServiceTag {
   _id: String;
@@ -31,6 +32,8 @@ export interface IAfcServiceDocument {
   outputURL?: string;
   review: IAfcServiceReviewResponse;
   docType: string;
+  resultType: RemediationSetting;
+  otherRequests: string;
   __v: number;
 }
 

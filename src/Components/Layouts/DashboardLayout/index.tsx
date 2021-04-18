@@ -12,10 +12,46 @@ import Header from "@Components/Basic/Header";
 import {
   BREADCRUMB_MAP,
   MENU_ITEMS,
-  UNIVERSITY_MENU_ITEMS,
   UserType,
+  UserRole,
+  ISTEM_ADMIN_MENU_ITEMS,
+  ISTEM_REMEDIATOR_MENU_ITEMS,
+  UNIVERSITY_STAFF_MENU_ITEMS,
+  BUSINESS_STAFF_MENU_ITEMS,
 } from "@Definitions/Constants";
 import { DashboardProps } from "./DashboardProps";
+
+function getMenuItemsByUserTypeAndRole(
+  userType: UserType | undefined,
+  role: string | undefined
+) {
+  switch (userType) {
+    case UserType.I_STEM:
+      if (role === UserRole.ADMIN) {
+        return ISTEM_ADMIN_MENU_ITEMS;
+      } else if (role === UserRole.REMEDIATOR) {
+        return ISTEM_REMEDIATOR_MENU_ITEMS;
+      }
+      break;
+
+    case UserType.UNIVERSITY:
+      if (role === UserRole.STAFF) {
+        return UNIVERSITY_STAFF_MENU_ITEMS;
+      }
+      break;
+
+    case UserType.BUSINESS:
+      if (role === UserRole.STAFF) {
+        return BUSINESS_STAFF_MENU_ITEMS;
+      }
+      break;
+
+    default:
+      return [];
+  }
+
+  return [];
+}
 
 const DashboardLayout: React.FunctionComponent<DashboardProps> = (
   { children, hideBreadcrumb, role, userType, escalationSetting },
@@ -25,7 +61,7 @@ const DashboardLayout: React.FunctionComponent<DashboardProps> = (
   const router = useRouter();
   const { window } = props;
   const menuItems = MENU_ITEMS;
-  const universityMenuItems = UNIVERSITY_MENU_ITEMS;
+  const additionalMenuItems = getMenuItemsByUserTypeAndRole(userType, role);
   const { pathname } = router;
   const pathSnippets = pathname.substring(1).split("/");
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -41,27 +77,15 @@ const DashboardLayout: React.FunctionComponent<DashboardProps> = (
   } else {
     document.body.style.overflow = "auto";
   }
-  const universityNav = universityMenuItems
-    .filter(data => {
-      if (escalationSetting === "I_STEM") return data.name !== "Escalations";
-      else return data;
-    })
-    .filter(data => {
-      if (userType === UserType.UNIVERSITY) {
-        return data.name !== "Employees" && data.name !== "Hiring";
-      } else {
-        return data.name !== "Students";
-      }
-    })
-    .map(item => {
-      return (
-        <Link href={item.link} key={item.link}>
-          <a className="ant-menu-item ant-menu-item-only-child text-base font-semibold menu-font">
-            {item.name}
-          </a>
-        </Link>
-      );
-    });
+  const universityNav = additionalMenuItems.map((item: any) => {
+    return (
+      <Link href={item.link} key={item.link}>
+        <a className="ant-menu-item ant-menu-item-only-child text-base font-semibold menu-font">
+          {item.name}
+        </a>
+      </Link>
+    );
+  });
   const navigation = (
     <nav className="h-full w-full ant-menu ant-menu-light ant-menu-root ant-menu-inline">
       {menuItems.map(item => {
@@ -73,10 +97,7 @@ const DashboardLayout: React.FunctionComponent<DashboardProps> = (
           </Link>
         );
       })}
-      {(userType === UserType.UNIVERSITY ||
-        userType === UserType.I_STEM ||
-        userType === UserType.BUSINESS) &&
-      role === "STAFF" ? (
+      {additionalMenuItems.length > 0 ? (
         <div>
           <div className="navbar-divider"></div>
           <div className="text-base font-semibold manage-options">
@@ -86,41 +107,6 @@ const DashboardLayout: React.FunctionComponent<DashboardProps> = (
         </div>
       ) : (
         <></>
-      )}
-      {(userType === UserType.UNIVERSITY || userType === UserType.I_STEM) &&
-      role === "REMEDIATOR" ? (
-        <div>
-          <div className="navbar-divider"></div>
-          <div className="text-base font-semibold manage-options">
-            MANAGE OPTIONS
-          </div>
-          <Link href="/organization/escalation">
-            <a className="ant-menu-item ant-menu-item-only-child text-base font-semibold menu-font">
-              Escalations
-            </a>
-          </Link>
-        </div>
-      ) : (
-        <> </>
-      )}
-      {(userType === UserType.UNIVERSITY ||
-        userType === UserType.I_STEM ||
-        userType === UserType.BUSINESS) &&
-      role === "ADMIN" ? (
-        <div>
-          <div className="navbar-divider"></div>
-          <div className="text-base font-semibold manage-options">
-            MANAGE OPTIONS
-          </div>
-          {universityNav}
-          <Link href="/admin">
-            <a className="ant-menu-item ant-menu-item-only-child text-base font-semibold menu-font">
-              Admin Panel
-            </a>
-          </Link>
-        </div>
-      ) : (
-        <> </>
       )}
     </nav>
   );

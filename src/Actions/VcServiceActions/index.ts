@@ -1,13 +1,13 @@
 import { Dispatch } from "redux";
 
-import { CaptioningService, } from "@Services";
+import { CaptioningService } from "@Services";
 
 import {
   ICaptioningServicePatchPayload,
   ICaptioningServicePayload,
   ICaptioningServicePayloadPost,
   IStore,
-  ICaptioningServiceTrainingModelPost
+  ICaptioningServiceTrainingModelPost,
 } from "@Interfaces";
 import { ActionConsts } from "@Definitions";
 
@@ -28,9 +28,12 @@ export const VcServiceActions = {
       tag: payload.tag,
       status: inputFileId ? 1 : 0,
       inputFileId,
-      modelId:payload.modelId,
+      modelId: payload.modelId,
       requestType: payload.requestType,
       outputFormat: payload.outputFormat,
+      videoPortions: payload.range,
+      otherRequests: payload.otherRequests,
+      resultType: payload.resultType,
     };
     if (!inputFileId) {
       delete params.inputFileId;
@@ -71,24 +74,24 @@ export const VcServiceActions = {
   },
 
   AddModel: (payload: ICaptioningServiceTrainingModelPost) => (
-    dispatch: Dispatch,
-    ) => {
-      console.log("Payload", payload)
-      return CaptioningService.addVCModel({
-          params: payload,
-        });
+    dispatch: Dispatch
+  ) => {
+    console.log("Payload", payload);
+    return CaptioningService.addVCModel({
+      params: payload,
+    });
   },
 
   GetVCModels: () => () => {
     return CaptioningService.getVCModels()
-    .then(result => {
-      if (!result.error) {
-      return result.data;
-    }
-    return { ...result, error: true };
-  })
-  .catch(e => {
-    return { ...e, error: true };
-  });
-  }
+      .then(result => {
+        if (!result.error) {
+          return result.data;
+        }
+        return { ...result, error: true };
+      })
+      .catch(e => {
+        return { ...e, error: true };
+      });
+  },
 };

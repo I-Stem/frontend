@@ -20,10 +20,10 @@ import router from "next/router";
 import { DialogMessageBox } from "@Components/Basic/Dialog";
 import { InviteModal } from "@Components/University/InviteModal";
 import { getInvitationResponseMessage } from "@Services/helper/utils";
-import { UserType } from "@Definitions/Constants";
+import { RemediationSetting, UserType } from "@Definitions/Constants";
 import { useAppAbility } from "src/Hooks/useAppAbility";
 import Error from "next/error";
-import { DASHBOARD_ROUTE } from "@Definitions/Constants/pageroutes";
+import { AuthActions } from "@Actions";
 
 const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   props: any
@@ -115,9 +115,16 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       domainAccess: data.domainAccess,
       domain: data.domain,
       escalationHandledBy: data.escalationHandledBy,
+      handleAccessibilityRequests: data.handleAccessibilityRequests,
     }).then((results: any) => {
       if (results.code === 200) {
-        router.push(DASHBOARD_ROUTE);
+        router.push("/dashboard");
+        props.updatePreferences({
+          user: {
+            ...props.user,
+            handleAccessibilityRequests: data.handleAccessibilityRequests,
+          },
+        });
       } else {
         console.log("Error", results.message);
       }
@@ -128,6 +135,8 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
     emails: "",
     domainAccess: universityData?.domainAccess || "",
     escalationHandledBy: universityData?.escalationHandledBy || "",
+    handleAccessibilityRequests:
+      universityData?.handleAccessibilityRequests || "",
     domain: universityData?.domain || "",
   };
   return access ? (
@@ -259,6 +268,65 @@ const Settings: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                       checked={formik.values.escalationHandledBy === "I_STEM"}
                     />
                   </fieldset>
+                  {universityData?.showRemediationSetting && (
+                    <fieldset className="mt-4">
+                      <h3 className="lip-subtext lip-label font-semibold text-xl leading-9 settings-font">
+                        What to do with accessibility conversion requests of
+                        users?
+                      </h3>
+                      <RadioCheck
+                        htmlType="radio"
+                        name="handleAccessibilityRequests"
+                        value={RemediationSetting.AUTO}
+                        label="SEND AUTOMATED CONVERSION RESULTS FROM AI SERVICES"
+                        id="handleAccessibilityRequestsElement"
+                        onChange={() =>
+                          formik.setFieldValue(
+                            "handleAccessibilityRequests",
+                            RemediationSetting.AUTO
+                          )
+                        }
+                        checked={
+                          formik.values.handleAccessibilityRequests ===
+                          RemediationSetting.AUTO
+                        }
+                      />
+                      <RadioCheck
+                        htmlType="radio"
+                        name="handleAccessibilityRequests"
+                        value={RemediationSetting.MANUAL}
+                        label="SEND 100% ACCURATE RESULTS AFTER MANUAL REMEDIATION"
+                        id="handleAccessibilityRequestsElement"
+                        onChange={() =>
+                          formik.setFieldValue(
+                            "handleAccessibilityRequests",
+                            RemediationSetting.MANUAL
+                          )
+                        }
+                        checked={
+                          formik.values.handleAccessibilityRequests ===
+                          RemediationSetting.MANUAL
+                        }
+                      />
+                      <RadioCheck
+                        htmlType="radio"
+                        name="handleAccessibilityRequests"
+                        value={RemediationSetting.ASK_USER}
+                        label="ASK USER FOR EACH REQUEST WHETHER THEY NEED AUTOMATED CONVERSION RESULTS OR MANUALLY REMEDIATED RESULTS."
+                        id="handleAccessibilityRequestsElement"
+                        onChange={() =>
+                          formik.setFieldValue(
+                            "handleAccessibilityRequests",
+                            RemediationSetting.ASK_USER
+                          )
+                        }
+                        checked={
+                          formik.values.handleAccessibilityRequests ===
+                          RemediationSetting.ASK_USER
+                        }
+                      />
+                    </fieldset>
+                  )}
                   <div className="mt-4" style={{ width: "45%" }}>
                     <GreenButton htmlType="submit">
                       <span className="flex items-center">
@@ -308,13 +376,16 @@ const mapStateToProps = (store: IStore) => {
     user: auth.user,
   };
 };
-
-const Extended = connect(mapStateToProps, null)(Settings);
+const mapDispatchToProps = {
+  updatePreferences: AuthActions.updateCardPreferences,
+};
+const Extended = connect(mapStateToProps, mapDispatchToProps)(Settings);
 
 export default PrivateRoute(Extended);
 export interface FormData {
   domainAccess?: string;
   escalationHandledBy?: string;
+  handleAccessibilityRequests?: string;
   domain?: string;
   emails?: string;
 }

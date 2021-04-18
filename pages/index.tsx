@@ -57,7 +57,13 @@ const StemServices: NextPage<
 
   const updateCardPreferences = (updatedPreferences: CardPreferences) => {
     props.updatePreferences({
-      user: { ...props.user, userPreferences: updatedPreferences },
+      user: {
+        ...props.user,
+        userPreferences: {
+          ...userPreferences,
+          cardPreferences: updatedPreferences,
+        },
+      },
     });
   };
 

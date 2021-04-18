@@ -30,7 +30,9 @@ export const AfcServiceActions = {
       docType: payload.docType,
       status: inputFileId ? 1 : 0,
       inputFileId,
-      inputFileLink,
+      escalatedPageRange: payload.range,
+      otherRequests: payload.otherRequests,
+      resultType: payload.resultType,
     };
     if (!inputFileId) {
       delete params.inputFileId;

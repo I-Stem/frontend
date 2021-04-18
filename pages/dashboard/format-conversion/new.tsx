@@ -10,7 +10,7 @@ import { logEvent } from "@Services/monitoring/GoogleAnalytics";
 
 // #region Local Imports
 import "../style.scss";
-import { IStemServices, ReduxNextPageContext } from "@Interfaces";
+import { IStemServices, IStore, ReduxNextPageContext } from "@Interfaces";
 import { Wrapper } from "@Components";
 import {
   AFCRequestOutputFormat,
@@ -25,11 +25,12 @@ import {
 import RadioCheck from "@Components/HOC/Dashboard/RadioCheck";
 import DropdownWrapper from "@Components/StemServices/DropdownComponent";
 import Upload from "@Components/Upload";
-import { VALID_FILE_NAME } from "@Definitions/Constants";
+import { RemediationSetting, VALID_FILE_NAME } from "@Definitions/Constants";
 import PrivateRoute from "../../_privateRoute";
 import { useAppAbility } from "src/Hooks/useAppAbility";
 import Error from "next/error";
 import { serviceTypeEnum } from "@Components/Upload/constants";
+import { event } from "react-ga";
 
 const NewFile: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   props: any
@@ -37,14 +38,22 @@ const NewFile: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
   const initialFocus = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [tag, setTag] = useState<string>();
+  const [pagesValue, setPagesValue] = useState("");
+  const [showEscalationFields, setShowEscalationFields] = useState(false);
   const formSubmit = (values: any) => {
     const documentData = {
       documentName: values.fileName,
       tag: tag,
       outputFormat: values.outputFormat,
       docType: values.docType,
+      range: values.range || "ALL",
+      otherRequests: values.otherRequests,
+      resultType:
+        values.resultType ||
+        props.user?.handleAccessibilityRequests ||
+        RemediationSetting.AUTO,
     };
-    console.log("Document data: ", documentData);
+    console.log("Document data: " + JSON.stringify(documentData));
     props
       .addAfc(documentData)
       .then((result: any) => {
@@ -81,6 +90,13 @@ const NewFile: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
       setHideNonMathFormat(true);
     } else {
       setHideNonMathFormat(false);
+    }
+  };
+  const handleResultTypeChange = (event: any) => {
+    if (event.target.value === RemediationSetting.AUTO) {
+      setShowEscalationFields(false);
+    } else {
+      setShowEscalationFields(true);
     }
   };
   const outputFormat = Array.from(outputFormatsListAFC)
@@ -208,6 +224,123 @@ const NewFile: NextPage<IStemServices.IProps, IStemServices.InitialProps> = (
                   />
                 </fieldset>
               </Form.Item>
+              {props.user?.handleAccessibilityRequests ===
+                RemediationSetting.ASK_USER && (
+                <>
+                  <Form.Item
+                    className="width-41p"
+                    name="resultType"
+                    // rules={[{ required: true, message: "Category is required" }]}
+                  >
+                    <fieldset className="afc-fieldset">
+                      <legend
+                        className="font-semibold text-xl leading-9"
+                        style={{ width: "max-content" }}
+                      >
+                        What to do with this request?{" "}
+                      </legend>
+                      <RadioCheck
+                        value={RemediationSetting.AUTO}
+                        htmlType="radio"
+                        name="resultType"
+                        label="SEND AUTOMATED CONVERSION RESULTS FROM AI SERVICES"
+                        id="auto"
+                        onChange={handleResultTypeChange}
+                      />
+                      <RadioCheck
+                        value={RemediationSetting.MANUAL}
+                        htmlType="radio"
+                        name="resultType"
+                        label="SEND 100% ACCURATE RESULTS AFTER MANUAL REMEDIATION"
+                        id="manual"
+                        onChange={handleResultTypeChange}
+                      />
+                    </fieldset>
+                  </Form.Item>
+                </>
+              )}
+
+              {(props.user?.handleAccessibilityRequests ===
+                RemediationSetting.MANUAL ||
+                showEscalationFields) && (
+                <>
+                  {" "}
+                  <label htmlFor="pagesElement">
+                    <h3 className="font-semibold text-xl leading-9">
+                      Pages for Manual Remediation *
+                    </h3>
+                  </label>
+                  <Form.Item
+                    className="width-41p"
+                    name="pages"
+                    id="pagesElement"
+                  >
+                    <Select
+                      native
+                      label="Accessible PDF"
+                      className="lip-button format-button"
+                      labelId="demo-simple-select-filled-label"
+                      id="demo-simple-select-filled"
+                      variant="outlined"
+                      defaultValue="none"
+                      onChange={e => setPagesValue(String(e.target.value))}
+                    >
+                      {" "}
+                      <option value="none" disabled>
+                        Select
+                      </option>
+                      <option value="ALL">All</option>
+                      <option value="CUSTOM">Custom</option>
+                    </Select>
+                  </Form.Item>
+                  {pagesValue === "CUSTOM" && (
+                    <>
+                      <label htmlFor="rangeElement">
+                        <h3 className="font-semibold text-xl leading-9">
+                          Page ranges, separated by dash and commas, e.g. 2-3,
+                          5-7 etc.
+                        </h3>
+                      </label>
+                      <Form.Item
+                        id="rangeElement"
+                        name="range"
+                        rules={[
+                          {
+                            pattern: new RegExp(
+                              "[0-9]+-[0-9]+(?:,[0-9]+-[0-9]+)*"
+                            ),
+                            message:
+                              "Page ranges must be separated by dash and commas",
+                          },
+                        ]}
+                      >
+                        <Input
+                          aria-live="off"
+                          className="lip-button"
+                          placeholder="Custom range 1-5,8-10,10-15"
+                        />
+                      </Form.Item>
+                    </>
+                  )}
+                  <label htmlFor="otherRequestsElement">
+                    <h3 className="font-semibold text-xl leading-9">
+                      Any other requests for manual conversion
+                    </h3>
+                    <p>
+                      e.g. deadline for getting the results so that we could
+                      customize and prioritize accordingly etc.
+                    </p>
+                  </label>
+                  <Form.Item id="otherRequestsElement" name="otherRequests">
+                    <Input
+                      aria-live="off"
+                      className="lip-button"
+                      placeholder="Requests"
+                    />
+                  </Form.Item>{" "}
+                </>
+              )}
+
               <label>
                 <h3 className="font-semibold text-xl leading-9">
                   Select output format *
@@ -251,12 +384,19 @@ NewFile.getInitialProps = async (
 
   return { namespacesRequired: ["common"], token, user };
 };
+
+const mapStateToProps = (store: IStore) => {
+  const { auth, credits } = store;
+  return {
+    user: auth.user,
+  };
+};
 const mapDispatchToProps = {
   addAfc: AfcServiceActions.Add,
   resetList: UploadActions.resetUploadList,
   searchTag: TagsActions.Search,
 };
 
-const Extended = connect(null, mapDispatchToProps)(NewFile);
+const Extended = connect(mapStateToProps, mapDispatchToProps)(NewFile);
 
 export default PrivateRoute(Extended);

@@ -15,6 +15,8 @@ import Error from "next/error";
 import { connect } from "react-redux";
 import { IStore } from "@Interfaces";
 import "../../dashboard/style.scss";
+import { RemediationSetting } from "@Definitions/Constants";
+import RadioCheck from "@Components/HOC/Dashboard/RadioCheck";
 
 const OrgId: NextPage<{}> = (props: any) => {
   const router = useRouter();
@@ -25,6 +27,10 @@ const OrgId: NextPage<{}> = (props: any) => {
   const { can } = useAppAbility();
   const access = can("VIEW", "ADMIN_PANEL");
   const initialFocus = useRef<HTMLDivElement>(null);
+  const [remediation, setRemediation] = useState<RemediationSetting>(
+    RemediationSetting.AUTO
+  );
+  const [showRemediationSetting, setShowRemediationSetting] = useState(false);
   useEffect(() => {
     initialFocus.current?.focus();
     AdminPanelServices.requestDetails({
@@ -34,6 +40,8 @@ const OrgId: NextPage<{}> = (props: any) => {
   const acceptHandler = () => {
     UniversityPortal.handleUniversity(details?.orgCode || "", "APPROVED", {
       id: (id as unknown) as string,
+      handleAccessibilityRequests: remediation,
+      showRemediationSetting: showRemediationSetting,
     }).then(res => {
       router.back();
     });
@@ -59,6 +67,45 @@ const OrgId: NextPage<{}> = (props: any) => {
               </td>
             </tr>
           ))}
+        <fieldset className="mt-4">
+          <h3 className="lip-subtext lip-label font-semibold text-xl leading-9 settings-font">
+            What to do with accessibility conversion requests of users?
+          </h3>
+          <RadioCheck
+            htmlType="radio"
+            name="handleAccessibilityRequests"
+            value={RemediationSetting.AUTO}
+            label="SEND AUTOMATED CONVERSION RESULTS FROM AI SERVICES"
+            id="handleAccessibilityRequestsElement"
+            onChange={() => setRemediation(RemediationSetting.AUTO)}
+          />
+          <RadioCheck
+            htmlType="radio"
+            name="handleAccessibilityRequests"
+            value={RemediationSetting.MANUAL}
+            label="SEND 100% ACCURATE RESULTS AFTER MANUAL REMEDIATION"
+            id="handleAccessibilityRequestsElement"
+            onChange={() => setRemediation(RemediationSetting.MANUAL)}
+          />
+          <RadioCheck
+            htmlType="radio"
+            name="handleAccessibilityRequests"
+            value={RemediationSetting.ASK_USER}
+            label="ASK USER FOR EACH REQUEST WHETHER THEY NEED AUTOMATED CONVERSION RESULTS OR MANUALLY REMEDIATED RESULTS."
+            id="handleAccessibilityRequestsElement"
+            onChange={() => setRemediation(RemediationSetting.ASK_USER)}
+          />
+        </fieldset>
+
+        <RadioCheck
+          htmlType="checkbox"
+          name="showRemediationSetting"
+          value={RemediationSetting.MANUAL}
+          label="Show remediation settings"
+          id="showRemediationSettingElement"
+          onChange={() => setShowRemediationSetting(!showRemediationSetting)}
+        />
+
         <ReviewButtons
           acceptHandler={acceptHandler}
           rejectHandler={rejectHandler}

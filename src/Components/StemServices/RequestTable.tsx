@@ -86,6 +86,8 @@ const RequestTable: React.FunctionComponent<TableProps> = props => {
           outputFormat: afcService.outputFormat,
           inputFileId: afcService.inputFileId,
           docType: afcService.docType,
+          resultType: afcService.resultType,
+          otherRequests: afcService.otherRequests,
           inputFileLink: afcService.inputFileLink || "",
           status: 0,
         },

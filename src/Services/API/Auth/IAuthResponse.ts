@@ -14,6 +14,7 @@ export interface IAuthUser {
   organizationCode?: string;
   userPreferences?: UserPreferences;
   escalationSetting?: string;
+  handleAccessibilityRequests?: string;
 }
 
 export interface UserPreferences {
