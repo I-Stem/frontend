@@ -51,6 +51,35 @@ export const Http = {
         });
     });
   },
+  getFile: async (
+    url: string,
+    params?: HttpModel.IRequestQueryPayload
+  ): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      const query = params
+        ? `?${stringify({ ...params, api_key: API_KEY })}`
+        : "";
+
+      axiosRequest
+        .get(`${url}${query}`, {
+          responseType: "blob",
+        })
+        .then(response => {
+          if (response.status === 200) {
+            return resolve(response);
+          }
+          const promiseResponse = { ...response, error: true };
+          return reject(promiseResponse);
+        })
+        .catch(e => {
+          if (e.response) {
+            const promiseResponse = { ...e.response?.data, error: true };
+            return reject(promiseResponse);
+          }
+          return reject(e);
+        });
+    });
+  },
   post: async <A>(
     url: string,
     params?: HttpModel.IRequestQueryPayload,

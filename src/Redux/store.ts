@@ -22,7 +22,7 @@ export const makeStore = (initialState: {}) => {
     storage,
   };
   store = createStore(
-    persistReducer(persistConfig, Reducers),
+    persistReducer<any>(persistConfig, Reducers),
     initialState,
     compose(applyMiddleware(thunkMiddleware))
   );

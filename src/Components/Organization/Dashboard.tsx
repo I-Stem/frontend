@@ -17,7 +17,7 @@ import {
   UPLOAD_EMPLOYEES,
   UPLOAD_STUDENTS,
 } from "@Definitions/Constants/universityRoutes";
-import { StudentDetails } from "@Components/University/StuentDetails";
+// import { StudentDetails } from "@Components/University/StuentDetails";
 import { DialogMessageBox } from "@Components/Basic/Dialog";
 import { MetricsReportDialog } from "@Components/University/MetricsReport";
 import { InviteModal } from "@Components/University/InviteModal";
@@ -336,7 +336,7 @@ const OrgDashboard: React.FC = (props: any) => {
             email address or multiple addresses separated by commas to invite. A
             link will be mailed to them to sign up.
           </InviteModal>
-          <StudentDetails
+          {/* <StudentDetails
             showModal={studentModal}
             toggleModal={toggleModal}
             studentId={(studentData && studentData[index]?.id) || ""}
@@ -345,7 +345,7 @@ const OrgDashboard: React.FC = (props: any) => {
               email: (studentData && studentData[index]?.email) || "",
               roll: (studentData && studentData[index]?.roll) || "",
             }}
-          />
+          /> */}
           <DialogMessageBox
             showModal={messageBox}
             message={dialogMessage}

@@ -44,16 +44,6 @@ export const UNIVERSITY_STAFF_MENU_ITEMS = [
 ];
 export const BUSINESS_STAFF_MENU_ITEMS = [
   {
-    name: "Settings",
-    link: "/organization/settings",
-  },
-  {
-    name: "Escalations",
-    link: "/organization/escalation",
-  },
-];
-export const BUSINESS_STAFF_MENU_ITEMS = [
-  {
     name: "Employees",
     link: "/organization/employees",
   },

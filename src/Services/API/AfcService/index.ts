@@ -53,4 +53,7 @@ export const AfcService = {
   }): Promise<any> => {
     return Http.get<any>("afc/afcCount", payload.params);
   },
+  getDetails: async (params: { id: string }): Promise<any> => {
+    return Http.get("/afc/details", params);
+  },
 };

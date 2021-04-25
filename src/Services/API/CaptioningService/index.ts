@@ -70,4 +70,8 @@ export const CaptioningService = {
   getVcCount: async (): Promise<any> => {
     return Http.get<any>("vc/vcCount");
   },
+
+  getDetails: async (params: { id: string }): Promise<any> => {
+    return Http.get("/vc/details", params);
+  },
 };
