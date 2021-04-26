@@ -97,7 +97,7 @@ describe("StudentDetails", () => {
   it("should render without fail", () => {
     const { getByRole } = render(
       <StudentDetails
-        studentId="ama"
+        studentId={(undefined as unknown) as string}
         studentDetails={{
           name: "ABCD",
           email: "abc@example.com",
@@ -112,7 +112,7 @@ describe("StudentDetails", () => {
   it("should match snapshot", () => {
     const { container } = render(
       <StudentDetails
-        studentId="ama"
+        studentId={(undefined as unknown) as string}
         studentDetails={{
           name: "ABCD",
           email: "abc@example.com",
