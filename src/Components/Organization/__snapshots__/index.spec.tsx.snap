@@ -1,0 +1,863 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`organization pages should match ColumnMapping snapshot 1`] = `
+<div>
+   
+  <section
+    class="lipbg"
+  >
+    <div
+      class="ant-row"
+    >
+      <div
+        class="lip-header p-4  w-full flex justify-between"
+      >
+        <div
+          class="PrivateHiddenCss-mdUp-53"
+        >
+          <button
+            aria-label="open drawer"
+            class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-edgeStart"
+            style="color: rgb(255, 255, 255);"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="MuiIconButton-label"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+                />
+              </svg>
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+        </div>
+        <img
+          alt="I-Stem logo"
+          class="lip-logo"
+          src="/static/images/logo.svg"
+        />
+        <button
+          class="theme-button hide-border btn btn-primary"
+          type="button"
+        >
+          Accessibility Settings 
+          <span
+            aria-label="down"
+            class="anticon anticon-down"
+            role="img"
+            style="vertical-align: 0em;"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="down"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+              />
+            </svg>
+          </span>
+        </button>
+        <div
+          class="text-white float-right pt-1"
+        >
+          <span
+            aria-label="close"
+            class="anticon anticon-close"
+            role="button"
+            tabindex="-1"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="close"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 00203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"
+              />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-row ant-row-center dashboard-container h-auto overflow-auto pb-20"
+    >
+      <div
+        class="ant-col pl-8 ant-col-lg-24"
+      >
+        <div
+          class="lip-margin"
+        >
+          <div
+            tabindex="-1"
+          >
+            <h2
+              class="mt-8 lip-title"
+            >
+              STEP 2: SELECT RESPECTIVE COLUMN HEADERS
+            </h2>
+          </div>
+          <p
+            class="lip-subtext"
+          >
+            BASIC INFO
+          </p>
+          <div>
+            <form
+              class=""
+              style="margin-top: 3rem;"
+            >
+              <div
+                class="csv-formgroup form-group"
+              >
+                <label
+                  class="csv-select-label form-label"
+                  for="name"
+                >
+                  <h3
+                    class="lip-subtext"
+                  >
+                    Name
+                  </h3>
+                </label>
+                <select
+                  class="stud-select form-control"
+                  id="name"
+                  name="name"
+                  placeholder="Select csv column"
+                >
+                  <option
+                    hidden=""
+                    value="none"
+                  >
+                    Select csv column
+                  </option>
+                  <option
+                    class="csv-dropdown-item"
+                  >
+                    0
+                  </option>
+                  <option
+                    class="csv-dropdown-item"
+                  >
+                    1
+                  </option>
+                  <option
+                    class="csv-dropdown-item"
+                  >
+                    2
+                  </option>
+                </select>
+              </div>
+              <div
+                class="csv-formgroup form-group"
+              >
+                <label
+                  class="csv-select-label form-label"
+                  for="email"
+                >
+                  <h3
+                    class="lip-subtext"
+                  >
+                    Email
+                  </h3>
+                </label>
+                <select
+                  class="stud-select form-control"
+                  id="email"
+                  name="email"
+                  placeholder="Select csv column"
+                >
+                  <option
+                    hidden=""
+                    value="none"
+                  >
+                    Select csv column
+                  </option>
+                  <option
+                    class="csv-dropdown-item"
+                  >
+                    0
+                  </option>
+                  <option
+                    class="csv-dropdown-item"
+                  >
+                    1
+                  </option>
+                  <option
+                    class="csv-dropdown-item"
+                  >
+                    2
+                  </option>
+                </select>
+              </div>
+              <div
+                class="csv-formgroup form-group"
+              >
+                <label
+                  class="csv-select-label form-label"
+                  for="roll_no"
+                >
+                  <h3
+                    class="lip-subtext"
+                  >
+                    Roll No
+                  </h3>
+                </label>
+                <select
+                  class="stud-select form-control"
+                  id="roll_no"
+                  name="roll_no"
+                  placeholder="Select csv column"
+                >
+                  <option
+                    hidden=""
+                    value="none"
+                  >
+                    Select csv column
+                  </option>
+                  <option
+                    class="csv-dropdown-item"
+                  >
+                    0
+                  </option>
+                  <option
+                    class="csv-dropdown-item"
+                  >
+                    1
+                  </option>
+                  <option
+                    class="csv-dropdown-item"
+                  >
+                    2
+                  </option>
+                </select>
+              </div>
+              <div
+                style="width: 35%;"
+              >
+                <div
+                  class="w-full"
+                >
+                  <button
+                    class="ant-btn ant-btn-block text-center blue-btn"
+                    type="submit"
+                  >
+                    <span
+                      class="font-semibold text-lg text-white leading-6"
+                    >
+                      NEXT
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;
+
+exports[`organization pages should match ConfirmAndImport snapshot 1`] = `
+<div>
+  <section
+    class="lipbg"
+  >
+    <div
+      class="ant-row"
+    >
+      <div
+        class="lip-header p-4  w-full flex justify-between"
+      >
+        <div
+          class="PrivateHiddenCss-mdUp-23"
+        >
+          <button
+            aria-label="open drawer"
+            class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-edgeStart"
+            style="color: rgb(255, 255, 255);"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="MuiIconButton-label"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+                />
+              </svg>
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+        </div>
+        <img
+          alt="I-Stem logo"
+          class="lip-logo"
+          src="/static/images/logo.svg"
+        />
+        <button
+          class="theme-button hide-border btn btn-primary"
+          type="button"
+        >
+          Accessibility Settings 
+          <span
+            aria-label="down"
+            class="anticon anticon-down"
+            role="img"
+            style="vertical-align: 0em;"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="down"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+              />
+            </svg>
+          </span>
+        </button>
+        <div
+          class="text-white float-right pt-1"
+        >
+          <span
+            aria-label="close"
+            class="anticon anticon-close"
+            role="button"
+            tabindex="-1"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="close"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 00203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"
+              />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-row ant-row-center dashboard-container h-auto overflow-auto pb-20"
+    >
+      <div
+        class="ant-col pl-8 ant-col-lg-24"
+      >
+        <div
+          class="lip-margin"
+        >
+          <div
+            tabindex="-1"
+          >
+            <h2
+              class="mt-8 lip-title"
+            >
+              STEP 3: CONFIRM AND IMPORT (
+              1
+               
+              STUDENTS
+              )
+            </h2>
+          </div>
+          <div
+            class=""
+          >
+            <table
+              class="table"
+              style="margin-top: 1rem;"
+            >
+              <thead>
+                <tr
+                  style="border-top: hidden;"
+                >
+                  <th>
+                    NAME
+                  </th>
+                  <th>
+                    Email
+                  </th>
+                  <th>
+                    ROLL NUMBER
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td />
+                  <td />
+                  <td />
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            class="lip-pagination auto-x-overflow"
+          >
+            <ul
+              class="pagination"
+            >
+              <li
+                class="page-item disabled"
+              >
+                <span
+                  class="page-link"
+                  disabled=""
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    Previous
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    Previous
+                  </span>
+                </span>
+              </li>
+              <li
+                class="page-item active disabled"
+              >
+                <span
+                  class="page-link"
+                  disabled=""
+                  value="1"
+                >
+                  1
+                  <span
+                    class="sr-only"
+                  >
+                    (current)
+                  </span>
+                </span>
+              </li>
+              <li
+                class="page-item disabled"
+              >
+                <span
+                  class="page-link"
+                  disabled=""
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    Next
+                  </span>
+                  <span
+                    class="sr-only"
+                  >
+                    Next
+                  </span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div
+            style="width: 35%;"
+          >
+            <div
+              class="w-full"
+            >
+              <button
+                class="ant-btn ant-btn-block text-center blue-btn"
+                type="button"
+              >
+                <span
+                  class="font-semibold text-lg text-white leading-6"
+                >
+                  CONFIRM AND IMPORT
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;
+
+exports[`organization pages should match ResolveErrors snapshot 1`] = `
+<div>
+  <section
+    class="lipbg"
+  >
+    <div
+      class="ant-row"
+    >
+      <div
+        class="lip-header p-4  w-full flex justify-between"
+      >
+        <div
+          class="PrivateHiddenCss-mdUp-68"
+        >
+          <button
+            aria-label="open drawer"
+            class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-edgeStart"
+            style="color: rgb(255, 255, 255);"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="MuiIconButton-label"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+                />
+              </svg>
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+        </div>
+        <img
+          alt="I-Stem logo"
+          class="lip-logo"
+          src="/static/images/logo.svg"
+        />
+        <button
+          class="theme-button hide-border btn btn-primary"
+          type="button"
+        >
+          Accessibility Settings 
+          <span
+            aria-label="down"
+            class="anticon anticon-down"
+            role="img"
+            style="vertical-align: 0em;"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="down"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+              />
+            </svg>
+          </span>
+        </button>
+        <div
+          class="text-white float-right pt-1"
+        >
+          <span
+            aria-label="close"
+            class="anticon anticon-close"
+            role="button"
+            tabindex="-1"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="close"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 00203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"
+              />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-row ant-row-center dashboard-container h-auto overflow-auto pb-20"
+    >
+      <div
+        class="ant-col pl-8 ant-col-lg-24"
+      >
+        <div
+          class="lip-margin"
+        >
+          <div
+            tabindex="-1"
+          >
+            <h2
+              class="mt-8 lip-title orange-title"
+            >
+              RESOLVE THE FOLLOWING ERRORS!
+            </h2>
+          </div>
+          <div
+            class=""
+          >
+            <table
+              class="table"
+              style="margin-top: 1rem;"
+            >
+              <thead>
+                <tr
+                  style="border-top: hidden;"
+                >
+                  <th
+                    style="width: 15%;"
+                  >
+                    Row
+                  </th>
+                  <th>
+                    Email
+                  </th>
+                  <th>
+                    Student
+                     
+                    Name
+                  </th>
+                  <th>
+                    Roll Number
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    1
+                  </td>
+                  <td>
+                    Invalid character in domain
+                     
+                  </td>
+                  <td>
+                    Too long
+                  </td>
+                  <td>
+                    unknown
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div
+            style="width: 35%; margin-top: 2rem;"
+          >
+            <div
+              class="w-full"
+            >
+              <button
+                class="ant-btn ant-btn-block text-center blue-btn"
+                type="button"
+              >
+                <span
+                  class="font-semibold text-lg text-white leading-6"
+                >
+                  RE-UPLOAD CSV FILE
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;
+
+exports[`organization pages should match UploadData snapshot 1`] = `
+<div>
+  <section
+    class="lipbg"
+  >
+    <div
+      class="ant-row"
+    >
+      <div
+        class="lip-header p-4  w-full flex justify-between"
+      >
+        <div
+          class="PrivateHiddenCss-mdUp-38"
+        >
+          <button
+            aria-label="open drawer"
+            class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-edgeStart"
+            style="color: rgb(255, 255, 255);"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="MuiIconButton-label"
+            >
+              <svg
+                aria-hidden="true"
+                class="MuiSvgIcon-root"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+                />
+              </svg>
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+        </div>
+        <img
+          alt="I-Stem logo"
+          class="lip-logo"
+          src="/static/images/logo.svg"
+        />
+        <button
+          class="theme-button hide-border btn btn-primary"
+          type="button"
+        >
+          Accessibility Settings 
+          <span
+            aria-label="down"
+            class="anticon anticon-down"
+            role="img"
+            style="vertical-align: 0em;"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="down"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"
+              />
+            </svg>
+          </span>
+        </button>
+        <div
+          class="text-white float-right pt-1"
+        >
+          <span
+            aria-label="close"
+            class="anticon anticon-close"
+            role="button"
+            tabindex="-1"
+          >
+            <svg
+              aria-hidden="true"
+              data-icon="close"
+              fill="currentColor"
+              focusable="false"
+              height="1em"
+              viewBox="64 64 896 896"
+              width="1em"
+            >
+              <path
+                d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 00203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"
+              />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ant-row ant-row-center dashboard-container h-auto overflow-auto pb-20"
+    >
+      <div
+        class="ant-col pl-8 ant-col-lg-24"
+      >
+        <div
+          class="lip-margin"
+        >
+          <div
+            tabindex="-1"
+          >
+            <h2
+              class="mt-8 lip-title"
+            >
+              STEP 1: UPLOAD
+               
+              STUDENT
+               DATA
+            </h2>
+          </div>
+          <p
+            class="lip-subtext"
+          >
+            Upload the CSV file with name, email id and roll no(optional) fields for 
+            student
+             data. Email ID must be unique. Download a sample file
+            <a
+              href="/static/images/IMPORT_STUDENTS_SAMPLE.csv"
+            >
+               here.
+            </a>
+          </p>
+          <div
+            class="stud-upload"
+          >
+            <div
+              class="csv-reader-input"
+            >
+              <label
+                class="csv-label"
+                for="react-csv-reader-input"
+              >
+                UPLOAD CSV FILE
+              </label>
+              <input
+                accept=".csv, text/csv"
+                class="csv-input"
+                id="react-csv-reader-input"
+                name="react-csv-reader-input"
+                type="file"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+`;

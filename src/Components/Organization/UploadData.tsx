@@ -11,7 +11,7 @@ import { IStemServices, IStore } from "@Interfaces";
 import { Wrapper } from "@Components";
 import { FormLayout } from "@Components/HOC/Dashboard/FormHOC";
 import CSVReader from "react-csv-reader";
-import { UniversityPortalActions } from "src/Actions/UniversityActions";
+import { UniversityPortalActions } from "@Actions/UniversityActions";
 import {
   COLUMN_MAPPING_EMPLOYEES,
   COLUMN_MAPPING_STUDENTS,
@@ -19,7 +19,7 @@ import {
 import fileNames from "@Definitions/Constants/image";
 import Link from "next/link";
 import { UserType } from "@Definitions/Constants";
-import { useAppAbility } from "src/Hooks/useAppAbility";
+import { useAppAbility } from "@Hooks/useAppAbility";
 import Error from "next/error";
 
 const UploadDataComponent: React.FC = (props: any) => {

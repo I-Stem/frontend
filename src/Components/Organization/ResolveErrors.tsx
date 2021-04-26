@@ -15,7 +15,7 @@ import {
   UPLOAD_STUDENTS,
 } from "@Definitions/Constants/universityRoutes";
 import { UserType } from "@Definitions/Constants";
-import { useAppAbility } from "src/Hooks/useAppAbility";
+import { useAppAbility } from "@Hooks/useAppAbility";
 import Error from "next/error";
 
 const ResolveErrorsComponent: React.FC = (props: any) => {

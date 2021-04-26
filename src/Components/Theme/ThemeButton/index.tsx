@@ -4,7 +4,7 @@ import { Button, Card, Overlay, Row } from "react-bootstrap";
 import "./styles.scss";
 // import { ColorThemes, FontThemes } from "@Definitions/Constants/ThemeConstants";
 import { connect } from "react-redux";
-import { AuthActions } from "@Actions";
+import { AuthActions } from "@Actions/AuthActions";
 import { ColorThemeButton } from "./ColorThemeButton";
 import { ColorThemes, FontThemes } from "@Definitions/Constants/ThemeConstants";
 import { UniversityPortal } from "@Services";

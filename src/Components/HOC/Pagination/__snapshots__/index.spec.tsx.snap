@@ -3,7 +3,7 @@
 exports[`Pagination should match snapshot 1`] = `
 <div>
   <div
-    class="lip-pagination"
+    class="lip-pagination auto-x-overflow"
   >
     <ul
       class="pagination"

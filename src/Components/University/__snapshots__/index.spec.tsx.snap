@@ -141,7 +141,189 @@ exports[`Recomended Actions should match snapshot 1`] = `
 `;
 
 exports[`StudentDetails should match snapshot 1`] = `
-<div
-  aria-hidden="true"
-/>
+<div>
+  <nav
+    class="nav nav-tabs"
+    role="tablist"
+  >
+    <a
+      aria-controls="controlled-tab-example-tabpane-activity"
+      aria-selected="true"
+      class="nav-item nav-link active"
+      data-rb-event-key="activity"
+      href="#"
+      id="controlled-tab-example-tab-activity"
+      role="tab"
+    >
+      Activity
+    </a>
+    <a
+      aria-controls="controlled-tab-example-tabpane-info"
+      aria-selected="false"
+      class="nav-item nav-link"
+      data-rb-event-key="info"
+      href="#"
+      id="controlled-tab-example-tab-info"
+      role="tab"
+    >
+      Info
+    </a>
+  </nav>
+  <div
+    class="tab-content"
+  >
+    <div
+      aria-hidden="false"
+      aria-labelledby="controlled-tab-example-tab-activity"
+      class="fade tab-pane active show"
+      css="[object Object]"
+      id="controlled-tab-example-tabpane-activity"
+      role="tabpanel"
+    >
+      <div
+        class="activity-dropdown form-group"
+      >
+        <select
+          class="stud-select form-control"
+          id="activity"
+          placeholder="Select csv column"
+        >
+          <option
+            class="csv-dropdown-item"
+            disabled=""
+          >
+            Select Activity
+          </option>
+          <option
+            class="csv-dropdown-item"
+          >
+            All activity
+          </option>
+          <option
+            class="csv-dropdown-item"
+          >
+            Escalated Requests
+          </option>
+          <option
+            class="csv-dropdown-item"
+          >
+            Active Requests
+          </option>
+          <option
+            class="csv-dropdown-item"
+          >
+            Completed Requests
+          </option>
+          <option
+            class="csv-dropdown-item"
+          >
+            Document accessibility requests
+          </option>
+          <option
+            class="csv-dropdown-item"
+          >
+            Video and audio accessibility requests
+          </option>
+        </select>
+      </div>
+      <h2
+        class="lip-title"
+      />
+      <div
+        class="activity-content"
+      >
+         
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      aria-labelledby="controlled-tab-example-tab-info"
+      class="fade tab-text tab-pane"
+      id="controlled-tab-example-tabpane-info"
+      role="tabpanel"
+    >
+      <form
+        class=""
+      >
+        <div
+          class="form-group"
+        >
+          <label
+            class="student-detail-text lip-text form-label"
+            for="nameElement"
+          >
+            Student name
+          </label>
+          <input
+            class="lip-button form-control"
+            id="nameElement"
+            name="fullname"
+            placeholder="Enter Email"
+            value="ABCD"
+          />
+        </div>
+        <div
+          class="form-group"
+        >
+          <label
+            class="student-detail-text lip-text form-label"
+            for="emailElement"
+          >
+            Student email
+          </label>
+          <input
+            class="lip-button form-control"
+            id="emailElement"
+            name="email"
+            placeholder="Enter Name"
+            value="abc@example.com"
+          />
+        </div>
+        <div
+          class="form-group"
+        >
+          <label
+            class="student-detail-text lip-text form-label"
+            for="rollNoElement"
+          >
+            Student roll no
+          </label>
+          <input
+            class="lip-button form-control"
+            id="rollNoElement"
+            name="rollNumber"
+            placeholder="Enter Roll no"
+            value="1234"
+          />
+        </div>
+        <div
+          style="width: 30%;"
+        >
+          <div
+            class="w-full"
+          >
+            <button
+              class="ant-btn ant-btn-block text-center green-btn"
+              type="submit"
+            >
+              <span
+                class="font-semibold text-lg text-white leading-6"
+              >
+                <span
+                  class="flex items-center"
+                >
+                  <span
+                    class="ml-2"
+                  >
+                    SAVE CHANGES
+                  </span>
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 `;

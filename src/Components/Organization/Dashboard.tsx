@@ -25,7 +25,7 @@ import { getInvitationResponseMessage } from "@Services/helper/utils";
 import { UserType } from "@Definitions/Constants";
 import Pagination from "@Components/HOC/Pagination";
 import Error from "next/error";
-import { useAppAbility } from "src/Hooks/useAppAbility";
+import { useAppAbility } from "@Hooks/useAppAbility";
 
 const { STUDENTS } = fileNames;
 const OrgDashboard: React.FC = (props: any) => {

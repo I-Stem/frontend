@@ -5,7 +5,7 @@ import { render } from "@Test/utils";
 import { RecommendedActions } from "./RecommendedActions";
 import { InviteModal } from "./InviteModal";
 import { MetricsReportDialog } from "./MetricsReport";
-import { StudentDetails } from "./StuentDetails";
+import { StudentDetails } from "./StudentDetails";
 import { UserType } from "@Definitions/Constants";
 const baseProps = {
   mockFunc: jest.fn(),
@@ -95,10 +95,9 @@ describe("MetricsReportDialog", () => {
 });
 describe("StudentDetails", () => {
   it("should render without fail", () => {
-    const { getByText } = render(
+    const { getByRole } = render(
       <StudentDetails
-        showModal={true}
-        toggleModal={baseProps.mockFunc}
+        studentId="ama"
         studentDetails={{
           name: "ABCD",
           email: "abc@example.com",
@@ -107,14 +106,13 @@ describe("StudentDetails", () => {
       />
     );
 
-    expect(getByText("ABCD")).toBeTruthy();
+    expect(getByRole("heading")).toBeTruthy();
   });
 
   it("should match snapshot", () => {
     const { container } = render(
       <StudentDetails
-        showModal={true}
-        toggleModal={baseProps.mockFunc}
+        studentId="ama"
         studentDetails={{
           name: "ABCD",
           email: "abc@example.com",

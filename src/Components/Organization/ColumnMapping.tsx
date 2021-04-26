@@ -20,8 +20,8 @@ import {
   CONFIRM_IMPORT_STUDENTS,
   CONFIRM_IMPORT_EMPLOYEES,
 } from "@Definitions/Constants/universityRoutes";
-import { UniversityPortalActions } from "src/Actions/UniversityActions";
-import { useAppAbility } from "src/Hooks/useAppAbility";
+import { UniversityPortalActions } from "@Actions/UniversityActions";
+import { useAppAbility } from "@Hooks/useAppAbility";
 import Error from "next/error";
 import { UserType } from "@Definitions/Constants";
 
