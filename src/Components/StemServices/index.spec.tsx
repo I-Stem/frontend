@@ -8,6 +8,8 @@ import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import { AFCRequestOutputFormat } from "@Definitions/Constants/dashboard-form-constants";
 import { FeedbackModalProps } from "./StemServices";
+import { AfcServiceActions } from "@Actions/AfcServiceActions";
+import { VcServiceActions } from "@Actions/VcServiceActions";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -22,6 +24,15 @@ const baseProps = {
   mockFunc: jest.fn(),
 };
 
+store.dispatch = baseProps.mockFunc;
+
+//mocking afc and vc review actions
+jest
+  .spyOn(AfcServiceActions, "ReviewAfcService")
+  .mockImplementation(baseProps.mockFunc);
+jest
+  .spyOn(VcServiceActions, "ReviewVcService")
+  .mockImplementation(baseProps.mockFunc);
 const feedbackProps: FeedbackModalProps = {
   showModal: true,
   closeAction: baseProps.mockFunc,
