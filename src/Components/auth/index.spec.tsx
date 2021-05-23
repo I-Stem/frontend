@@ -40,7 +40,7 @@ const ResetPasswordFormStore = () => (
 );
 
 describe("AuthDisclaimer", () => {
-  it.only("should render without fail", () => {
+  it("should render without fail", () => {
     try {
       const { getByText } = render(<AuthDisclaimer message="Sign in" />);
 

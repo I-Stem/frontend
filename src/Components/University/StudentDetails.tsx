@@ -273,7 +273,7 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
         <Form.Group className="activity-dropdown" controlId="activity">
           <Form.Control
             className="stud-select"
-            placeholder="Select csv column"
+            placeholder="Select activity type"
             as="select"
             onChange={e => {
               activityList.forEach(val => {
@@ -297,7 +297,7 @@ export const StudentDetails: React.FC<Props> = (props: Props) => {
         <h2 className="lip-title">{activity}</h2>
         <div className="activity-content">
           {currentActivity.map((activity: any, ind: number) => (
-            <article>
+            <article data-testid="testId">
               <Card key={activity._id} style={{ marginBottom: "20px" }}>
                 <Card.Body>
                   <Card.Title>

@@ -2,6 +2,8 @@
 
 exports[`FeedbackModal should match snapshot 1`] = `<div />`;
 
+exports[`FeedbackModal should match snapshot 2`] = `<div />`;
+
 exports[`SearchDocument should match snapshot 1`] = `
 <div>
   <div>
