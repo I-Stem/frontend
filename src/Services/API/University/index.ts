@@ -3,7 +3,7 @@ import { CardPreferences, UserPreferences } from "@Interfaces";
 import { Http } from "@Services";
 import { MetricsData, MetricsResponse } from "./IUniversityResponse";
 
-interface studentsData {
+export interface studentsData {
   fullNames: Array<string>;
   emails: Array<string>;
   organization?: string;
@@ -37,7 +37,7 @@ interface UniversityStudentsParams {
   };
 }
 
-interface StudentActivityParams {
+export interface StudentActivityParams {
   params: {
     studentId: string;
   };

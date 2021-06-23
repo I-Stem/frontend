@@ -106,6 +106,8 @@ const validateFileFormat = (fileName: string, serviceType: serviceTypeEnum) => {
       return false;
     }
   }
+
+  return true;
 };
 
 export { validateFileFormat };
