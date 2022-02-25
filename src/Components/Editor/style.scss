@@ -1,0 +1,34 @@
+.toolbar-section {
+  display: flex;
+  gap: 8px;
+}
+
+.toolbar-button {
+  border: 2px solid #d9d9d9;
+  border-radius: 4px;
+  background: rgba(250, 250, 250, 0.6);
+  border-width: 2px;
+  font-size: 16px;
+}
+
+.toggle-container {
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+}
+
+.show {
+  display: block;
+}
+.page-number::-webkit-outer-spin-button,
+.page-number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.page-number[type="number"] {
+  -moz-appearance: textfield;
+}
+.page-number {
+  width: 1rem;
+  padding-left: 2px;
+}
